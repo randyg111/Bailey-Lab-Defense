@@ -17,7 +17,7 @@ public class LevelPlayer {
 
         frame.setVisible(true);
 
-        timer = new Timer(1, new TimerListener(level));
+        timer = new Timer(1000, new TimerListener(level));
         timer.start();
     }
 
