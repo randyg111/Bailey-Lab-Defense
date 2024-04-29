@@ -1,15 +1,14 @@
 package characters.Baileys;
 import abilities.*;
-import characters.*;
 import characters.Character;
 
-public abstract class Baileys extends Character {
+public abstract class Bailey extends Character {
     int speed;
 
-    public Baileys(){
+    public Bailey(){
         super();
     }
-    public Baileys(String name, int hp, Ability power, String image, int speed) {
+    public Bailey(String name, int hp, Ability power, String image, int speed) {
         super(name, hp, power, image);
         this.speed = speed;
     }

@@ -1,7 +1,7 @@
 package characters.Baileys;
 import abilities.GlassesAbility;
 
-public class Glasses extends Baileys{
+public class Glasses extends Bailey {
     static final String name = "Glasses Bailey";
     static int hp = 400;
     static final String imageName = "Glasses";

@@ -1,7 +1,7 @@
 package characters.Baileys;
 import abilities.BasicAbility;
 
-public class Blonde extends Baileys{
+public class Blonde extends Bailey {
     static final String name = "Blonde Bailey";
     static int hp = 200;
     static final String imageName = "blonde";
