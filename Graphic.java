@@ -8,7 +8,7 @@ public class Graphic {
     }
     public void display()
     {
-
+        System.out.println();
     }
 }
 
