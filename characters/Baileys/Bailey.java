@@ -16,4 +16,8 @@ public abstract class Bailey extends Character {
     public int getSpeed() {
         return speed;
     }
+    public void addSpeed(int add){
+        speed += add;
+    }
+
 }

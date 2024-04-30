@@ -3,10 +3,10 @@ import abilities.GlassesAbility;
 
 public class Glasses extends Bailey {
     static final String name = "Glasses Bailey";
-    static int hp = 400;
+    static int startingHp = 400;
     static final String imageName = "Glasses";
-    static int speed = 10;
+    static final int startingSpeed = 10;
     public Glasses(){
-        super(name, hp, new GlassesAbility(), imageName, speed);
+        super(name, startingHp, new GlassesAbility(), imageName, startingSpeed);
     }
 }

@@ -3,10 +3,10 @@ import abilities.BasicAbility;
 
 public class RedHead extends Bailey {
     static final String name = "RedHead Bailey";
-    static int hp = 400;
+    static final int startingHp = 400;
     static final String imageName = "redhead";
-    static int speed = 10;
+    static final int startingSpeed = 10;
     public RedHead(){
-        super(name, hp, new BasicAbility(), imageName, speed);
+        super(name, startingHp, new BasicAbility(), imageName, startingSpeed);
     }
 }

@@ -3,10 +3,10 @@ import abilities.PhoneAbility;
 
 public class Phone extends Bailey {
     static final String name = "Blonde Bailey";
-    static int hp = 200;
+    static int startingHp = 200;
     static final String imageName = "Blonde";
-    static int speed = 10;
+    static int startingSpeed = 5;
     public Phone(){
-        super(name, hp, new PhoneAbility(), imageName, speed);
+        super(name, startingHp, new PhoneAbility(), imageName, startingSpeed);
     }
 }

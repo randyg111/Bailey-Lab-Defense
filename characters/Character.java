@@ -27,6 +27,10 @@ public abstract class Character implements Traits {
         return hp;
     }
 
+    public void loseHp(int lose){
+        hp -= lose;
+    }
+
     public int getDamage(){
         return power.damage;
     }
