@@ -1,7 +1,7 @@
 package characters.Officers;
 import abilities.ZhengAbility;
 
-public class Zheng extends Officers{
+public class Zheng extends Officer {
     static final String name = "Alex Zheng";
     static final int startingHp = 0;
     static final String imageName = "zheng";

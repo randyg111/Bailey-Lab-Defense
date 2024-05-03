@@ -1,7 +1,7 @@
 package characters.Officers;
 import abilities.KhoAbility;
 
-public class Kho extends Officers{
+public class Kho extends Officer {
     static final String name = "Khosraw Azizi";
     static final int startingHp = 300;
     static final String imageName = "kho";

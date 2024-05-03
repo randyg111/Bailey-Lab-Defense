@@ -1,5 +1,6 @@
 package abilities;
 
+
 public abstract class Ability {
         public int damage;
         public double rate;
@@ -10,5 +11,9 @@ public abstract class Ability {
         public Ability(int damage, double time){
                 this.damage = damage;
                 this.rate = time;
+        }
+
+        public void animate(String name){
+
         }
 }

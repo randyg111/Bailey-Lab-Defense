@@ -8,9 +8,11 @@ import java.io.IOException;
 
 public class Level extends JComponent {
     private Graphic[][] grid;
+    static final int rows = 5;
+    static final int columns = 9;
     public Level()
     {
-        grid = new Graphic[5][9];
+        grid = new Graphic[rows][columns];
     }
     public void paintComponent(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;

@@ -2,17 +2,24 @@ package characters.Officers;
 import abilities.*;
 import characters.Character;
 
-public abstract class Officers extends Character {
+public abstract class Officer extends Character {
     int cost;
-    public Officers(){
+    public Officer(){
         super();
     }
-    public Officers(String name, int hp, Ability power, String image, int cost) {
+    public Officer(String name, int hp, Ability power, String image, int cost) {
         super(name, hp, power, image);
         this.cost = cost;
     }
 
     public int getCost(){
         return cost;
+    }
+
+    public void active(){
+        while(active){
+
+        }
+        animate();
     }
 }
