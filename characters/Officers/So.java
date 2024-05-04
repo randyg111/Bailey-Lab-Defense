@@ -12,10 +12,6 @@ public class So extends Officer {
     public So(int x, int y, int w, int h){
         super(name, startingHp, imageName, x, y, w, h, cost);
     }
-    public void draw(Graphics2D gr)
-    {
-
-    }
     public void useAbility()
     {
 

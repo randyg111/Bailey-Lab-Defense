@@ -12,10 +12,6 @@ public class Aaron extends Officer {
     public Aaron(int x, int y, int w, int h){
         super(name, startingHp, imageName, x, y, w, h, cost);
     }
-    public void draw(Graphics2D gr)
-    {
-        gr.drawImage(image, x, y, null);
-    }
     public void useAbility()
     {
 

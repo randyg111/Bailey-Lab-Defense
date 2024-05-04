@@ -76,7 +76,10 @@ public abstract class Character{
         active = false;
     }
 
-    public abstract void draw(Graphics2D gr);
+    public void draw(Graphics2D gr)
+    {
+        gr.drawImage(image, x, y, null);
+    }
 
     public abstract void useAbility();
 
