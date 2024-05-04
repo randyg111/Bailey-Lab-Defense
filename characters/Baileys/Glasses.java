@@ -9,7 +9,7 @@ public class Glasses extends Bailey {
     static final int d = 100;
     static final double r = 1;
     public Glasses(int x, int y, int w, int h){
-        super(name, startingHp, imageName, startingSpeed, x, y, w, h);
+        super(name, startingHp, imageName, x, y, w, h, startingSpeed);
     }
 
     public void useAbility() {
