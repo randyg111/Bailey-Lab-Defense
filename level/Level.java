@@ -37,11 +37,12 @@ public class Level extends JComponent {
         grid[2][8] = new Kho(8*s2+25, 2*s1+25, s2, s1);
         grid[0][5] = new Randy(5*s2+25, 0*s1+25, s2, s1);
         baileys[0] = new LinkedList<>();
-//        baileys[0].add(new Blonde(500, 500, s2, s1));
+
+    }
+    public void addZombie() {
+        baileys[0].add(new Blonde(500, 500, 100, 100));
     }
     public void paintComponent(Graphics gr) {
-        System.out.println(getWidth()+" "+getHeight());
-        System.out.println("TEST");
         Graphics2D g = (Graphics2D) gr;
         int w = getWidth();
         int h = getHeight();
@@ -67,7 +68,7 @@ public class Level extends JComponent {
                 }
             }
         }
-//        baileys[0].peek().draw(g);
+        baileys[0].peek().draw(g);
 //        System.out.println(characterMap);
     }
 

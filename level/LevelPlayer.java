@@ -34,6 +34,7 @@ public class LevelPlayer {
         LEVEL = new Level((int) bounds.getWidth(), (int) bounds.getHeight());
         frame.add(LEVEL);
         frame.setVisible(true);
+        LEVEL.addZombie();
 
         Timer timer = new Timer(1000, new TimerListener(LEVEL));
         timer.setActionCommand("test");
