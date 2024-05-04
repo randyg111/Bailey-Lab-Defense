@@ -1,4 +1,5 @@
 package level;
+import java.awt.event.MouseListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -55,8 +56,31 @@ public class Level extends JComponent {
 
     }
 
-    public Location mouseClicked(MouseEvent e){
-            return (Location) e.getLocationOnScreen();
+    public class ClickListener implements MouseListener {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            e.getLocationOnScreen();
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
 }
 
