@@ -11,23 +11,23 @@ public class LevelPlayer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
-        frame.setBackground(Color.gray);
+        frame.getContentPane().setBackground(Color.gray);
         Level level = new Level();
         frame.add(level);
 
-        ImageIcon pizzaImage = new ImageIcon("pizza.jpg");
-        JButton testbutton = new JButton(pizzaImage);
-        testbutton.setBounds(50, 50, 100, 100);
-        frame.add(testbutton);
-        testbutton.addActionListener(new PizzaListener());
-        frame.setLayout(null);
+//        ImageIcon pizzaImage = new ImageIcon("pizza.jpg");
+//        JButton testbutton = new JButton(pizzaImage);
+//        testbutton.setBounds(50, 50, 100, 100);
+//        frame.add(testbutton);
+//        testbutton.addActionListener(new PizzaListener());
+//        frame.setLayout(null);
 
 
         frame.setVisible(true);
 
         Timer timer = new Timer(1000, new TimerListener(level));
         timer.setActionCommand("test");
-        timer.start();
+//        timer.start();
     }
 
     static class TimerListener implements ActionListener
