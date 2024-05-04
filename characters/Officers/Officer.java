@@ -2,6 +2,8 @@ package characters.Officers;
 import abilities.*;
 import characters.Character;
 
+import java.nio.Buffer;
+
 public abstract class Officer extends Character {
     int cost;
     public Officer(){
@@ -20,6 +22,6 @@ public abstract class Officer extends Character {
         while(active){
 
         }
-        animate();
+        //animate();
     }
 }
