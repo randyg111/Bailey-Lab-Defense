@@ -1,5 +1,6 @@
 package characters.Officers;
-import abilities.AaronAbility;
+
+import java.awt.*;
 
 public class Aaron extends Officer {
     static final String name = "Aaron Zhou";
@@ -9,6 +10,14 @@ public class Aaron extends Officer {
     private static final int DAMAGE = 350;
     private static final double RATE = 2;
     public Aaron(int x, int y){
-        super(name, startingHp, new AaronAbility(), imageName, x, y, cost);
+        super(name, startingHp, imageName, x, y, cost);
+    }
+    public void draw(Graphics2D gr)
+    {
+
+    }
+    public void useAbility()
+    {
+
     }
 }

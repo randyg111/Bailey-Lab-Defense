@@ -13,24 +13,21 @@ import java.util.*;
 public abstract class Character{
     private String name;
     private int hp;
-    private Ability power;
     private BufferedImage image;
     boolean active;
-    private int x;
-    private int y;
+    protected int x;
+    protected int y;
 
     public Character() {
         this.name = null;
         this.hp = 0;
-        this.power = null;
         this.image = null;
         active = false;
     }
 
-    public Character(String name, int hp, Ability power, String imageName, int x, int y){
+    public Character(String name, int hp, String imageName, int x, int y){
         this.name = name;
         this.hp = hp;
-        this.power = power;
         this.x = x;
         this.y = y;
         try{
@@ -52,14 +49,6 @@ public abstract class Character{
 
     public void loseHp(int lose) {
         hp -= lose;
-    }
-
-    public int getDamage() {
-        return power.damage;
-    }
-
-    public double getRate() {
-        return power.rate;
     }
 
     public BufferedImage getImage() {
@@ -86,7 +75,7 @@ public abstract class Character{
         active = false;
     }
 
-    //public abstract void draw(Graphics2D gr);
+    public abstract void draw(Graphics2D gr);
 
     public abstract void useAbility();
 
