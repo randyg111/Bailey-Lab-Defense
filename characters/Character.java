@@ -10,29 +10,33 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-public abstract class Character{
-    String name;
-    int hp;
-    Ability power;
-    BufferedImage image;
+public abstract class Character
+{
+    private String name;
+    private int hp;
+    private Ability power;
+    private BufferedImage image;
     protected boolean active;
+    private int x;
+    private int y;
 
-    public Character() {
-        this.name = null;
-        this.hp = 0;
-        this.power = null;
-        this.image = null;
-        active = false;
+    public Character()
+    {
+
     }
 
-    public Character(String name, int hp, Ability power, String imageName){
+    public Character(String name, int hp, Ability power, String imageName, int x, int y)
+    {
         this.name = name;
         this.hp = hp;
         this.power = power;
+        this.x = x;
+        this.y = y;
+
         try{
             image = ImageIO.read(new File(imageName));
-        } catch (IOException e){
-            System.out.println(imageName + "image not found");
+        } catch (IOException e) {
+            System.out.println(imageName + " image not found");
         }
 
         active = false;
@@ -46,7 +50,7 @@ public abstract class Character{
         return hp;
     }
 
-    public void loseHp(int lose) {
+    public void minusHp(int lose) {
         hp -= lose;
     }
 
@@ -82,6 +86,6 @@ public abstract class Character{
         active = false;
     }
 
-    //public abstract void draw(Graphics2D gr);
+    public abstract void draw(Graphics2D gr);
 
 }

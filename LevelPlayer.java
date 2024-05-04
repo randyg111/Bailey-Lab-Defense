@@ -1,12 +1,9 @@
-import com.sun.xml.internal.bind.v2.model.core.EnumLeafInfo;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LevelPlayer {
-    private static Timer timer;
     private static int numPizza = 0;
 
     public static void main(String[] args) {
@@ -22,13 +19,14 @@ public class LevelPlayer {
         JButton testbutton = new JButton(pizzaImage);
         testbutton.setBounds(50, 50, 100, 100);
         frame.add(testbutton);
-        testbutton.addActionListener(new pizzaListener());
+        testbutton.addActionListener(new PizzaListener());
         frame.setLayout(null);
 
 
         frame.setVisible(true);
 
-        timer = new Timer(1000, new TimerListener(level));
+        Timer timer = new Timer(1000, new TimerListener(level));
+        timer.setActionCommand("test");
         timer.start();
     }
 
@@ -47,14 +45,18 @@ public class LevelPlayer {
          */
         public void actionPerformed(ActionEvent event)
         {
-            if (event.getSource() == timer)
+            if (event.getSource() instanceof Timer)
             {
-                System.out.println("TEST");
+                switch (((Timer) event.getSource()).getActionCommand()) {
+                    case "test":
+                        System.out.println("TEST");
+                        break;
+                }
             }
         }
     }
 
-    static class pizzaListener implements ActionListener{
+    static class PizzaListener implements ActionListener{
         public void actionPerformed(ActionEvent event)
         {
             JButton button = (JButton) event.getSource();

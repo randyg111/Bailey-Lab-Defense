@@ -7,21 +7,34 @@ import java.io.File;
 import java.io.IOException;
 
 public class Level extends JComponent {
-    private Graphic[][] grid;
-    static final int rows = 5;
-    static final int columns = 9;
+    private Character[][] grid;
+    private static final int ROWS = 5;
+    private static final int COLS = 9;
     public Level()
     {
-        grid = new Graphic[rows][columns];
+        grid = new Character[ROWS][COLS];
     }
     public void paintComponent(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
+        int w = getWidth();
+        int h = getHeight();
+        int s1 = (w-50)/5;
+        int s2 = (h-50)/9;
 
-        try {
-            BufferedImage image = ImageIO.read(new File("pizza.jpg"));
-            g.drawImage(image, 100, 100, null);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        for (int row = 0; row < ROWS; row++)
+        {
+            for (int col = 0; col < COLS; col++)
+            {
+                if (grid[row][col] == null)
+                {
+                    g.setColor(Color.gray);
+                    g.fill(new Rectangle(row*s1 + 25, col*s2 + 25, s1, s2));
+                }
+                else
+                {
+                    grid[row][col].draw(g);
+                }
+            }
         }
     }
 }
