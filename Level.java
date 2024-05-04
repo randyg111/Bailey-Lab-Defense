@@ -19,8 +19,8 @@ public class Level extends JComponent {
         Graphics2D g = (Graphics2D) gr;
         int w = getWidth();
         int h = getHeight();
-        int s1 = (w-50)/5;
-        int s2 = (h-50)/9;
+        int s1 = (h-50)/ROWS;
+        int s2 = (w-50)/COLS;
 
         for (int row = 0; row < ROWS; row++)
         {
@@ -28,8 +28,11 @@ public class Level extends JComponent {
             {
                 if (grid[row][col] == null)
                 {
-                    g.setColor(Color.gray);
-                    g.fill(new Rectangle(row*s1 + 25, col*s2 + 25, s1, s2));
+                    Rectangle rect = new Rectangle(col*s2 + 25, row*s1 + 25, s2, s1);
+                    g.setColor(Color.lightGray);
+                    g.fill(rect);
+                    g.setColor(Color.black);
+                    g.draw(rect);
                 }
                 else
                 {
