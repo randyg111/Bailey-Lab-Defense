@@ -1,10 +1,13 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.xml.stream.Location;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.EventListener;
+
 import characters.Character;
 import characters.Officers.*;
 
@@ -47,6 +50,11 @@ public class Level extends JComponent {
                 }
             }
         }
+
+    }
+
+    public Location mouseClicked(MouseEvent e){
+            return (Location) e.getLocationOnScreen();
     }
 }
 

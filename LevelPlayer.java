@@ -66,6 +66,8 @@ public class LevelPlayer {
 
         }
     }
+
+
     public static void addPizza(int num){
         numPizza += num;
     }
