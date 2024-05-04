@@ -1,3 +1,7 @@
+package level;
+
+import level.Level;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
