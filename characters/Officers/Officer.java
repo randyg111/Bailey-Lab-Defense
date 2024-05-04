@@ -10,7 +10,7 @@ public abstract class Officer extends Character {
         super();
     }
     public Officer(String name, int hp, Ability power, String image, int x, int y, int cost) {
-        super(name, hp, power, image);
+        super(name, hp, power, image, x, y);
         this.cost = cost;
     }
 

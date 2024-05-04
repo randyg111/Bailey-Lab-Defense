@@ -6,7 +6,7 @@ public class Zheng extends Officer {
     static final int startingHp = 0;
     static final String imageName = "zheng";
     static final int cost = 150;
-    public Zheng(){
-        super(name, startingHp, new ZhengAbility(), imageName, cost);
+    public Zheng(int x, int y){
+        super(name, startingHp, new ZhengAbility(), imageName, x, y, cost);
     }
 }

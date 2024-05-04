@@ -6,7 +6,7 @@ public class Aaron extends Officer {
     static final int startingHp = 0;
     static final String imageName = "aaron";
     static final int cost = 50;
-    public Aaron(){
-        super(name, startingHp, new AaronAbility(), imageName, cost);
+    public Aaron(int x, int y){
+        super(name, startingHp, new AaronAbility(), imageName, x, y, cost);
     }
 }

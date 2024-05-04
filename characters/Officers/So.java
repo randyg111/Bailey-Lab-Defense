@@ -5,8 +5,8 @@ public class So extends Officer {
     static final int startingHp = 350;
     static final String imageName = "alexS";
     static final int cost = 100;
-    public So(){
-        super(name, startingHp, new SoAbility(), imageName, cost);
+    public So(int x, int y){
+        super(name, startingHp, new SoAbility(), imageName, x, y, cost);
     }
 
 }
