@@ -11,11 +11,13 @@ import java.io.IOException;
 import java.util.*;
 
 public abstract class Character{
-    String name;
-    int hp;
-    Ability power;
-    BufferedImage image;
+    private String name;
+    private int hp;
+    private Ability power;
+    private BufferedImage image;
     boolean active;
+    private int x;
+    private int y;
 
     public Character() {
         this.name = null;
@@ -25,10 +27,12 @@ public abstract class Character{
         active = false;
     }
 
-    public Character(String name, int hp, Ability power, String imageName){
+    public Character(String name, int hp, Ability power, String imageName, int x, int y){
         this.name = name;
         this.hp = hp;
         this.power = power;
+        this.x = x;
+        this.y = y;
         try{
             image = ImageIO.read(new File(imageName));
         } catch (IOException e){
@@ -84,8 +88,6 @@ public abstract class Character{
 
     //public abstract void draw(Graphics2D gr);
 
-    public abstract void useAbility(){
-
-    }
+    public abstract void useAbility();
 
 }
