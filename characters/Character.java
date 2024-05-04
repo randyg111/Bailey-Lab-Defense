@@ -1,7 +1,6 @@
 package characters;
 import abilities.*;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -11,9 +10,9 @@ import java.io.IOException;
 import java.util.*;
 
 public abstract class Character{
-    private String name;
-    private int hp;
-    private BufferedImage image;
+    protected String name;
+    protected int hp;
+    protected BufferedImage image;
     boolean active;
     protected int x;
     protected int y;
@@ -33,7 +32,7 @@ public abstract class Character{
         try{
             image = ImageIO.read(new File(imageName));
         } catch (IOException e){
-            System.out.println(imageName + "image not found");
+            System.out.println(imageName + " image not found");
         }
 
         active = false;
@@ -61,7 +60,7 @@ public abstract class Character{
 
     /*
     public void activate() {
-        while(
+        active = true;
         Timer timer = new Timer(1000, new TimerListener());
         while (active) {
 

@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import characters.Character;
+import characters.Officers.Aaron;
 
 public class Level extends JComponent {
     private Character[][] grid;
@@ -22,6 +23,7 @@ public class Level extends JComponent {
         int s1 = (h-50)/ROWS;
         int s2 = (w-50)/COLS;
 
+        grid[1][2] = new Aaron(2*s2+25, 1*s1+25);
         for (int row = 0; row < ROWS; row++)
         {
             for (int col = 0; col < COLS; col++)

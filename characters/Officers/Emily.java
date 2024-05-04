@@ -19,7 +19,7 @@ public class Emily extends Officer {
 
     }
 
-    public void useAbility(JFrame frame)
+    public void useAbility()
     {
         JButton button = new JButton();
     }
