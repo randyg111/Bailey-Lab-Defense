@@ -1,5 +1,5 @@
 package characters.Baileys;
-
+import level.Level;
 import java.awt.*;
 
 public class Phone extends Bailey {
@@ -14,7 +14,7 @@ public class Phone extends Bailey {
     }
 
     @Override
-    public void useAbility() {
+    public void useAbility(Level level) {
 
     }
 

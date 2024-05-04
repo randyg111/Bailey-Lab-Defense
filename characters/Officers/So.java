@@ -1,5 +1,5 @@
 package characters.Officers;
-
+import level.Level;
 import java.awt.*;
 
 public class So extends Officer {
@@ -12,7 +12,7 @@ public class So extends Officer {
     public So(int x, int y, int w, int h){
         super(name, startingHp, imageName, x, y, w, h, cost);
     }
-    public void useAbility()
+    public void useAbility(Level level)
     {
 
     }

@@ -1,5 +1,6 @@
 package characters.Baileys;
 import java.awt.*;
+import level.Level;
 
 public class SprayBottle extends Bailey {
     static final String name = "Spray Bottle Bailey";
@@ -13,7 +14,7 @@ public class SprayBottle extends Bailey {
         super(name, startingHp, imageName, x, y, w, h, startingSpeed);
     }
 
-    public void useAbility() {
+    public void useAbility(Level level) {
 
     }
 }

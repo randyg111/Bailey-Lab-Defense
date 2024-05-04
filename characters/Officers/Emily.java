@@ -1,5 +1,5 @@
 package characters.Officers;
-
+import level.Level;
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,7 +15,7 @@ public class Emily extends Officer {
         super(name, startingHp, imageName, x, y, w, h, cost);
     }
 
-    public void useAbility()
+    public void useAbility(Level level)
     {
 
     }

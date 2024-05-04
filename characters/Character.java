@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import level.Level;
 
 public abstract class Character{
     protected String name;
@@ -81,6 +82,6 @@ public abstract class Character{
         gr.drawImage(image, x, y, null);
     }
 
-    public abstract void useAbility();
+    public abstract void useAbility(Level level);
 
 }
