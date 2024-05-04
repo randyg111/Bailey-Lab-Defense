@@ -11,15 +11,15 @@ public class Emily extends Officer {
     static final int cost = 150;
     static final int d = 15;
     static final double r = .75;
-    public Emily(int x, int y){
-        super(name, startingHp, imageName, x, y, cost);
+    public Emily(int x, int y, int w, int h){
+        super(name, startingHp, imageName, x, y, w, h, cost);
     }
     public void draw(Graphics2D gr)
     {
 
     }
 
-    public void useAbility(JFrame frame)
+    public void useAbility()
     {
         JButton button = new JButton();
     }

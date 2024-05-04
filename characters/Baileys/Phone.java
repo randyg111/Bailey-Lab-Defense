@@ -9,8 +9,8 @@ public class Phone extends Bailey {
     static final int startingSpeed = 5;
     static final int d = 200;
     static final double r = 3;
-    public Phone(int x, int y){
-        super(name, startingHp, imageName, startingSpeed, x, y);
+    public Phone(int x, int y, int w, int h){
+        super(name, startingHp, imageName, startingSpeed, x, y, w, h);
     }
 
     @Override

@@ -9,8 +9,8 @@ public class Zheng extends Officer {
     static final int cost = 150;
     static final int d = 1800;
     static final double r = 3;
-    public Zheng(int x, int y){
-        super(name, startingHp, imageName, x, y, cost);
+    public Zheng(int x, int y, int w, int h){
+        super(name, startingHp, imageName, x, y, w, h, cost);
     }
     public void draw(Graphics2D gr)
     {

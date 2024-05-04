@@ -1,5 +1,4 @@
 package characters;
-import abilities.*;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -12,10 +11,12 @@ import java.util.*;
 public abstract class Character{
     protected String name;
     protected int hp;
-    protected BufferedImage image;
+    protected Image image;
     boolean active;
     protected int x;
     protected int y;
+    protected int width;
+    protected int height;
 
     public Character() {
         this.name = null;
@@ -24,13 +25,14 @@ public abstract class Character{
         active = false;
     }
 
-    public Character(String name, int hp, String imageName, int x, int y){
+    public Character(String name, int hp, String imageName, int x, int y, int width, int height){
         this.name = name;
         this.hp = hp;
         this.x = x;
         this.y = y;
         try{
             image = ImageIO.read(new File(imageName));
+            image = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
         } catch (IOException e){
             System.out.println(imageName + " image not found");
         }
@@ -50,7 +52,7 @@ public abstract class Character{
         hp -= lose;
     }
 
-    public BufferedImage getImage() {
+    public Image getImage() {
         return image;
     }
 

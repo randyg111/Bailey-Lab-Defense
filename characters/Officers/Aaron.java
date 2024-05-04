@@ -9,8 +9,8 @@ public class Aaron extends Officer {
     static final int cost = 50;
     private static final int DAMAGE = 350;
     private static final double RATE = 2;
-    public Aaron(int x, int y){
-        super(name, startingHp, imageName, x, y, cost);
+    public Aaron(int x, int y, int w, int h){
+        super(name, startingHp, imageName, x, y, w, h, cost);
     }
     public void draw(Graphics2D gr)
     {
