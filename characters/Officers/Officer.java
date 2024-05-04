@@ -18,10 +18,4 @@ public abstract class Officer extends Character {
         return cost;
     }
 
-    public void active(){
-        while(active){
-
-        }
-        //animate();
-    }
 }

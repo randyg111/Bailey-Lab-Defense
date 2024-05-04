@@ -8,8 +8,8 @@ public abstract class Bailey extends Character {
     public Bailey(){
         super();
     }
-    public Bailey(String name, int hp, Ability power, String image, int speed) {
-        super(name, hp, power, image);
+    public Bailey(String name, int hp, Ability power, String image, int x, int y, int speed) {
+        super(name, hp, power, image, x, y);
         this.speed = speed;
     }
 
