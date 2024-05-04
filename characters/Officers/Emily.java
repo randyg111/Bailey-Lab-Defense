@@ -7,6 +7,7 @@ public class Emily extends Officer {
     static final String name = "Emily Lou";
     static final int startingHp = 300;
     static final String imageName = "emily";
+    static final String abilityImageName = "pizza.jpg";
     static final int cost = 150;
     static final int d = 15;
     static final double r = .75;
@@ -17,8 +18,9 @@ public class Emily extends Officer {
     {
 
     }
-    public void useAbility(JFrame frame, )
-    {
 
+    public void useAbility(JFrame frame)
+    {
+        JButton button = new JButton();
     }
 }

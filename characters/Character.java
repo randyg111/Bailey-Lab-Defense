@@ -77,6 +77,6 @@ public abstract class Character{
 
     public abstract void draw(Graphics2D gr);
 
-    public abstract void useAbility(JFrame frame);
+    public abstract void useAbility();
 
 }
