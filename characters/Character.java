@@ -16,8 +16,8 @@ public abstract class Character{
     boolean active;
     protected int x;
     protected int y;
-    protected int width;
-    protected int height;
+    protected int id;
+    private static int num = 1;
 
     public Character() {
         this.name = null;
@@ -39,6 +39,8 @@ public abstract class Character{
         }
 
         active = false;
+        id = num++;
+        Level.getCharacterMap().put(id, this);
     }
 
     public String getName() {

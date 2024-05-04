@@ -1,9 +1,12 @@
 package characters.Baileys;
 import characters.Character;
 
+import javax.swing.*;
+
 public abstract class Bailey extends Character {
     protected int speed;
     protected boolean walking;
+    protected Timer timer;
 
     public Bailey(){
         super();
@@ -14,6 +17,15 @@ public abstract class Bailey extends Character {
         walking = true;
     }
 
-
+    public void start()
+    {
+        walking = true;
+        timer.start();
+    }
+    public void stop()
+    {
+        walking = false;
+        timer.stop();
+    }
 
 }

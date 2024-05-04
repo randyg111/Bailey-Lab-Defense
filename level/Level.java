@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.EventListener;
+import java.util.HashMap;
 
 import characters.Character;
 import characters.Officers.*;
@@ -18,6 +19,7 @@ public class Level extends JComponent {
     private Character[][] grid;
     private static final int ROWS = 5;
     private static final int COLS = 9;
+    private static HashMap<Integer, Character> characterMap = new HashMap<>();
     public Level()
     {
         grid = new Character[ROWS][COLS];
@@ -53,7 +55,12 @@ public class Level extends JComponent {
                 }
             }
         }
+//        System.out.println(characterMap);
+    }
 
+    public static HashMap<Integer, Character> getCharacterMap()
+    {
+        return characterMap;
     }
 
     public class ClickListener implements MouseListener {
@@ -80,6 +87,32 @@ public class Level extends JComponent {
         @Override
         public void mouseExited(MouseEvent e) {
 
+        }
+    }
+
+    static class TimerListener implements ActionListener
+    {
+        private final Level level;
+
+        public TimerListener(Level level)
+        {
+            this.level = level;
+        }
+
+        /**
+         *  Advances the race whenever the timer goes off
+         *  @param event the event for this timer
+         */
+        public void actionPerformed(ActionEvent event)
+        {
+            if (event.getSource() instanceof Timer)
+            {
+                switch (((Timer) event.getSource()).getActionCommand()) {
+                    case "test":
+                        System.out.println("TEST");
+                        break;
+                }
+            }
         }
     }
 }
