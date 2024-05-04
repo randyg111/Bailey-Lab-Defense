@@ -16,7 +16,4 @@ public class Blonde extends Bailey {
 
     }
 
-    public void draw(Graphics2D gr){
-
-    }
 }

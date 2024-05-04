@@ -15,8 +15,4 @@ public class Glasses extends Bailey {
     public void useAbility() {
 
     }
-
-    public void draw(Graphics2D gr){
-
-    }
 }

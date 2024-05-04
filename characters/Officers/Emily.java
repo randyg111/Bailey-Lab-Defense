@@ -14,13 +14,9 @@ public class Emily extends Officer {
     public Emily(int x, int y){
         super(name, startingHp, imageName, x, y, cost);
     }
-    public void draw(Graphics2D gr)
+
+    public void useAbility()
     {
 
-    }
-
-    public void useAbility(JFrame frame)
-    {
-        JButton button = new JButton();
     }
 }

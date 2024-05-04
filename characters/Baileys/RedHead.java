@@ -16,7 +16,4 @@ public class RedHead extends Bailey {
 
     }
 
-    public void draw(Graphics2D gr){
-
-    }
 }
