@@ -8,8 +8,8 @@ public class Blonde extends Bailey {
     static final int startingSpeed = 10;
     static final  int d = 100;
     static final double r = 1;
-    public Blonde(int x, int y){
-        super(name, startingHp, imageName, startingSpeed, x, y);
+    public Blonde(int x, int y, int w, int h){
+        super(name, startingHp, imageName, startingSpeed, x, y, w, h);
     }
 
     public void useAbility() {

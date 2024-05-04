@@ -1,5 +1,4 @@
 package characters.Baileys;
-import abilities.*;
 import characters.Character;
 
 public abstract class Bailey extends Character {
@@ -8,8 +7,8 @@ public abstract class Bailey extends Character {
     public Bailey(){
         super();
     }
-    public Bailey(String name, int hp, String image, int x, int y, int speed) {
-        super(name, hp, image, x, y);
+    public Bailey(String name, int hp, String image, int x, int y, int w, int h, int speed) {
+        super(name, hp, image, x, y, w, h);
         this.speed = speed;
     }
 

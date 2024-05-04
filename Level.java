@@ -23,7 +23,7 @@ public class Level extends JComponent {
         int s1 = (h-50)/ROWS;
         int s2 = (w-50)/COLS;
 
-        grid[1][2] = new Aaron(2*s2+25, 1*s1+25);
+        grid[1][2] = new Aaron(2*s2+25, 1*s1+25, s2, s1);
         for (int row = 0; row < ROWS; row++)
         {
             for (int col = 0; col < COLS; col++)

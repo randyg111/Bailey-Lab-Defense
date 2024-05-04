@@ -9,8 +9,8 @@ public class SprayBottle extends Bailey {
     static final int d = 200;
     static final double r = 3;
 
-    public SprayBottle(int x, int y){
-        super(name, startingHp, imageName, startingSpeed, x, y);
+    public SprayBottle(int x, int y, int w, int h){
+        super(name, startingHp, imageName, startingSpeed, x, y, w, h);
     }
 
     public void useAbility() {
