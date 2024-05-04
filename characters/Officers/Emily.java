@@ -6,7 +6,7 @@ import java.awt.*;
 public class Emily extends Officer {
     static final String name = "Emily Lou";
     static final int startingHp = 300;
-    static final String imageName = "emily";
+    static final String imageName = "emily.png";
     static final String abilityImageName = "pizza.jpg";
     static final int cost = 150;
     static final int d = 15;

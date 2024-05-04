@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import characters.Character;
-import characters.Officers.Aaron;
+import characters.Officers.*;
 
 public class Level extends JComponent {
     private Character[][] grid;
@@ -23,7 +23,12 @@ public class Level extends JComponent {
         int s1 = (h-50)/ROWS;
         int s2 = (w-50)/COLS;
 
-        grid[1][2] = new Aaron(2*s2+25, 1*s1+25, s2, s1);
+        grid[1][1] = new Aaron(1*s2+25, 1*s1+25, s2, s1);
+        grid[0][2] = new So(2*s2+25, 0*s1+25, s2, s1);
+        grid[3][4] = new Zheng(4*s2+25, 3*s1+25, s2, s1);
+        grid[4][7] = new Emily(7*s2+25, 4*s1+25, s2, s1);
+        grid[2][8] = new Kho(8*s2+25, 2*s1+25, s2, s1);
+        grid[0][5] = new Randy(5*s2+25, 0*s1+25, s2, s1);
         for (int row = 0; row < ROWS; row++)
         {
             for (int col = 0; col < COLS; col++)
