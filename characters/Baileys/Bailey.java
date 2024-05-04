@@ -1,7 +1,11 @@
 package characters.Baileys;
 import characters.Character;
+import level.Level;
+import level.LevelPlayer;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public abstract class Bailey extends Character {
     protected int speed;
@@ -15,6 +19,8 @@ public abstract class Bailey extends Character {
         super(name, hp, image, x, y, w, h);
         this.speed = speed;
         walking = true;
+        timer = new Timer(1000, new TimerListener(LevelPlayer.LEVEL));
+        timer.start();
     }
 
     public void start()
@@ -28,4 +34,23 @@ public abstract class Bailey extends Character {
         timer.stop();
     }
 
+    class TimerListener implements ActionListener
+    {
+        private final Level level;
+
+        public TimerListener(Level level)
+        {
+            this.level = level;
+        }
+
+        /**
+         *  Advances the race whenever the timer goes off
+         *  @param event the event for this timer
+         */
+        public void actionPerformed(ActionEvent event)
+        {
+            Bailey.this.useAbility(level);
+            level.repaint();
+        }
+    }
 }

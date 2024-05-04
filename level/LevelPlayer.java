@@ -6,18 +6,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
 
 public class LevelPlayer {
     private static int numPizza = 0;
+    public static Level LEVEL;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         JFrame frame = new JFrame("Bailey Lab Defense");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         frame.getContentPane().setBackground(Color.gray);
-        Level level = new Level();
-        frame.add(level);
 
 //        ImageIcon pizzaImage = new ImageIcon("pizza.jpg");
 //        JButton testbutton = new JButton(pizzaImage);
@@ -27,9 +27,15 @@ public class LevelPlayer {
 //        frame.setLayout(null);
 
 
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Rectangle bounds = env.getMaximumWindowBounds();
+//        frame.setSize((int) bounds.getWidth(), (int) bounds.getHeight());
+
+        LEVEL = new Level((int) bounds.getWidth(), (int) bounds.getHeight());
+        frame.add(LEVEL);
         frame.setVisible(true);
 
-        Timer timer = new Timer(1000, new TimerListener(level));
+        Timer timer = new Timer(1000, new TimerListener(LEVEL));
         timer.setActionCommand("test");
 //        timer.start();
     }
