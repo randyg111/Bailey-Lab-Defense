@@ -1,6 +1,4 @@
 package characters.Baileys;
-import abilities.BasicAbility;
-
 import java.awt.*;
 
 public class RedHead extends Bailey {
