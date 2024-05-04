@@ -1,5 +1,6 @@
 package characters.Officers;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Emily extends Officer {
@@ -16,7 +17,7 @@ public class Emily extends Officer {
     {
 
     }
-    public void useAbility()
+    public void useAbility(JFrame frame, )
     {
 
     }

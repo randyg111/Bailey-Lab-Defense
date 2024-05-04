@@ -1,7 +1,7 @@
 package characters;
 import abilities.*;
-
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -61,7 +61,7 @@ public abstract class Character{
 
     /*
     public void activate() {
-        active = true;
+        while(
         Timer timer = new Timer(1000, new TimerListener());
         while (active) {
 
@@ -77,6 +77,6 @@ public abstract class Character{
 
     public abstract void draw(Graphics2D gr);
 
-    public abstract void useAbility();
+    public abstract void useAbility(JFrame frame);
 
 }
