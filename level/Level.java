@@ -55,16 +55,21 @@ public class Level extends JComponent {
             boxes.add(new Rectangle(BOX_OFFSET, (i+1)*(BOX_HEIGHT+BOX_OFFSET) + BOX_OFFSET, BOX_WIDTH, BOX_HEIGHT));
         }
         addMouseListener(new ClickListener());
+        startSpawn();
     }
-    public void testZombie() {
 
+    public void startSpawn(){
+        Timer timer = new Timer();
 
-        int w = getWidth();
-        int s2 = getS2();
-        Dimension scale = getDimension(Blonde.IMAGE_NAME, new Dimension(w, s2));
-        for(int i = 0; i < 5; i++) {
-            baileys[i].add(new Blonde(1500, i*s2 + 25, scale.width, scale.height));
+        for(int wave = 0; wave < 2; wave++) {
+            timer.schedule(new StageTask(.5, 0, 0, 0, 0, 0), 5000 + wave * 2500);
+            timer.schedule(new StageTask(.5, .2, 0, 0, 0, 0), 10000 + wave * 2500);
+            timer.schedule(new StageTask(.5, .2, .2, 0, 0, 0), 15000 + wave * 2500);
+            timer.schedule(new StageTask(.6, .2, .2, .2, 0, 0), 20000 + wave * 2500);
+            timer.schedule(new StageTask(.7, .2, .2, .2, .2, 0), 25000 + wave * 2500);
+            timer.schedule(new StageTask(.8, .3, .3, .2, .2, .2), 30000 + wave * 2500);
         }
+
     }
 
     public void spawn(double blondeRate, double redHeadRate, double idRate,
@@ -107,7 +112,6 @@ public class Level extends JComponent {
         int w = getWidth();
         int s2 = getS2();
         int row = (int) (Math.random()*5);
-        System.out.println(type);
         switch(type)
         {
             case 0:
@@ -451,10 +455,9 @@ public class Level extends JComponent {
                         {
                             Rectangle rect = getRectangle(row, col);
                             if (rect.contains(e.getPoint())) {
-                                Officer check = getOfficer(curr, rect.x, rect.y, rect.getSize());
-                                if(check.getCost() <= numPizza){
-                                    grid[row][col] = check;
-                                    numPizza -= check.getCost();
+                                if(arr[curr].getCost() <= numPizza){
+                                    grid[row][col] = getOfficer(curr, rect.x, rect.y, rect.getSize());
+                                    numPizza -= grid[row][col].getCost();
                                 } else {
                                     timer.cancel();
                                     timer = new Timer();
@@ -487,6 +490,28 @@ public class Level extends JComponent {
         public void run() {
             display = "";
         }
+    }
+
+
+    public class StageTask extends TimerTask{
+        double bR;
+        double rHR;
+        double idR;
+        double gR;
+        double sR;
+        double pR;
+        public StageTask(double r1, double r2, double r3, double r4, double r5, double r6){
+            bR = r1;
+            rHR = r2;
+            idR = r3;
+            gR = r4;
+            sR = r5;
+            pR = r6;
+        }
+        public void run() {
+            spawn(bR, rHR, idR, gR, sR, pR);
+        }
+
     }
 
 }

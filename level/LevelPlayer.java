@@ -16,7 +16,6 @@ public class LevelPlayer {
         frame.add(LEVEL);
         frame.setVisible(true);
         Thread.sleep(2000);
-        LEVEL.testZombie();
         LEVEL.testPizza();
     }
 }
