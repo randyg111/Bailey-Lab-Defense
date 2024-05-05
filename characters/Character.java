@@ -14,8 +14,10 @@ public abstract class Character{
     protected int hp;
     protected Image image;
     boolean active;
-    protected int x;
-    protected int y;
+    public int x;
+    public int y;
+    public int width;
+    public int height;
 
     public Character() {
         this.name = null;
@@ -29,6 +31,8 @@ public abstract class Character{
         this.hp = hp;
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
         try{
             image = ImageIO.read(new File(imageName));
             image = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);

@@ -18,9 +18,8 @@ public abstract class Bailey extends Character {
     public Bailey(String name, int hp, String image, int x, int y, int w, int h, int speed) {
         super(name, hp, image, x, y, w, h);
         this.speed = speed;
-        walking = true;
-        timer = new Timer(1000, new TimerListener(LevelPlayer.LEVEL));
-        timer.start();
+        timer = new Timer(250, new TimerListener(LevelPlayer.LEVEL));
+        start();
     }
 
     public void start()
@@ -32,6 +31,11 @@ public abstract class Bailey extends Character {
     {
         walking = false;
         timer.stop();
+    }
+
+    public boolean isWalking()
+    {
+        return walking;
     }
 
     class TimerListener implements ActionListener

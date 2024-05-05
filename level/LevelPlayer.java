@@ -39,6 +39,7 @@ public class LevelPlayer {
 //        LEVEL = new Level();
         frame.add(LEVEL);
         frame.setVisible(true);
+        Thread.sleep(2000);
         LEVEL.addZombie();
 
         Timer timer = new Timer(1000, new TimerListener(LEVEL));

@@ -1,16 +1,15 @@
 package characters.Baileys;
-import java.awt.*;
 import level.Level;
 
 public class Glasses extends Bailey {
     static final String name = "Glasses Bailey";
     static int startingHp = 400;
-    static final String imageName = "Glasses";
+    public static final String IMAGE_NAME = "Glasses";
     static final int startingSpeed = 10;
     static final int d = 100;
     static final double r = 1;
     public Glasses(int x, int y, int w, int h){
-        super(name, startingHp, imageName, x, y, w, h, startingSpeed);
+        super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed);
     }
 
     public void useAbility(Level level) {

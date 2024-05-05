@@ -17,7 +17,7 @@ import characters.Officers.*;
 import characters.Baileys.*;
 
 public class Level extends JComponent {
-    private static Character[][] grid;
+    private static Officer[][] grid;
     private static final int ROWS = 5;
     private static final int COLS = 9;
     private static Queue<Bailey>[] baileys = new Queue[ROWS];
@@ -26,7 +26,7 @@ public class Level extends JComponent {
     static boolean[] selected = new boolean[6];
     public Level()
     {
-        grid = new Character[ROWS][COLS];
+        grid = new Officer[ROWS][COLS];
         for(int row = 0; row < ROWS; row++)
             baileys[row] = new LinkedList<>();
         officers.add(getScaledImage(Aaron.IMAGE_NAME));
@@ -42,7 +42,14 @@ public class Level extends JComponent {
         addMouseListener(new ClickListener());
     }
     public void addZombie() {
-        baileys[0].add(new Blonde(500, 500, 100, 100));
+        int w = getWidth();
+        int h = getHeight();
+        int s1 = (w-240)/COLS;
+        int s2 = (h-50)/ROWS;
+        Dimension scale = getDimension(Blonde.IMAGE_NAME, new Dimension(1000, s2));
+        for(int i = 0; i < 5; i++) {
+            baileys[i].add(new Blonde(1900, i*s2 + 25, scale.width, scale.height));
+        }
     }
     public void paintComponent(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
@@ -50,13 +57,6 @@ public class Level extends JComponent {
         int h = getHeight();
         int s1 = (w-240)/COLS;
         int s2 = (h-50)/ROWS;
-
-//        grid[1][1] = new Aaron(1*s2+25, 1*s1+25, s2, s1);
-//        grid[0][2] = new So(2*s2+25, 0*s1+25, s2, s1);
-//        grid[3][4] = new Zheng(4*s2+25, 3*s1+25, s2, s1);
-//        grid[4][7] = new Emily(7*s2+25, 4*s1+25, s2, s1);
-//        grid[2][8] = new Kho(8*s2+25, 2*s1+25, s2, s1);
-//        grid[0][5] = new Randy(5*s2+25, 0*s1+25, s2, s1);
 
         for (int i = 0; i < 6; i++)
         {
@@ -94,7 +94,16 @@ public class Level extends JComponent {
         }
         for (int row = 0; row < ROWS; row++)
             for (Bailey bailey : baileys[row])
+            {
+                int c = (bailey.x + bailey.width/2 - 220) / s1;
+                int r = (bailey.y + bailey.height/2 - 25) / s2;
+                if(bailey.isWalking() && r >= 0 && r < 5 && c >= 0 && c < 9 && grid[r][c] != null)
+                {
+                    bailey.stop();
+                }
                 bailey.draw(g);
+            }
+
     }
 
     public static Dimension getDimension(String imageName, Dimension bounds)
@@ -128,22 +137,9 @@ public class Level extends JComponent {
 
         try {
             BufferedImage image = ImageIO.read(new File(imageName));
-            int originalWidth = image.getWidth();
-            int originalHeight = image.getHeight();
-            int boundWidth = 200;
-            int boundHeight = 100;
-            int newWidth = originalWidth;
-            int newHeight = originalHeight;
-
-            if (originalWidth > boundWidth) {
-                newWidth = boundWidth;
-                newHeight = (newWidth * originalHeight) / originalWidth;
-            }
-
-            if (newHeight > boundHeight) {
-                newHeight = boundHeight;
-                newWidth = (newHeight * originalWidth) / originalHeight;
-            }
+            Dimension newDimension = getDimension(imageName, new Dimension(200, 100));
+            int newWidth = newDimension.width;
+            int newHeight = newDimension.height;
 
             BufferedImage resized = new BufferedImage(newWidth, newHeight, image.getType());
             Graphics2D g = resized.createGraphics();
