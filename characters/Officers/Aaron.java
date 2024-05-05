@@ -1,5 +1,8 @@
 package characters.Officers;
+import characters.Baileys.Bailey;
 import level.Level;
+
+import java.awt.*;
 
 public class Aaron extends Officer {
     public static final String NAME = "Aaron Zhou";
@@ -13,6 +16,7 @@ public class Aaron extends Officer {
     }
     public void useAbility(Level level)
     {
-
+        Bailey bailey = level.getNearestBailey(this);
+        bailey.minusHp(damage);
     }
 }

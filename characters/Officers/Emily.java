@@ -5,7 +5,6 @@ public class Emily extends Officer {
     public static final String NAME = "Emily Lou";
     static final int startingHp = 300;
     public static final String IMAGE_NAME = "emily.png";
-    static final String abilityImageName = "pizza.jpg";
     public static final int COST = 150;
     static final int d = 15;
     static final double r = .75;

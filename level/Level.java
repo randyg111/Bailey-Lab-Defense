@@ -76,6 +76,19 @@ public class Level extends JComponent {
             pizzas.add(new Pizza(x, y));
         }
     }
+    public Bailey getNearestBailey(Officer officer)
+    {
+        Point p = getLoc(officer.x, officer.y, officer.width, officer.height);
+        Bailey nearest = null;
+        for (int i = 0; i < baileys[p.x].size(); i++)
+        {
+            if (baileys[p.x].get(i).x >= officer.x) {
+                nearest = baileys[p.x].get(i);
+                break;
+            }
+        }
+        return nearest;
+    }
     public void paintComponent(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
         int w = getWidth();
@@ -107,20 +120,38 @@ public class Level extends JComponent {
         {
             for (int col = 0; col < COLS; col++)
             {
-                if(grid[row][col] != null && grid[row][col].isDead())
+                Officer officer = grid[row][col];
+                if(officer != null && officer.isDead())
                     grid[row][col] = null;
 
-                if (grid[row][col] == null)
+                if (officer != null)
+                {
+                    if (officer.isDead())
+                    {
+                        grid[row][col] = null;
+                    }
+                    else if(officer.getName().equals("Aaron Zhou"))
+                    {
+                        Bailey bailey = getNearestBailey(officer);
+                        if(bailey != null && bailey.x - officer.x <= getS1()) {
+                            officer.useAbility(this);
+                            grid[row][col] = null;
+                        }
+                        else
+                            officer.draw(g);
+                    }
+                    else
+                    {
+                        officer.draw(g);
+                    }
+                }
+                if(grid[row][col] == null)
                 {
                     Rectangle rect = getRectangle(row, col);
                     g.setColor(Color.lightGray);
                     g.fill(rect);
                     g.setColor(Color.black);
                     g.draw(rect);
-                }
-                else
-                {
-                    grid[row][col].draw(g);
                 }
             }
         }
@@ -131,6 +162,15 @@ public class Level extends JComponent {
                     if (officer != null && officer.getName().equals("Alex So")
                     && !officer.isActive())
                         officer.start();
+                }
+            }
+            else
+            {
+                for (int col = 0; col < COLS; col++) {
+                    Officer officer = grid[row][col];
+                    if (officer != null && officer.getName().equals("Alex So")
+                            && officer.isActive())
+                        officer.stop();
                 }
             }
             for (int i = baileys[row].size()-1; i >= 0; i--) {
