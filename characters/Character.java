@@ -51,7 +51,7 @@ public abstract class Character{
         return hp;
     }
 
-    public void loseHp(int lose) {
+    public void minusHp(int lose) {
         hp -= lose;
     }
 

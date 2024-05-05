@@ -7,10 +7,10 @@ public class SprayBottle extends Bailey {
     public static final String IMAGE_NAME = "sprayBottle";
     static final int startingSpeed = 10;
     static final int d = 200;
-    static final double r = 3;
+    static final int r = 3;
 
     public SprayBottle(int x, int y, int w, int h){
-        super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed);
+        super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed, d, r);
     }
 
     public void useAbility(Level level) {

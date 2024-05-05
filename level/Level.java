@@ -45,18 +45,16 @@ public class Level extends JComponent {
         officers.add(getScaledImage(Randy.IMAGE_NAME));
         officers.add(getScaledImage(So.IMAGE_NAME));
         officers.add(getScaledImage(Zheng.IMAGE_NAME));
-        displayPizza = new Pizza(BOX_OFFSET + BOX_WIDTH/2 - Pizza.WIDTH/2, VERTICAL_OFFSET);
+        displayPizza = new Pizza(BOX_OFFSET + BOX_WIDTH/2 - Pizza.WIDTH/2, BOX_OFFSET);
         for(int i = 0; i < 6; i++)
         {
-            boxes.add(new Rectangle(BOX_OFFSET, (i+1)*(BOX_HEIGHT+BOX_OFFSET) + VERTICAL_OFFSET, BOX_WIDTH, BOX_HEIGHT));
+            boxes.add(new Rectangle(BOX_OFFSET, (i+1)*(BOX_HEIGHT+BOX_OFFSET) + BOX_OFFSET, BOX_WIDTH, BOX_HEIGHT));
         }
         addMouseListener(new ClickListener());
     }
     public void addZombie() {
         int w = getWidth();
-        int h = getHeight();
-        int s1 = (w-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
-        int s2 = (h-2*VERTICAL_OFFSET)/ROWS;
+        int s2 = getS2();
         Dimension scale = getDimension(Blonde.IMAGE_NAME, new Dimension(w, s2));
         for(int i = 0; i < 5; i++) {
             baileys[i].add(new Blonde(1900, i*s2 + 25, scale.width, scale.height));
@@ -75,8 +73,8 @@ public class Level extends JComponent {
         Graphics2D g = (Graphics2D) gr;
         int w = getWidth();
         int h = getHeight();
-        int s1 = (w-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
-        int s2 = (h-2*VERTICAL_OFFSET)/ROWS;
+        int s1 = getS1();
+        int s2 = getS2();
 
         displayPizza.draw(g);
         g.setFont(new Font("Comic Sans", Font.BOLD, 36));
@@ -104,6 +102,9 @@ public class Level extends JComponent {
         {
             for (int col = 0; col < COLS; col++)
             {
+                if(grid[row][col] != null && grid[row][col].getHp() <= 0)
+                    grid[row][col] = null;
+
                 if (grid[row][col] == null)
                 {
                     Rectangle rect = getRectangle(row, col);
@@ -126,12 +127,28 @@ public class Level extends JComponent {
                 if(bailey.isWalking() && r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null)
                 {
                     bailey.stop();
+                    bailey.startEat();
                 }
                 bailey.draw(g);
             }
 
         for (Pizza pizza : pizzas)
             pizza.draw(g);
+    }
+
+    public int getS1()
+    {
+        return (getWidth()-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
+    }
+
+    public int getS2()
+    {
+        return (getHeight()-2*VERTICAL_OFFSET)/ROWS;
+    }
+
+    public Officer[][] getGrid()
+    {
+        return grid;
     }
 
     public Rectangle getRectangle(int r, int c)
