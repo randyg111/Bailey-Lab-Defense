@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
 public class LevelPlayer {
-    private static int numPizza = 0;
     public static Level LEVEL = new Level();
 
     public static void main(String[] args) throws InterruptedException {
@@ -41,6 +40,7 @@ public class LevelPlayer {
         frame.setVisible(true);
         Thread.sleep(2000);
         LEVEL.addZombie();
+        LEVEL.addPizza();
 
         Timer timer = new Timer(1000, new TimerListener(LEVEL));
         timer.setActionCommand("test");
@@ -72,28 +72,5 @@ public class LevelPlayer {
             }
         }
     }
-
-    static class PizzaListener implements ActionListener{
-        public void actionPerformed(ActionEvent event)
-        {
-            JButton button = (JButton) event.getSource();
-            addPizza(50);
-            button.setVisible(false);
-            System.out.println(numPizza);
-
-        }
-    }
-
-
-    public static void addPizza(int num){
-        numPizza += num;
-    }
-
-    public static void minusPizza(int num){
-        numPizza -= num;
-    }
-
-
-
 }
 

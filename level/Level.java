@@ -23,7 +23,9 @@ public class Level extends JComponent {
     private static Queue<Bailey>[] baileys = new Queue[ROWS];
     private static List<Rectangle> boxes = new ArrayList<>();
     private static List<BufferedImage> officers = new ArrayList<>();
+    private static List<Pizza> pizzas = new ArrayList<>();
     static boolean[] selected = new boolean[6];
+    private static int numPizza = 75;
     public Level()
     {
         grid = new Officer[ROWS][COLS];
@@ -49,6 +51,15 @@ public class Level extends JComponent {
         Dimension scale = getDimension(Blonde.IMAGE_NAME, new Dimension(1000, s2));
         for(int i = 0; i < 5; i++) {
             baileys[i].add(new Blonde(1900, i*s2 + 25, scale.width, scale.height));
+        }
+    }
+    public void addPizza() {
+        int w = getWidth();
+        int h = getHeight();
+        for(int i = 0; i < 5; i++) {
+            int x = (int) (Math.random() * (w-240)) + 220;
+            int y = (int) (Math.random() * (h - 50)) + 25;
+            pizzas.add(new Pizza(x, y));
         }
     }
     public void paintComponent(Graphics gr) {
@@ -104,6 +115,8 @@ public class Level extends JComponent {
                 bailey.draw(g);
             }
 
+        for (Pizza pizza : pizzas)
+            pizza.draw(g);
     }
 
     public static Dimension getDimension(String imageName, Dimension bounds)
@@ -185,6 +198,18 @@ public class Level extends JComponent {
         int curr = -1;
         @Override
         public void mouseClicked(MouseEvent e) {
+            for (int i = 0; i < pizzas.size(); i++)
+            {
+                Pizza pizza = pizzas.get(i);
+                Rectangle rect = new Rectangle(pizza.x, pizza.y, pizza.WIDTH, pizza.HEIGHT);
+                if(rect.contains(e.getPoint()))
+                {
+                    pizzas.remove(i);
+                    numPizza += 50;
+                    return;
+                }
+            }
+
             if(curr != -1)
             {
                 int w = getWidth();
