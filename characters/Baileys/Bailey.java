@@ -10,18 +10,13 @@ import java.awt.event.ActionListener;
 
 public abstract class Bailey extends Character {
     protected int speed;
-    protected boolean walking;
-    protected int damage;
-    protected int rate;
 
     public Bailey(){
         super();
     }
-    public Bailey(String name, int hp, String image, int x, int y, int w, int h, int speed, int d, int r) {
-        super(name, hp, image, x, y, w, h);
+    public Bailey(String name, int hp, String image, int x, int y, int w, int h, int speed, int d, double r) {
+        super(name, hp, image, x, y, w, h, d, r);
         this.speed = speed;
-        damage = d;
-        rate = r;
         start();
     }
 
@@ -34,7 +29,7 @@ public abstract class Bailey extends Character {
 
     public void startEat()
     {
-        timer = new Timer(1000/rate, new TimerListener(LevelPlayer.LEVEL));
+        timer = new Timer((int) (1000/rate), new TimerListener(LevelPlayer.LEVEL));
         timer.start();
     }
 

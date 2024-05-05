@@ -25,6 +25,8 @@ public abstract class Character{
     public int width;
     public int height;
     protected Timer timer;
+    protected int damage;
+    protected double rate;
 
     public Character() {
         this.name = null;
@@ -33,13 +35,15 @@ public abstract class Character{
         active = false;
     }
 
-    public Character(String name, int hp, String imageName, int x, int y, int width, int height){
+    public Character(String name, int hp, String imageName, int x, int y, int width, int height, int d, double r){
         this.name = name;
         this.hp = hp;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        damage = d;
+        rate = r;
         try{
             image = ImageIO.read(new File(imageName));
             image = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
@@ -56,7 +60,7 @@ public abstract class Character{
     {
         if(LevelPlayer.LEVEL == null)
             return;
-        timer = new Timer(500, new TimerListener(LevelPlayer.LEVEL));
+        timer = new Timer((int) (1000*rate), new TimerListener(LevelPlayer.LEVEL));
         active = true;
         timer.start();
     }
@@ -78,28 +82,22 @@ public abstract class Character{
         hp -= lose;
     }
 
+    public int getDamage()
+    {
+        return damage;
+    }
+
+    public boolean isDead()
+    {
+        return hp <= 0;
+    }
+
     public Image getImage() {
         return image;
     }
 
     public void setImage(String name) throws IOException {
         image = ImageIO.read(new File(name));
-    }
-
-    /*
-    public void activate() {
-        active = true;
-        Timer timer = new Timer(1000, new TimerListener());
-        while (active) {
-
-        }
-        //animate()
-    }
-
-     */
-
-    public void deactivate() {
-        active = false;
     }
 
     public void draw(Graphics2D gr)
@@ -109,6 +107,7 @@ public abstract class Character{
 
     public abstract void useAbility(Level level);
 
+    static int num = 0;
     protected class TimerListener implements ActionListener
     {
         private final Level level;
@@ -120,6 +119,7 @@ public abstract class Character{
 
         public void actionPerformed(ActionEvent event)
         {
+            System.out.println(++num);
             Character.this.useAbility(level);
             level.repaint();
         }

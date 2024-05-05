@@ -18,10 +18,11 @@ public class Level extends JComponent {
     private static Officer[][] grid;
     private static final int ROWS = 5;
     private static final int COLS = 9;
-    private static Queue<Bailey>[] baileys = new Queue[ROWS];
+    private static List<Bailey>[] baileys = new List[ROWS];
     private static List<Rectangle> boxes = new ArrayList<>();
     private static List<BufferedImage> officers = new ArrayList<>();
     private static List<Pizza> pizzas = new ArrayList<>();
+    private static List<Bullet> bullets = new ArrayList<>();
     private static Pizza displayPizza;
     static boolean[] selected = new boolean[6];
     private static int numPizza = 75;
@@ -36,7 +37,7 @@ public class Level extends JComponent {
     {
         grid = new Officer[ROWS][COLS];
         for(int row = 0; row < ROWS; row++)
-            baileys[row] = new LinkedList<>();
+            baileys[row] = new ArrayList<>();
         officers.add(getScaledImage(Aaron.IMAGE_NAME));
         officers.add(getScaledImage(Emily.IMAGE_NAME));
         officers.add(getScaledImage(Kho.IMAGE_NAME));
@@ -58,6 +59,10 @@ public class Level extends JComponent {
             baileys[i].add(new Blonde(1500, i*s2 + 25, scale.width, scale.height));
         }
     }
+    public void addBullet(Bullet b)
+    {
+        bullets.add(b);
+    }
     public void addPizza(Pizza p)
     {
         pizzas.add(p);
@@ -73,6 +78,8 @@ public class Level extends JComponent {
     }
     public void paintComponent(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
+        int w = getWidth();
+        int h = getHeight();
 
         displayPizza.draw(g);
         g.setFont(new Font("Comic Sans", Font.BOLD, 36));
@@ -100,7 +107,7 @@ public class Level extends JComponent {
         {
             for (int col = 0; col < COLS; col++)
             {
-                if(grid[row][col] != null && grid[row][col].getHp() <= 0)
+                if(grid[row][col] != null && grid[row][col].isDead())
                     grid[row][col] = null;
 
                 if (grid[row][col] == null)
@@ -117,19 +124,47 @@ public class Level extends JComponent {
                 }
             }
         }
-        for (int row = 0; row < ROWS; row++)
-            for (Bailey bailey : baileys[row])
-            {
+        for (int row = 0; row < ROWS; row++) {
+            if (!baileys[row].isEmpty() && baileys[row].get(0).x < w) {
+                for (int col = 0; col < COLS; col++) {
+                    if (grid[row][col] != null && grid[row][col].getName().equals("Alex So"))
+                        grid[row][col].start();
+                }
+            }
+            for (int i = baileys[row].size()-1; i >= 0; i--) {
+                Bailey bailey = baileys[row].get(i);
+                if(bailey.isDead())
+                {
+                    baileys[row].remove(i);
+                    continue;
+                }
                 Point p = getLoc(bailey.x, bailey.y, bailey.width, bailey.height);
                 int c = p.y;
                 int r = p.x;
-                if(bailey.isWalking() && r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null)
-                {
+                if (bailey.isWalking() && r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null) {
                     bailey.stop();
                     bailey.startEat();
                 }
                 bailey.draw(g);
             }
+        }
+
+        for (int i = bullets.size()-1; i >= 0; i--)
+        {
+            Bullet bullet = bullets.get(i);
+            bullet.draw(g);
+            Point p = getLoc(bullet.x, bullet.y, bullet.width, bullet.height);
+            Rectangle bulletRect = new Rectangle(bullet.x, bullet.y, bullet.width, bullet.height);
+            for(Bailey bailey : baileys[p.x])
+            {
+                Rectangle rect = new Rectangle(bailey.x, bailey.y, bailey.width, bailey.height);
+                if(rect.intersects(bulletRect))
+                {
+                    bullets.remove(i);
+                    bailey.minusHp(bullet.getDamage());
+                }
+            }
+        }
 
         for (Pizza pizza : pizzas)
             pizza.draw(g);
@@ -245,9 +280,8 @@ public class Level extends JComponent {
 
     public class ClickListener extends MouseAdapter {
         int curr = -1;
-        int num = 0;
         public void mousePressed(MouseEvent e) {
-            for (int i = 0; i < pizzas.size(); i++)
+            for (int i = pizzas.size()-1; i >= 0; i--)
             {
                 Pizza pizza = pizzas.get(i);
                 Rectangle rect = new Rectangle(pizza.x, pizza.y, Pizza.WIDTH, Pizza.HEIGHT);
@@ -295,30 +329,5 @@ public class Level extends JComponent {
         }
     }
 
-    static class TimerListener implements ActionListener
-    {
-        private final Level level;
-
-        public TimerListener(Level level)
-        {
-            this.level = level;
-        }
-
-        /**
-         *  Advances the race whenever the timer goes off
-         *  @param event the event for this timer
-         */
-        public void actionPerformed(ActionEvent event)
-        {
-            if (event.getSource() instanceof Timer)
-            {
-                switch (((Timer) event.getSource()).getActionCommand()) {
-                    case "test":
-                        System.out.println("TEST");
-                        break;
-                }
-            }
-        }
-    }
 }
 

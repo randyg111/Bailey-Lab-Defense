@@ -10,7 +10,7 @@ public class Emily extends Officer {
     static final int d = 15;
     static final double r = .75;
     public Emily(int x, int y, int w, int h){
-        super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST);
+        super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST, d, r);
     }
 
     public void useAbility(Level level)

@@ -6,8 +6,10 @@ public class Randy extends Officer {
     static final int startingHp = 8000;
     public static final String IMAGE_NAME = "randy.png";
     public static final int COST = 125;
+    private static final int DAMAGE = 0;
+    private static final double RATE = 1;
     public Randy(int x, int y, int w, int h){
-        super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST);
+        super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST, DAMAGE, RATE);
     }
     public void useAbility(Level level)
     {

@@ -7,7 +7,7 @@ public class Glasses extends Bailey {
     public static final String IMAGE_NAME = "Glasses";
     static final int startingSpeed = 10;
     static final int d = 100;
-    static final int r = 1;
+    static final double r = 1;
     public Glasses(int x, int y, int w, int h){
         super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed, d, r);
     }

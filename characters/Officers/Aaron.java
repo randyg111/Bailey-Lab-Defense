@@ -9,7 +9,7 @@ public class Aaron extends Officer {
     private static final int DAMAGE = 350;
     private static final double RATE = 2;
     public Aaron(int x, int y, int w, int h){
-        super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST);
+        super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST, DAMAGE, RATE);
     }
     public void useAbility(Level level)
     {
