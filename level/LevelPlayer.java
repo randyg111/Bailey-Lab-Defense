@@ -1,12 +1,7 @@
 package level;
 
-import level.Level;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.concurrent.TimeUnit;
 
 public class LevelPlayer {
     public static Level LEVEL = new Level();
@@ -18,59 +13,11 @@ public class LevelPlayer {
 
         frame.getContentPane().setBackground(Color.gray);
 
-//        ImageIcon pizzaImage = new ImageIcon("pizza.jpg");
-//        JButton testbutton = new JButton(pizzaImage);
-//        testbutton.setBounds(50, 50, 100, 100);
-//        frame.add(testbutton);
-//        testbutton.addActionListener(new PizzaListener());
-//        frame.setLayout(null);
-
-
-//        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//        Dimension screen = env.getMaximumWindowBounds().getSize();
-//        Insets insets = frame.getInsets();
-//
-//        System.out.println(screen.width+" "+screen.height);
-//        final int width = screen.width - insets.left - insets.right;
-//        final int height = screen.height - insets.top - insets.bottom;
-//        frame.setSize((int) bounds.getWidth(), (int) bounds.getHeight());
-
-//        LEVEL = new Level();
         frame.add(LEVEL);
         frame.setVisible(true);
         Thread.sleep(2000);
-        LEVEL.addZombie();
-        LEVEL.addPizza();
-
-        Timer timer = new Timer(1000, new TimerListener(LEVEL));
-        timer.setActionCommand("test");
-//        timer.start();
-    }
-
-    static class TimerListener implements ActionListener
-    {
-        private final Level level;
-
-        public TimerListener(Level level)
-        {
-            this.level = level;
-        }
-
-        /**
-         *  Advances the race whenever the timer goes off
-         *  @param event the event for this timer
-         */
-        public void actionPerformed(ActionEvent event)
-        {
-            if (event.getSource() instanceof Timer)
-            {
-                switch (((Timer) event.getSource()).getActionCommand()) {
-                    case "test":
-                        System.out.println("TEST");
-                        break;
-                }
-            }
-        }
+        LEVEL.testZombie();
+        LEVEL.testPizza();
     }
 }
 

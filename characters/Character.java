@@ -1,23 +1,30 @@
 package characters;
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import javax.swing.Timer;
+
+import characters.Baileys.Bailey;
+import characters.Officers.Kho;
 import level.Level;
+import level.LevelPlayer;
 
 public abstract class Character{
     protected String name;
     protected int hp;
     protected Image image;
-    boolean active;
+    protected boolean active;
     public int x;
     public int y;
     public int width;
     public int height;
+    protected Timer timer;
 
     public Character() {
         this.name = null;
@@ -41,6 +48,22 @@ public abstract class Character{
         }
 
         active = false;
+        if(name.equals(Kho.NAME))
+            start();
+    }
+
+    public void start()
+    {
+        if(LevelPlayer.LEVEL == null)
+            return;
+        timer = new Timer(500, new TimerListener(LevelPlayer.LEVEL));
+        active = true;
+        timer.start();
+    }
+    public void stop()
+    {
+        active = false;
+        timer.stop();
     }
 
     public String getName() {
@@ -86,4 +109,19 @@ public abstract class Character{
 
     public abstract void useAbility(Level level);
 
+    protected class TimerListener implements ActionListener
+    {
+        private final Level level;
+
+        public TimerListener(Level level)
+        {
+            this.level = level;
+        }
+
+        public void actionPerformed(ActionEvent event)
+        {
+            Character.this.useAbility(level);
+            level.repaint();
+        }
+    }
 }

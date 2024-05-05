@@ -1,5 +1,4 @@
 package level;
-import java.awt.event.MouseListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-import characters.Character;
 import characters.Officers.*;
 import characters.Baileys.*;
 
@@ -33,7 +31,7 @@ public class Level extends JComponent {
     private static final int BOX_HEIGHT = 100;
     private static final int BOX_OFFSET = 10;
     private static Officer[] arr = {new Aaron(0, 0, 1, 1), new Emily(0,0,1,1),
-    new Kho(0,0,1,1), new So(0,0,1,1), new Randy(0,0,1,1), new Zheng(0,0,1,1)};
+            new Kho(0,0,1,1), new So(0,0,1,1), new Randy(0,0,1,1), new Zheng(0,0,1,1)};
     public Level()
     {
         grid = new Officer[ROWS][COLS];
@@ -52,15 +50,19 @@ public class Level extends JComponent {
         }
         addMouseListener(new ClickListener());
     }
-    public void addZombie() {
+    public void testZombie() {
         int w = getWidth();
         int s2 = getS2();
         Dimension scale = getDimension(Blonde.IMAGE_NAME, new Dimension(w, s2));
         for(int i = 0; i < 5; i++) {
-            baileys[i].add(new Blonde(1900, i*s2 + 25, scale.width, scale.height));
+            baileys[i].add(new Blonde(1500, i*s2 + 25, scale.width, scale.height));
         }
     }
-    public void addPizza() {
+    public void addPizza(Pizza p)
+    {
+        pizzas.add(p);
+    }
+    public void testPizza() {
         int w = getWidth();
         int h = getHeight();
         for(int i = 0; i < 5; i++) {
@@ -71,10 +73,6 @@ public class Level extends JComponent {
     }
     public void paintComponent(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
-        int w = getWidth();
-        int h = getHeight();
-        int s1 = getS1();
-        int s2 = getS2();
 
         displayPizza.draw(g);
         g.setFont(new Font("Comic Sans", Font.BOLD, 36));
@@ -122,8 +120,9 @@ public class Level extends JComponent {
         for (int row = 0; row < ROWS; row++)
             for (Bailey bailey : baileys[row])
             {
-                int c = (bailey.x + bailey.width/2 - 220) / s1;
-                int r = (bailey.y + bailey.height/2 - 25) / s2;
+                Point p = getLoc(bailey.x, bailey.y, bailey.width, bailey.height);
+                int c = p.y;
+                int r = p.x;
                 if(bailey.isWalking() && r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null)
                 {
                     bailey.stop();
@@ -146,9 +145,9 @@ public class Level extends JComponent {
         return (getHeight()-2*VERTICAL_OFFSET)/ROWS;
     }
 
-    public Officer[][] getGrid()
+    public Officer getOfficer(int r, int c)
     {
-        return grid;
+        return grid[r][c];
     }
 
     public Rectangle getRectangle(int r, int c)
@@ -212,27 +211,34 @@ public class Level extends JComponent {
 
     }
 
+    public Point getLoc(int x, int y, int width, int height)
+    {
+        int c = (x + width/2 - 220) / getS1();
+        int r = (y + height/2 - 25) / getS2();
+        return new Point(r, c);
+    }
+
     private Officer getOfficer(int i, int x, int y, Dimension bounds)
     {
         switch(i) {
             case 0:
                 Dimension d = getDimension(Aaron.IMAGE_NAME, bounds);
-                return new Aaron(x, y, d.width, d.height);
+                return new Aaron(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
             case 1:
                 d = getDimension(Emily.IMAGE_NAME, bounds);
-                return new Emily(x, y, d.width, d.height);
+                return new Emily(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
             case 2:
                 d = getDimension(Kho.IMAGE_NAME, bounds);
-                return new Kho(x, y, d.width, d.height);
+                return new Kho(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
             case 3:
                 d = getDimension(Randy.IMAGE_NAME, bounds);
-                return new Randy(x, y, d.width, d.height);
+                return new Randy(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
             case 4:
                 d = getDimension(So.IMAGE_NAME, bounds);
-                return new So(x, y, d.width, d.height);
+                return new So(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
             case 5:
                 d = getDimension(Zheng.IMAGE_NAME, bounds);
-                return new Zheng(x, y, d.width, d.height);
+                return new Zheng(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
         }
         return null;
     }

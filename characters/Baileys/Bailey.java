@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 public abstract class Bailey extends Character {
     protected int speed;
     protected boolean walking;
-    protected Timer timer;
     protected int damage;
     protected int rate;
 
@@ -24,18 +23,6 @@ public abstract class Bailey extends Character {
         damage = d;
         rate = r;
         start();
-    }
-
-    public void start()
-    {
-        timer = new Timer(500, new TimerListener(LevelPlayer.LEVEL));
-        walking = true;
-        timer.start();
-    }
-    public void stop()
-    {
-        walking = false;
-        timer.stop();
     }
 
     public void eat(Officer officer)
@@ -58,22 +45,7 @@ public abstract class Bailey extends Character {
 
     public boolean isWalking()
     {
-        return walking;
+        return active;
     }
 
-    class TimerListener implements ActionListener
-    {
-        private final Level level;
-
-        public TimerListener(Level level)
-        {
-            this.level = level;
-        }
-
-        public void actionPerformed(ActionEvent event)
-        {
-            Bailey.this.useAbility(level);
-            level.repaint();
-        }
-    }
 }

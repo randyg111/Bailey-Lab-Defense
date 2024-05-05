@@ -1,6 +1,12 @@
 package characters.Officers;
+import characters.Baileys.Bailey;
 import characters.Character;
+import level.Level;
+import level.LevelPlayer;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.nio.Buffer;
 
 public abstract class Officer extends Character {
@@ -16,5 +22,4 @@ public abstract class Officer extends Character {
     public int getCost(){
         return cost;
     }
-
 }

@@ -3,6 +3,8 @@ package characters.Baileys;
 import characters.Officers.Officer;
 import level.Level;
 
+import java.awt.*;
+
 public class Blonde extends Bailey {
     static final String name = "Blonde Bailey";
     static final int startingHp = 200;
@@ -15,14 +17,15 @@ public class Blonde extends Bailey {
     }
 
     public void useAbility(Level level) {
-        if(walking) {
+        if(active) {
             walk();
         }
         else
         {
-            int c = (x + width/2 - 220) / level.getS1();
-            int r = (y + height/2 - 25) / level.getS2();
-            Officer officer = level.getGrid()[r][c];
+            Point p = level.getLoc(x, y, width, height);
+            int c = p.y;
+            int r = p.x;
+            Officer officer = level.getOfficer(r, c);
             eat(officer);
         }
     }
