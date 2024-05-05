@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LevelPlayer {
     private static int numPizza = 0;
-    public static Level LEVEL;
+    public static Level LEVEL = new Level();
 
     public static void main(String[] args) throws InterruptedException {
         JFrame frame = new JFrame("Bailey Lab Defense");
@@ -27,11 +27,16 @@ public class LevelPlayer {
 //        frame.setLayout(null);
 
 
-        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        Rectangle bounds = env.getMaximumWindowBounds();
+//        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//        Dimension screen = env.getMaximumWindowBounds().getSize();
+//        Insets insets = frame.getInsets();
+//
+//        System.out.println(screen.width+" "+screen.height);
+//        final int width = screen.width - insets.left - insets.right;
+//        final int height = screen.height - insets.top - insets.bottom;
 //        frame.setSize((int) bounds.getWidth(), (int) bounds.getHeight());
 
-        LEVEL = new Level((int) bounds.getWidth(), (int) bounds.getHeight());
+//        LEVEL = new Level();
         frame.add(LEVEL);
         frame.setVisible(true);
         LEVEL.addZombie();
