@@ -3,7 +3,7 @@ import level.Level;
 
 public class Randy extends Officer {
     public static final String NAME = "Randy Guo";
-    static final int startingHp = 8000;
+    static final int startingHp = 4000;
     public static final String IMAGE_NAME = "randy.png";
     public static final int COST = 125;
     private static final int DAMAGE = 0;

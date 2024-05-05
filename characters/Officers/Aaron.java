@@ -18,5 +18,6 @@ public class Aaron extends Officer {
     {
         Bailey bailey = level.getNearestBailey(this);
         bailey.minusHp(damage);
+        this.hp = 0;
     }
 }

@@ -1,4 +1,5 @@
 package characters.Officers;
+import characters.Baileys.Bailey;
 import level.Level;
 
 public class Emily extends Officer {
@@ -14,6 +15,7 @@ public class Emily extends Officer {
 
     public void useAbility(Level level)
     {
-
+        Bailey bailey = level.getNearestBailey(this);
+        bailey.minusHp(damage);
     }
 }

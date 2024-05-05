@@ -126,19 +126,31 @@ public class Level extends JComponent {
 
                 if (officer != null)
                 {
-                    if (officer.isDead())
-                    {
-                        grid[row][col] = null;
-                    }
-                    else if(officer.getName().equals("Aaron Zhou"))
+                    if(officer.getName().equals("Aaron Zhou"))
                     {
                         Bailey bailey = getNearestBailey(officer);
                         if(bailey != null && bailey.x - officer.x <= getS1()) {
                             officer.useAbility(this);
-                            grid[row][col] = null;
                         }
                         else
                             officer.draw(g);
+                    }
+                    else if(officer.getName().equals("Emily Lou"))
+                    {
+                        Bailey bailey = getNearestBailey(officer);
+                        if(bailey != null && bailey.x - officer.x <= 2*getS1()) {
+                            if(!officer.isActive())
+                                officer.start();
+                        }
+                        else if(officer.isActive())
+                        {
+                            officer.stop();
+                        }
+                        officer.draw(g);
+                    }
+                    else if (officer.isDead())
+                    {
+                        grid[row][col] = null;
                     }
                     else
                     {
