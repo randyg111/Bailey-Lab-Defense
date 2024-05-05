@@ -24,6 +24,7 @@ public class Level extends JComponent {
     private static List<Rectangle> boxes = new ArrayList<>();
     private static List<BufferedImage> officers = new ArrayList<>();
     private static List<Pizza> pizzas = new ArrayList<>();
+    private static Pizza displayPizza;
     static boolean[] selected = new boolean[6];
     private static int numPizza = 75;
     private static final int VERTICAL_OFFSET = 25;
@@ -31,6 +32,8 @@ public class Level extends JComponent {
     private static final int BOX_WIDTH = 200;
     private static final int BOX_HEIGHT = 100;
     private static final int BOX_OFFSET = 10;
+    private static Officer[] arr = {new Aaron(0, 0, 1, 1), new Emily(0,0,1,1),
+    new Kho(0,0,1,1), new So(0,0,1,1), new Randy(0,0,1,1), new Zheng(0,0,1,1)};
     public Level()
     {
         grid = new Officer[ROWS][COLS];
@@ -42,9 +45,10 @@ public class Level extends JComponent {
         officers.add(getScaledImage(Randy.IMAGE_NAME));
         officers.add(getScaledImage(So.IMAGE_NAME));
         officers.add(getScaledImage(Zheng.IMAGE_NAME));
+        displayPizza = new Pizza(BOX_OFFSET + BOX_WIDTH/2 - Pizza.WIDTH/2, VERTICAL_OFFSET);
         for(int i = 0; i < 6; i++)
         {
-            boxes.add(new Rectangle(BOX_OFFSET, i*(BOX_HEIGHT+BOX_OFFSET) + VERTICAL_OFFSET, BOX_WIDTH, BOX_HEIGHT));
+            boxes.add(new Rectangle(BOX_OFFSET, (i+1)*(BOX_HEIGHT+BOX_OFFSET) + VERTICAL_OFFSET, BOX_WIDTH, BOX_HEIGHT));
         }
         addMouseListener(new ClickListener());
     }
@@ -74,6 +78,11 @@ public class Level extends JComponent {
         int s1 = (w-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
         int s2 = (h-2*VERTICAL_OFFSET)/ROWS;
 
+        displayPizza.draw(g);
+        g.setFont(new Font("Comic Sans", Font.BOLD, 36));
+        g.drawString(Integer.toString(numPizza), displayPizza.x + BOX_OFFSET, displayPizza.y + Pizza.HEIGHT + 3*BOX_OFFSET);
+
+        g.setFont(new Font("Comic Sans", Font.PLAIN, 24));
         for (int i = 0; i < boxes.size(); i++)
         {
             Rectangle box = boxes.get(i);
@@ -88,6 +97,7 @@ public class Level extends JComponent {
             int x = box.x + box.width/2 - officer.getWidth()/2;
             int y = box.y + box.height/2 - officer.getHeight()/2;
             g.drawImage(officer, x, y, null);
+            g.drawString(Integer.toString(arr[i].getCost()), box.x + BOX_OFFSET, box.y + box.height - BOX_OFFSET);
         }
 
         for (int row = 0; row < ROWS; row++)
@@ -236,8 +246,10 @@ public class Level extends JComponent {
                         if (grid[row][col] == null)
                         {
                             Rectangle rect = getRectangle(row, col);
-                            if (rect.contains(e.getPoint()))
+                            if (rect.contains(e.getPoint())) {
                                 grid[row][col] = getOfficer(curr, rect.x, rect.y, rect.getSize());
+                                numPizza -= grid[row][col].getCost();
+                            }
                         }
                     }
                 }
