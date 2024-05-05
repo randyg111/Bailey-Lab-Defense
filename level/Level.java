@@ -239,8 +239,8 @@ public class Level extends JComponent {
 
     public class ClickListener extends MouseAdapter {
         int curr = -1;
-        @Override
-        public void mouseClicked(MouseEvent e) {
+        int num = 0;
+        public void mousePressed(MouseEvent e) {
             for (int i = 0; i < pizzas.size(); i++)
             {
                 Pizza pizza = pizzas.get(i);
@@ -276,7 +276,7 @@ public class Level extends JComponent {
             }
             else
             {
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < boxes.size(); i++)
                 {
                     if (boxes.get(i).contains(e.getPoint()))
                     {
