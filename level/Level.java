@@ -56,6 +56,8 @@ public class Level extends JComponent {
         addMouseListener(new ClickListener());
     }
     public void testZombie() {
+
+
         int w = getWidth();
         int s2 = getS2();
         Dimension scale = getDimension(Blonde.IMAGE_NAME, new Dimension(w, s2));
@@ -63,6 +65,14 @@ public class Level extends JComponent {
             baileys[i].add(new Blonde(1500, i*s2 + 25, scale.width, scale.height));
         }
     }
+
+    public void spawn(double blondeRate, double redHeadRate, double idRate,
+                      double glassesRate, double sprayRate, double phoneRate){
+
+
+    }
+
+
     public void addBullet(Bullet b)
     {
         bullets.add(b);
