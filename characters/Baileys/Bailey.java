@@ -5,6 +5,7 @@ import level.Level;
 import level.LevelPlayer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -42,5 +43,17 @@ public abstract class Bailey extends Character {
     {
         return active;
     }
-
+    public void useAbility(Level level) {
+        if(active) {
+            walk();
+        }
+        else
+        {
+            Point p = level.getLoc(this);
+            int c = p.y;
+            int r = p.x;
+            Officer officer = level.getOfficer(r, c);
+            eat(officer);
+        }
+    }
 }

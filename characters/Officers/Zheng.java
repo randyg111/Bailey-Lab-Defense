@@ -19,7 +19,7 @@ public class Zheng extends Officer {
     }
     public void useAbility(Level level)
     {
-        Point p = level.getLoc(x, y, width, height);
+        Point p = level.getLoc(this);
         Rectangle rect = level.getRectangle(p.x, p.y);
         int s = level.getS1();
         List<Bailey>[] baileys = level.getBaileys();

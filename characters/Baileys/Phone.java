@@ -2,9 +2,9 @@ package characters.Baileys;
 import level.Level;
 
 public class Phone extends Bailey {
-    static final String name = "Blonde Bailey";
+    static final String name = "Phone Bailey";
     static int startingHp = 200;
-    public static final String IMAGE_NAME = "Blonde";
+    public static final String IMAGE_NAME = "phone.png";
     static final int startingSpeed = 5;
     static final int d = 200;
     static final double r = 3;
@@ -12,9 +12,8 @@ public class Phone extends Bailey {
         super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed, d, r);
     }
 
-    @Override
-    public void useAbility(Level level) {
-
-    }
+//    public void useAbility(Level level) {
+//
+//    }
 
 }
