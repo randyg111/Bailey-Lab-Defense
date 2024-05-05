@@ -76,6 +76,10 @@ public class Level extends JComponent {
             pizzas.add(new Pizza(x, y));
         }
     }
+    public List<Bailey>[] getBaileys()
+    {
+        return baileys;
+    }
     public Bailey getNearestBailey(Officer officer)
     {
         Point p = getLoc(officer.x, officer.y, officer.width, officer.height);
