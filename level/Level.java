@@ -2,7 +2,7 @@ package level;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.Timer;
+import java.util.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -26,11 +26,15 @@ public class Level extends JComponent {
     private static Pizza displayPizza;
     static boolean[] selected = new boolean[6];
     private static int numPizza = 75;
+    private static Timer timer = new Timer();
     private static final int VERTICAL_OFFSET = 25;
     private static final int HORIZONTAL_OFFSET = 20;
     private static final int BOX_WIDTH = 200;
     private static final int BOX_HEIGHT = 100;
     private static final int BOX_OFFSET = 10;
+    private static final String INSUFFICIENT = "Not Enough Pizza!";
+    static String display = "";
+
     private static Officer[] arr = {new Aaron(0, 0, 1, 1), new Emily(0,0,1,1),
             new Kho(0,0,1,1), new So(0,0,1,1), new Randy(0,0,1,1), new Zheng(0,0,1,1)};
     public Level()
@@ -205,6 +209,7 @@ public class Level extends JComponent {
                 }
                 bailey.draw(g);
             }
+
         }
 
         for (int i = bullets.size()-1; i >= 0; i--)
@@ -231,6 +236,13 @@ public class Level extends JComponent {
 
         for (Pizza pizza : pizzas)
             pizza.draw(g);
+
+        if(!display.isEmpty()){
+            g.setColor(Color.red);
+            g.setFont(new Font("Comic Sans", Font.BOLD, 36));
+            g.drawString(INSUFFICIENT, w / 2 - 50, h / 8);
+            timer.schedule(new MessageTask(), 2000);
+        }
     }
 
     public int getS1()
@@ -367,8 +379,15 @@ public class Level extends JComponent {
                         {
                             Rectangle rect = getRectangle(row, col);
                             if (rect.contains(e.getPoint())) {
-                                grid[row][col] = getOfficer(curr, rect.x, rect.y, rect.getSize());
-                                numPizza -= grid[row][col].getCost();
+                                Officer check = getOfficer(curr, rect.x, rect.y, rect.getSize());
+                                if(check.getCost() <= numPizza){
+                                    grid[row][col] = check;
+                                    numPizza -= check.getCost();
+                                } else {
+                                    timer.cancel();
+                                    timer = new Timer();
+                                    display = INSUFFICIENT;
+                                }
                             }
                         }
                     }
@@ -389,6 +408,12 @@ public class Level extends JComponent {
                 }
                 repaint();
             }
+        }
+    }
+
+    public class MessageTask extends TimerTask{
+        public void run() {
+            display = "";
         }
     }
 
