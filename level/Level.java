@@ -26,6 +26,11 @@ public class Level extends JComponent {
     private static List<Pizza> pizzas = new ArrayList<>();
     static boolean[] selected = new boolean[6];
     private static int numPizza = 75;
+    private static final int VERTICAL_OFFSET = 25;
+    private static final int HORIZONTAL_OFFSET = 20;
+    private static final int BOX_WIDTH = 200;
+    private static final int BOX_HEIGHT = 100;
+    private static final int BOX_OFFSET = 10;
     public Level()
     {
         grid = new Officer[ROWS][COLS];
@@ -39,16 +44,16 @@ public class Level extends JComponent {
         officers.add(getScaledImage(Zheng.IMAGE_NAME));
         for(int i = 0; i < 6; i++)
         {
-            boxes.add(new Rectangle(10, i*110 + 25, 200, 100));
+            boxes.add(new Rectangle(BOX_OFFSET, i*(BOX_HEIGHT+BOX_OFFSET) + VERTICAL_OFFSET, BOX_WIDTH, BOX_HEIGHT));
         }
         addMouseListener(new ClickListener());
     }
     public void addZombie() {
         int w = getWidth();
         int h = getHeight();
-        int s1 = (w-240)/COLS;
-        int s2 = (h-50)/ROWS;
-        Dimension scale = getDimension(Blonde.IMAGE_NAME, new Dimension(1000, s2));
+        int s1 = (w-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
+        int s2 = (h-2*VERTICAL_OFFSET)/ROWS;
+        Dimension scale = getDimension(Blonde.IMAGE_NAME, new Dimension(w, s2));
         for(int i = 0; i < 5; i++) {
             baileys[i].add(new Blonde(1900, i*s2 + 25, scale.width, scale.height));
         }
@@ -66,10 +71,10 @@ public class Level extends JComponent {
         Graphics2D g = (Graphics2D) gr;
         int w = getWidth();
         int h = getHeight();
-        int s1 = (w-240)/COLS;
-        int s2 = (h-50)/ROWS;
+        int s1 = (w-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
+        int s2 = (h-2*VERTICAL_OFFSET)/ROWS;
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < boxes.size(); i++)
         {
             Rectangle box = boxes.get(i);
             BufferedImage officer = officers.get(i);
@@ -91,7 +96,7 @@ public class Level extends JComponent {
             {
                 if (grid[row][col] == null)
                 {
-                    Rectangle rect = new Rectangle(col*s1 + 220, row*s2 + 25, s1, s2);
+                    Rectangle rect = getRectangle(row, col);
                     g.setColor(Color.lightGray);
                     g.fill(rect);
                     g.setColor(Color.black);
@@ -108,7 +113,7 @@ public class Level extends JComponent {
             {
                 int c = (bailey.x + bailey.width/2 - 220) / s1;
                 int r = (bailey.y + bailey.height/2 - 25) / s2;
-                if(bailey.isWalking() && r >= 0 && r < 5 && c >= 0 && c < 9 && grid[r][c] != null)
+                if(bailey.isWalking() && r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null)
                 {
                     bailey.stop();
                 }
@@ -117,6 +122,17 @@ public class Level extends JComponent {
 
         for (Pizza pizza : pizzas)
             pizza.draw(g);
+    }
+
+    public Rectangle getRectangle(int r, int c)
+    {
+        int w = getWidth();
+        int h = getHeight();
+        int s1 = (w-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
+        int s2 = (h-2*VERTICAL_OFFSET)/ROWS;
+        int x = c*s1 + BOX_WIDTH + HORIZONTAL_OFFSET;
+        int y = r*s2 + VERTICAL_OFFSET;
+        return new Rectangle(x, y, s1, s2);
     }
 
     public static Dimension getDimension(String imageName, Dimension bounds)
@@ -201,28 +217,25 @@ public class Level extends JComponent {
             for (int i = 0; i < pizzas.size(); i++)
             {
                 Pizza pizza = pizzas.get(i);
-                Rectangle rect = new Rectangle(pizza.x, pizza.y, pizza.WIDTH, pizza.HEIGHT);
+                Rectangle rect = new Rectangle(pizza.x, pizza.y, Pizza.WIDTH, Pizza.HEIGHT);
                 if(rect.contains(e.getPoint()))
                 {
                     pizzas.remove(i);
                     numPizza += 50;
+                    repaint();
                     return;
                 }
             }
 
             if(curr != -1)
             {
-                int w = getWidth();
-                int h = getHeight();
-                int s1 = (w-240)/COLS;
-                int s2 = (h-50)/ROWS;
                 for (int row = 0; row < ROWS; row++)
                 {
                     for (int col = 0; col < COLS; col++)
                     {
                         if (grid[row][col] == null)
                         {
-                            Rectangle rect = new Rectangle(col*s1 + 220, row*s2 + 25, s1, s2);
+                            Rectangle rect = getRectangle(row, col);
                             if (rect.contains(e.getPoint()))
                                 grid[row][col] = getOfficer(curr, rect.x, rect.y, rect.getSize());
                         }
