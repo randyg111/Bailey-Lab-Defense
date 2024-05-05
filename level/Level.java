@@ -23,6 +23,7 @@ public class Level extends JComponent {
     private static Queue<Bailey>[] baileys = new Queue[ROWS];
     private static List<Rectangle> boxes = new ArrayList<>();
     private static List<BufferedImage> officers = new ArrayList<>();
+    static boolean[] selected = new boolean[6];
     public Level()
     {
         grid = new Character[ROWS][COLS];
@@ -38,6 +39,7 @@ public class Level extends JComponent {
         {
             boxes.add(new Rectangle(10, i*110 + 25, 200, 100));
         }
+        addMouseListener(new ClickListener());
     }
     public void addZombie() {
         baileys[0].add(new Blonde(500, 500, 100, 100));
@@ -60,7 +62,10 @@ public class Level extends JComponent {
         {
             Rectangle box = boxes.get(i);
             BufferedImage officer = officers.get(i);
-            g.setColor(Color.lightGray);
+            if(selected[i])
+                g.setColor(Color.darkGray);
+            else
+                g.setColor(Color.lightGray);
             g.fill(box);
             g.setColor(Color.black);
             g.draw(box);
@@ -90,6 +95,33 @@ public class Level extends JComponent {
         for (int row = 0; row < ROWS; row++)
             for (Bailey bailey : baileys[row])
                 bailey.draw(g);
+    }
+
+    public static Dimension getDimension(String imageName, Dimension bounds)
+    {
+        try {
+            BufferedImage image = ImageIO.read(new File(imageName));
+            int originalWidth = image.getWidth();
+            int originalHeight = image.getHeight();
+            int boundWidth = bounds.width;
+            int boundHeight = bounds.height;
+            int newWidth = originalWidth;
+            int newHeight = originalHeight;
+
+            if (originalWidth > boundWidth) {
+                newWidth = boundWidth;
+                newHeight = (newWidth * originalHeight) / originalWidth;
+            }
+
+            if (newHeight > boundHeight) {
+                newHeight = boundHeight;
+                newWidth = (newHeight * originalWidth) / originalHeight;
+            }
+
+            return new Dimension(newWidth, newHeight);
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
     }
 
     public static BufferedImage getScaledImage(String imageName) {
@@ -128,30 +160,69 @@ public class Level extends JComponent {
 
     }
 
-    public class ClickListener implements MouseListener {
+    private Officer getOfficer(int i, int x, int y, Dimension bounds)
+    {
+        switch(i) {
+            case 0:
+                Dimension d = getDimension(Aaron.IMAGE_NAME, bounds);
+                return new Aaron(x, y, d.width, d.height);
+            case 1:
+                d = getDimension(Emily.IMAGE_NAME, bounds);
+                return new Emily(x, y, d.width, d.height);
+            case 2:
+                d = getDimension(Kho.IMAGE_NAME, bounds);
+                return new Kho(x, y, d.width, d.height);
+            case 3:
+                d = getDimension(Randy.IMAGE_NAME, bounds);
+                return new Randy(x, y, d.width, d.height);
+            case 4:
+                d = getDimension(So.IMAGE_NAME, bounds);
+                return new So(x, y, d.width, d.height);
+            case 5:
+                d = getDimension(Zheng.IMAGE_NAME, bounds);
+                return new Zheng(x, y, d.width, d.height);
+        }
+        return null;
+    }
+
+    public class ClickListener extends MouseAdapter {
+        int curr = -1;
         @Override
         public void mouseClicked(MouseEvent e) {
-            e.getLocationOnScreen();
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
+            if(curr != -1)
+            {
+                int w = getWidth();
+                int h = getHeight();
+                int s1 = (w-240)/COLS;
+                int s2 = (h-50)/ROWS;
+                for (int row = 0; row < ROWS; row++)
+                {
+                    for (int col = 0; col < COLS; col++)
+                    {
+                        if (grid[row][col] == null)
+                        {
+                            Rectangle rect = new Rectangle(col*s1 + 220, row*s2 + 25, s1, s2);
+                            if (rect.contains(e.getPoint()))
+                                grid[row][col] = getOfficer(curr, rect.x, rect.y, rect.getSize());
+                        }
+                    }
+                }
+                selected[curr] = false;
+                curr = -1;
+                repaint();
+            }
+            else
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    if (boxes.get(i).contains(e.getPoint()))
+                    {
+                        curr = i;
+                        selected[i] = true;
+                    }
+                }
+                repaint();
+            }
         }
     }
 
