@@ -13,6 +13,7 @@ import java.util.List;
 
 import characters.Officers.*;
 import characters.Baileys.*;
+import characters.Character;
 
 public class Level extends JComponent {
     private static Officer[][] grid;
@@ -66,23 +67,69 @@ public class Level extends JComponent {
         }
     }
 
-    public void startSpawn(){
-        Timer timer = new Timer();
-
-        for(int wave = 0; wave < 2; wave++) {
-            timer.schedule(new StageTask(.5, 0, 0, 0, 0, 0), 5000 + wave * 2500);
-            timer.schedule(new StageTask(.5, .2, 0, 0, 0, 0), 10000 + wave * 2500);
-            timer.schedule(new StageTask(.5, .2, .2, 0, 0, 0), 15000 + wave * 2500);
-            timer.schedule(new StageTask(.6, .2, .2, .2, 0, 0), 20000 + wave * 2500);
-            timer.schedule(new StageTask(.7, .2, .2, .2, .2, 0), 25000 + wave * 2500);
-            timer.schedule(new StageTask(.8, .3, .3, .2, .2, .2), 30000 + wave * 2500);
-        }
-
-    }
-
     public void spawn(double blondeRate, double redHeadRate, double idRate,
                       double glassesRate, double sprayRate, double phoneRate){
 
+        if(Math.random() < blondeRate)
+        {
+            Bailey b = spawnBailey(0);
+            baileys[getLoc(b).x].add(b);
+        }
+        if(Math.random() < redHeadRate)
+        {
+            Bailey b = spawnBailey(1);
+            baileys[getLoc(b).x].add(b);
+        }
+        if(Math.random() < idRate)
+        {
+            Bailey b = spawnBailey(2);
+            baileys[getLoc(b).x].add(b);
+        }
+        if(Math.random() < glassesRate)
+        {
+            Bailey b = spawnBailey(3);
+            baileys[getLoc(b).x].add(b);
+        }
+        if(Math.random() < sprayRate)
+        {
+            Bailey b = spawnBailey(4);
+            baileys[getLoc(b).x].add(b);
+        }
+        if(Math.random() < phoneRate)
+        {
+            Bailey b = spawnBailey(5);
+            baileys[getLoc(b).x].add(b);
+        }
+    }
+
+    public Bailey spawnBailey(int type)
+    {
+        int w = getWidth();
+        int s2 = getS2();
+        int row = (int) (Math.random()*5);
+        System.out.println(type);
+        switch(type)
+        {
+            case 0:
+                Dimension d = getDimension(Blonde.IMAGE_NAME, new Dimension(w, s2));
+                return new Blonde(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+            case 1:
+                d = getDimension(RedHead.IMAGE_NAME, new Dimension(w, s2));
+                return new RedHead(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+            case 2:
+                d = getDimension(Id.IMAGE_NAME, new Dimension(w, s2));
+                return new Id(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+            case 3:
+                d = getDimension(Glasses.IMAGE_NAME, new Dimension(w, s2));
+                return new Glasses(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+            case 4:
+                d = getDimension(SprayBottle.IMAGE_NAME, new Dimension(w, s2));
+                return new SprayBottle(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+            case 5:
+                d = getDimension(Phone.IMAGE_NAME, new Dimension(w, s2));
+                return new Phone(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+        }
+        return null;
     }
 
 
@@ -95,6 +142,7 @@ public class Level extends JComponent {
         pizzas.add(p);
     }
     public void testPizza() {
+        spawn(1,1,1,1,1,1);
         int w = getWidth();
         int h = getHeight();
         for(int i = 0; i < 5; i++) {
@@ -103,9 +151,13 @@ public class Level extends JComponent {
             pizzas.add(new Pizza(x, y));
         }
     }
+    public List<Bailey>[] getBaileys()
+    {
+        return baileys;
+    }
     public Bailey getNearestBailey(Officer officer)
     {
-        Point p = getLoc(officer.x, officer.y, officer.width, officer.height);
+        Point p = getLoc(officer);
         Bailey nearest = null;
         for (int i = 0; i < baileys[p.x].size(); i++)
         {
@@ -199,7 +251,7 @@ public class Level extends JComponent {
                 for (int col = 0; col < COLS; col++) {
                     Officer officer = grid[row][col];
                     if (officer != null && officer.getName().equals("Alex So")
-                    && !officer.isActive())
+                            && !officer.isActive())
                         officer.start();
                 }
             }
@@ -219,7 +271,7 @@ public class Level extends JComponent {
                     baileys[row].remove(i);
                     continue;
                 }
-                Point p = getLoc(bailey.x, bailey.y, bailey.width, bailey.height);
+                Point p = getLoc(bailey);
                 int c = p.y;
                 int r = p.x;
                 if (bailey.isWalking() && r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null) {
@@ -240,7 +292,7 @@ public class Level extends JComponent {
                 continue;
             }
             bullet.draw(g);
-            Point p = getLoc(bullet.x, bullet.y, bullet.width, bullet.height);
+            Point p = getLoc(bullet);
             Rectangle bulletRect = new Rectangle(bullet.x, bullet.y, bullet.width, bullet.height);
             for(Bailey bailey : baileys[p.x])
             {
@@ -313,6 +365,7 @@ public class Level extends JComponent {
 
             return new Dimension(newWidth, newHeight);
         } catch (IOException e) {
+            System.out.println(imageName+" image not found");
             throw new RuntimeException();
         }
     }
@@ -340,10 +393,10 @@ public class Level extends JComponent {
 
     }
 
-    public Point getLoc(int x, int y, int width, int height)
+    public Point getLoc(Character character)
     {
-        int c = (x + width/2 - 220) / getS1();
-        int r = (y + height/2 - 25) / getS2();
+        int c = (character.x + character.width/2 - 220) / getS1();
+        int r = (character.y + character.height/2 - 25) / getS2();
         return new Point(r, c);
     }
 
@@ -434,27 +487,6 @@ public class Level extends JComponent {
         public void run() {
             display = "";
         }
-    }
-
-    public class StageTask extends TimerTask{
-        double bR;
-        double rHR;
-        double idR;
-        double gR;
-        double sR;
-        double pR;
-        public StageTask(double r1, double r2, double r3, double r4, double r5, double r6){
-            bR = r1;
-            rHR = r2;
-            idR = r3;
-            gR = r4;
-            sR = r5;
-            pR = r6;
-        }
-        public void run() {
-            spawn(bR, rHR, idR, gR, sR, pR);
-        }
-
     }
 
 }
