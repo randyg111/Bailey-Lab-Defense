@@ -127,8 +127,10 @@ public class Level extends JComponent {
         for (int row = 0; row < ROWS; row++) {
             if (!baileys[row].isEmpty() && baileys[row].get(0).x < w) {
                 for (int col = 0; col < COLS; col++) {
-                    if (grid[row][col] != null && grid[row][col].getName().equals("Alex So"))
-                        grid[row][col].start();
+                    Officer officer = grid[row][col];
+                    if (officer != null && officer.getName().equals("Alex So")
+                    && !officer.isActive())
+                        officer.start();
                 }
             }
             for (int i = baileys[row].size()-1; i >= 0; i--) {
@@ -152,6 +154,11 @@ public class Level extends JComponent {
         for (int i = bullets.size()-1; i >= 0; i--)
         {
             Bullet bullet = bullets.get(i);
+            if(bullet.x > w)
+            {
+                bullets.remove(i);
+                continue;
+            }
             bullet.draw(g);
             Point p = getLoc(bullet.x, bullet.y, bullet.width, bullet.height);
             Rectangle bulletRect = new Rectangle(bullet.x, bullet.y, bullet.width, bullet.height);

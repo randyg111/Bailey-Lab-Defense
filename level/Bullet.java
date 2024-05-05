@@ -12,7 +12,7 @@ public class Bullet extends Bailey {
     public static final String IMAGE_NAME = "bullet.png";
     static final int startingSpeed = -50;
     static final int d = 25;
-    static final double r = 1;
+    static final double r = 0.1;
     private static final int WIDTH = 20;
     private static final int HEIGHT = 20;
     public Bullet(int x, int y) {

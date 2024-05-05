@@ -105,9 +105,14 @@ public abstract class Character{
         gr.drawImage(image, x, y, null);
     }
 
+    public boolean isActive()
+    {
+        return active;
+    }
+
     public abstract void useAbility(Level level);
 
-    static int num = 0;
+//    static int num = 0;
     protected class TimerListener implements ActionListener
     {
         private final Level level;
@@ -119,7 +124,7 @@ public abstract class Character{
 
         public void actionPerformed(ActionEvent event)
         {
-            System.out.println(++num);
+//            System.out.println(++num);
             Character.this.useAbility(level);
             level.repaint();
         }
