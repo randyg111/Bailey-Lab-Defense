@@ -66,6 +66,8 @@ public abstract class Character{
     }
     public void stop()
     {
+        if(!active)
+            return;
         active = false;
         timer.stop();
     }

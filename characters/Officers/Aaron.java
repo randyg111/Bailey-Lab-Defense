@@ -6,10 +6,10 @@ import java.awt.*;
 
 public class Aaron extends Officer {
     public static final String NAME = "Aaron Zhou";
-    static final int startingHp = 100;
+    static final int startingHp = 1000;
     public static final String IMAGE_NAME = "aaron.png";
     public static final int COST = 50;
-    private static final int DAMAGE = 350;
+    private static final int DAMAGE = 600; //used to be 350
     private static final double RATE = 2;
     public Aaron(int x, int y, int w, int h){
         super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST, DAMAGE, RATE);

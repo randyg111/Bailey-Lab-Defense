@@ -1,5 +1,7 @@
 package characters.Baileys;
 import level.Level;
+import level.Mobile;
+import level.Water;
 
 public class SprayBottle extends Bailey {
     static final String name = "Spray Bottle Bailey";
@@ -13,9 +15,14 @@ public class SprayBottle extends Bailey {
         super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed, d, r);
     }
 
-//    public void useAbility(Level level) {
-//
-//    }
+    public void useAbility(Level level) {
+        walk();
+        int waterX = x + width/2;
+        int waterY = y + height/2;
+        level.addWater(new Water(waterX, waterY, waterX - level.getS1(), waterY - level.getS2()));
+        level.addWater(new Water(waterX, waterY, waterX - level.getS1(), waterY));
+        level.addWater(new Water(waterX, waterY, waterX - level.getS1(), waterY + level.getS2()));
+    }
 
     public void checkHp()
     {

@@ -25,6 +25,7 @@ public class Level extends JComponent {
     private static List<Pizza> pizzas;
     private static List<Bullet> bullets;
     private static List<Mobile> mobiles;
+    private static List<Water> waters;
     private static Pizza displayPizza;
     private static int numPizza;
     private static Timer timer = new Timer();
@@ -59,7 +60,7 @@ public class Level extends JComponent {
         Timer timer = new Timer();
 
         for(int wave = 0; wave < 2; wave++) {
-            timer.schedule(new StageTask(.5, 0, 0, 0, 0, 1), 10000 + wave * 10000);
+            timer.schedule(new StageTask(.5, 0, 0, 0, 1, 0), 10000 + wave * 10000);
             timer.schedule(new StageTask(.5, .2, 0, 0, 0, 0), 30000 + wave * 10000);
             timer.schedule(new StageTask(.5, .2, .2, 0, 0, 0), 50000 + wave * 10000);
             timer.schedule(new StageTask(.6, .2, .2, .2, 0, 0), 70000 + wave * 10000);
@@ -155,6 +156,10 @@ public class Level extends JComponent {
     {
         mobiles.add(m);
     }
+    public void addWater(Water w)
+    {
+        waters.add(w);
+    }
     public List<Bailey>[] getBaileys()
     {
         return baileys;
@@ -219,8 +224,6 @@ public class Level extends JComponent {
                         if(bailey != null && bailey.x - officer.x <= getS1()) {
                             officer.useAbility(this);
                         }
-                        else
-                            officer.draw(g);
                     }
                     else if(officer.getName().equals("Emily Lou"))
                     {
@@ -233,9 +236,8 @@ public class Level extends JComponent {
                         {
                             officer.stop();
                         }
-                        officer.draw(g);
                     }
-                    else if (officer.isDead())
+                    if (officer.isDead())
                     {
                         officer.stop();
                         grid[row][col] = null;
@@ -360,11 +362,34 @@ public class Level extends JComponent {
             mobile.draw(g);
             Point p = getLoc(mobile);
             Rectangle mobileRect = mobile.getBounds();
+            if(p.x < 0 || p.x >= ROWS || p.y < 0 || p.y >= COLS)
+                continue;
             Officer officer = grid[p.x][p.y];
             if(officer != null && mobileRect.intersects(officer.getBounds()))
             {
                 mobiles.remove(i);
                 officer.minusHp(mobile.getDamage());
+            }
+        }
+
+        for (int i = waters.size()-1; i >= 0; i--)
+        {
+            Water water = waters.get(i);
+            if(!water.isActive())
+            {
+                waters.remove(i);
+                continue;
+            }
+            water.draw(g);
+            Point p = getLoc(water);
+            Rectangle waterRect = water.getBounds();
+            if(p.x < 0 || p.x >= ROWS || p.y < 0 || p.y >= COLS)
+                continue;
+            Officer officer = grid[p.x][p.y];
+            if(officer != null && waterRect.intersects(officer.getBounds()))
+            {
+                waters.remove(i);
+                officer.minusHp(water.getDamage());
             }
         }
 
@@ -420,7 +445,7 @@ public class Level extends JComponent {
 
     public int getS1()
     {
-        return (getWidth()-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
+        return (getWidth()-(getLeftWidth()-HORIZONTAL_OFFSET))/COLS;
     }
 
     public int getS2()
@@ -447,6 +472,22 @@ public class Level extends JComponent {
         int x = c*s1 + getLeftWidth();
         int y = r*s2 + VERTICAL_OFFSET;
         return new Rectangle(x, y, s1, s2);
+    }
+
+    public static BufferedImage rotate(BufferedImage bimg, Double angle) {
+        double sin = Math.abs(Math.sin(Math.toRadians(angle))),
+                cos = Math.abs(Math.cos(Math.toRadians(angle)));
+        int w = bimg.getWidth();
+        int h = bimg.getHeight();
+        int neww = (int) Math.floor(w*cos + h*sin),
+                newh = (int) Math.floor(h*cos + w*sin);
+        BufferedImage rotated = new BufferedImage(neww, newh, bimg.getType());
+        Graphics2D graphic = rotated.createGraphics();
+        graphic.translate((neww-w)/2, (newh-h)/2);
+        graphic.rotate(Math.toRadians(angle), w/2, h/2);
+        graphic.drawRenderedImage(bimg, null);
+        graphic.dispose();
+        return rotated;
     }
 
     public static Dimension getDimension(String imageName, Dimension bounds)
@@ -477,11 +518,11 @@ public class Level extends JComponent {
         }
     }
 
-    public static BufferedImage getScaledImage(String imageName) {
+    public static BufferedImage getScaledImage(String imageName, Dimension d) {
 
         try {
             BufferedImage image = ImageIO.read(new File(imageName));
-            Dimension newDimension = getDimension(imageName, new Dimension(BOX_WIDTH, BOX_HEIGHT));
+            Dimension newDimension = getDimension(imageName, d);
             int newWidth = newDimension.width;
             int newHeight = newDimension.height;
 
@@ -636,14 +677,16 @@ public class Level extends JComponent {
         pizzas = new ArrayList<>();
         bullets = new ArrayList<>();
         mobiles = new ArrayList<>();
+        waters = new ArrayList<>();
         gameOver = false;
         numPizza = 75;
-        officers.add(getScaledImage(Aaron.IMAGE_NAME));
-        officers.add(getScaledImage(Emily.IMAGE_NAME));
-        officers.add(getScaledImage(Kho.IMAGE_NAME));
-        officers.add(getScaledImage(Randy.IMAGE_NAME));
-        officers.add(getScaledImage(So.IMAGE_NAME));
-        officers.add(getScaledImage(Zheng.IMAGE_NAME));
+        Dimension d = new Dimension(BOX_WIDTH, BOX_HEIGHT);
+        officers.add(getScaledImage(Aaron.IMAGE_NAME, d));
+        officers.add(getScaledImage(Emily.IMAGE_NAME, d));
+        officers.add(getScaledImage(Kho.IMAGE_NAME, d));
+        officers.add(getScaledImage(Randy.IMAGE_NAME, d));
+        officers.add(getScaledImage(So.IMAGE_NAME, d));
+        officers.add(getScaledImage(Zheng.IMAGE_NAME, d));
         int pizzaX = BOX_OFFSET + BOX_WIDTH/2 - Pizza.WIDTH/2;
         displayPizza = new Pizza(pizzaX, BOX_OFFSET, BOX_OFFSET);
         for(int i = 0; i < 6; i++)
