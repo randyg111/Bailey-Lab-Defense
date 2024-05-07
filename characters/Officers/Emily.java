@@ -16,6 +16,7 @@ public class Emily extends Officer {
     public void useAbility(Level level)
     {
         Bailey bailey = level.getNearestBailey(this);
-        bailey.minusHp(damage);
+        if(bailey != null)
+            bailey.minusHp(damage);
     }
 }

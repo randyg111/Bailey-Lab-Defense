@@ -25,7 +25,6 @@ public class Level extends JComponent {
     private static final List<Pizza> pizzas = new ArrayList<>();
     private static final List<Bullet> bullets = new ArrayList<>();
     private static Pizza displayPizza;
-    static boolean[] selected = new boolean[6];
     private static int numPizza = 75;
     private static Timer timer = new Timer();
     private static final int VERTICAL_OFFSET = 25;
@@ -33,14 +32,19 @@ public class Level extends JComponent {
     private static final int BOX_WIDTH = 200;
     private static final int BOX_HEIGHT = 100;
     private static final int BOX_OFFSET = 10;
+    private static final int SHOCK_WIDTH = 100;
     private static final String INSUFFICIENT = "Not Enough Pizza!";
     private static String display = "";
     private static final int DISPLAY_SIZE = 36;
     private static final int PRICE_SIZE = 24;
     private static final int PIZZA_VALUE = 25;
+    private static boolean gameOver = false;
+    static Shockwave[] shockwave;
 
-    private static Officer[] arr = {new Aaron(0, 0, 1, 1), new Emily(0,0,1,1),
+    private static final Officer[] arr = {new Aaron(0, 0, 1, 1), new Emily(0,0,1,1),
             new Kho(0,0,1,1), new Randy(0,0,1,1), new So(0,0,1,1), new Zheng(0,0,1,1)};
+    static boolean[] selected = new boolean[arr.length];
+
     public Level()
     {
         grid = new Officer[ROWS][COLS];
@@ -80,7 +84,7 @@ public class Level extends JComponent {
     public void spawnPizzas()
     {
         new javax.swing.Timer(10000, e -> {
-            int dx = (int) (Math.random() * (getWidth() - BOX_WIDTH - 2 * HORIZONTAL_OFFSET - Pizza.WIDTH)) + BOX_WIDTH + HORIZONTAL_OFFSET;
+            int dx = (int) (Math.random() * (getWidth() - getLeftWidth() - HORIZONTAL_OFFSET - Pizza.WIDTH)) + getLeftWidth();
             int dy = (int) (Math.random() * (getHeight() - 2 * VERTICAL_OFFSET - Pizza.HEIGHT)) + VERTICAL_OFFSET;
             pizzas.add(new Pizza(dx, -Pizza.HEIGHT, dy));
         }).start();
@@ -252,6 +256,43 @@ public class Level extends JComponent {
                 }
             }
         }
+
+        if(shockwave == null && getS2() > 0)
+        {
+            shockwave = new Shockwave[ROWS];
+            for(int i = 0; i < ROWS; i++)
+            {
+                Dimension d = getDimension(Shockwave.IMAGE_NAME, new Dimension(SHOCK_WIDTH, getS2()));
+                shockwave[i] = new Shockwave(BOX_WIDTH+HORIZONTAL_OFFSET + SHOCK_WIDTH/2 - d.width/2,
+                        i*getS2() + VERTICAL_OFFSET + getS2()/2 - d.height/2,
+                        d.width, d.height);
+            }
+        }
+
+        for (int i = 0; i < ROWS; i++)
+        {
+            if(shockwave == null || shockwave[i] == null)
+                continue;
+            Shockwave shock = shockwave[i];
+            if(shock.x > w)
+            {
+                shockwave[i] = null;
+                continue;
+            }
+            shock.draw(g);
+            Rectangle shockRect = new Rectangle(shock.x, shock.y, shock.width, shock.height);
+            for(Bailey bailey : baileys[i])
+            {
+                Rectangle rect = new Rectangle(bailey.x, bailey.y, bailey.width, bailey.height);
+                if(rect.intersects(shockRect))
+                {
+                    if(!shock.isActive())
+                        shock.start();
+                    bailey.minusHp(shock.getDamage());
+                }
+            }
+        }
+
         for (int row = 0; row < ROWS; row++) {
             if (!baileys[row].isEmpty() && baileys[row].get(0).x < w) {
                 for (int col = 0; col < COLS; col++) {
@@ -283,6 +324,10 @@ public class Level extends JComponent {
                 if (bailey.isWalking() && r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null) {
                     bailey.stop();
                     bailey.startEat();
+                }
+                if (bailey.y < BOX_WIDTH+HORIZONTAL_OFFSET)
+                {
+                    gameOver = true;
                 }
                 bailey.draw(g);
             }
@@ -338,13 +383,18 @@ public class Level extends JComponent {
         return grid[r][c];
     }
 
+    private int getLeftWidth()
+    {
+        return BOX_WIDTH + HORIZONTAL_OFFSET + SHOCK_WIDTH + BOX_OFFSET;
+    }
+
     public Rectangle getRectangle(int r, int c)
     {
         int w = getWidth();
         int h = getHeight();
-        int s1 = (w-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
+        int s1 = (w-(getLeftWidth()+HORIZONTAL_OFFSET))/COLS;
         int s2 = (h-2*VERTICAL_OFFSET)/ROWS;
-        int x = c*s1 + BOX_WIDTH + HORIZONTAL_OFFSET;
+        int x = c*s1 + getLeftWidth();
         int y = r*s2 + VERTICAL_OFFSET;
         return new Rectangle(x, y, s1, s2);
     }
@@ -402,7 +452,7 @@ public class Level extends JComponent {
 
     public Point getLoc(Character character)
     {
-        int c = (character.x + character.width/2 - BOX_WIDTH - HORIZONTAL_OFFSET) / getS1();
+        int c = (character.x + character.width/2 - getLeftWidth()) / getS1();
         int r = (character.y + character.height/2 - VERTICAL_OFFSET) / getS2();
         return new Point(r, c);
     }

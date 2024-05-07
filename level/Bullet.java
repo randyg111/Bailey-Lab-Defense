@@ -7,7 +7,7 @@ import level.Level;
 import java.awt.*;
 
 public class Bullet extends Bailey {
-    static final String name = "Jasonn siete";
+    static final String name = "Bullet";
     static final int startingHp = 1;
     public static final String IMAGE_NAME = "bullet.png";
     static final int startingSpeed = -50;

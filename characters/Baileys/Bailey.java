@@ -18,7 +18,7 @@ public abstract class Bailey extends Character {
     public Bailey(String name, int hp, String image, int x, int y, int w, int h, int speed, int d, double r) {
         super(name, hp, image, x, y, w, h, d, r);
         this.speed = speed;
-        if(LevelPlayer.LEVEL != null)
+        if(LevelPlayer.LEVEL != null && !name.equals("Shockwave"))
             start();
     }
 
