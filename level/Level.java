@@ -20,12 +20,12 @@ public class Level extends JComponent {
     private static final int ROWS = 5;
     private static final int COLS = 9;
     private static final List<Bailey>[] baileys = new List[ROWS];
-    private static final List<Rectangle> boxes = new ArrayList<>();
-    private static final List<BufferedImage> officers = new ArrayList<>();
-    private static final List<Pizza> pizzas = new ArrayList<>();
-    private static final List<Bullet> bullets = new ArrayList<>();
+    private static List<Rectangle> boxes;
+    private static List<BufferedImage> officers;
+    private static List<Pizza> pizzas;
+    private static List<Bullet> bullets;
     private static Pizza displayPizza;
-    private static int numPizza = 75;
+    private static int numPizza;
     private static Timer timer = new Timer();
     private static final int VERTICAL_OFFSET = 25;
     private static final int HORIZONTAL_OFFSET = 20;
@@ -38,7 +38,10 @@ public class Level extends JComponent {
     private static final int DISPLAY_SIZE = 36;
     private static final int PRICE_SIZE = 24;
     private static final int PIZZA_VALUE = 25;
-    private static boolean gameOver = false;
+    private static boolean gameOver;
+    private static Rectangle restart;
+    private static Rectangle mainMenu;
+    static boolean[] pressed = new boolean[2];
     static Shockwave[] shockwave;
 
     private static final Officer[] arr = {new Aaron(0, 0, 1, 1), new Emily(0,0,1,1),
@@ -50,6 +53,12 @@ public class Level extends JComponent {
         grid = new Officer[ROWS][COLS];
         for(int row = 0; row < ROWS; row++)
             baileys[row] = new ArrayList<>();
+        boxes = new ArrayList<>();
+        officers = new ArrayList<>();
+        pizzas = new ArrayList<>();
+        bullets = new ArrayList<>();
+        gameOver = false;
+        numPizza = 75;
         officers.add(getScaledImage(Aaron.IMAGE_NAME));
         officers.add(getScaledImage(Emily.IMAGE_NAME));
         officers.add(getScaledImage(Kho.IMAGE_NAME));
@@ -325,7 +334,7 @@ public class Level extends JComponent {
                     bailey.stop();
                     bailey.startEat();
                 }
-                if (bailey.y < BOX_WIDTH+HORIZONTAL_OFFSET)
+                if (bailey.x < BOX_WIDTH+HORIZONTAL_OFFSET)
                 {
                     gameOver = true;
                 }
@@ -365,6 +374,45 @@ public class Level extends JComponent {
             g.setFont(new Font("Comic Sans", Font.BOLD, DISPLAY_SIZE));
             g.drawString(INSUFFICIENT, w / 2 - 50, h / 8);
             timer.schedule(new MessageTask(), 2000);
+        }
+
+        if(gameOver)
+        {
+            Rectangle rect = new Rectangle(0, 0, w, h);
+            g.setColor(new Color(0f, 0f, 0f, 0.5f));
+            g.fill(rect);
+
+            Rectangle monitor = new Rectangle(w/2 - 100, h/2 - 100, 200, 200);
+            g.setColor(Color.darkGray);
+            g.fill(monitor);
+
+            Rectangle screen = new Rectangle(w/2 - 90, h/2 - 90, 180, 180);
+            g.setColor(Color.black);
+            g.fill(screen);
+
+            g.setColor(Color.green);
+            g.setFont(new Font("Mono", Font.PLAIN, 18));
+            g.drawString("BAILEYS FOUND", w/2 - 70, h/2 - 60);
+            g.drawString("YOUR LAB!", w/2 - 50, h/2 - 30);
+
+            restart = new Rectangle(w/2 - 80, h/2 + 40, 70, 40);
+            if(pressed[0])
+                g.setColor(Color.darkGray);
+            else
+                g.setColor(Color.gray);
+            g.fill(restart);
+
+            mainMenu = new Rectangle(w/2 + 10, h/2 + 40, 70, 40);
+            if(pressed[1])
+                g.setColor(Color.darkGray);
+            else
+                g.setColor(Color.gray);
+            g.fill(mainMenu);
+
+            g.setColor(Color.green);
+            g.setFont(new Font("Mono", Font.PLAIN, 12));
+            g.drawString("Try Again", w/2 - 75, h/2 + 65);
+            g.drawString("Main Menu", w/2 + 15, h/2 + 65);
         }
     }
 
@@ -485,6 +533,18 @@ public class Level extends JComponent {
     public class ClickListener extends MouseAdapter {
         int curr = -1;
         public void mousePressed(MouseEvent e) {
+            if(gameOver)
+            {
+                if(restart.contains(e.getPoint())) {
+                    pressed[0] = true;
+                    repaint();
+                }
+                else if(mainMenu.contains(e.getPoint())) {
+                    pressed[1] = true;
+                    repaint();
+                }
+                return;
+            }
             for (int i = pizzas.size()-1; i >= 0; i--)
             {
                 Pizza pizza = pizzas.get(i);
@@ -522,6 +582,14 @@ public class Level extends JComponent {
                 }
                 selected[curr] = false;
                 curr = -1;
+                for (int i = 0; i < boxes.size(); i++)
+                {
+                    if (boxes.get(i).contains(e.getPoint()))
+                    {
+                        curr = i;
+                        selected[i] = true;
+                    }
+                }
                 repaint();
             }
             else
@@ -537,6 +605,55 @@ public class Level extends JComponent {
                 repaint();
             }
         }
+        public void mouseReleased(MouseEvent e)
+        {
+            if(!gameOver)
+                return;
+            if(pressed[0] && restart.contains(e.getPoint())) {
+                System.out.println("RESTART");
+                restart();
+            }
+            else if(pressed[1] && mainMenu.contains(e.getPoint())) {
+                System.out.println("MAIN MENU");
+            }
+            Arrays.fill(pressed, false);
+            repaint();
+        }
+    }
+
+    private void restart()
+    {
+        grid = new Officer[ROWS][COLS];
+        for(int row = 0; row < ROWS; row++)
+            baileys[row] = new ArrayList<>();
+        boxes = new ArrayList<>();
+        officers = new ArrayList<>();
+        pizzas = new ArrayList<>();
+        bullets = new ArrayList<>();
+        gameOver = false;
+        numPizza = 75;
+        officers.add(getScaledImage(Aaron.IMAGE_NAME));
+        officers.add(getScaledImage(Emily.IMAGE_NAME));
+        officers.add(getScaledImage(Kho.IMAGE_NAME));
+        officers.add(getScaledImage(Randy.IMAGE_NAME));
+        officers.add(getScaledImage(So.IMAGE_NAME));
+        officers.add(getScaledImage(Zheng.IMAGE_NAME));
+        int pizzaX = BOX_OFFSET + BOX_WIDTH/2 - Pizza.WIDTH/2;
+        displayPizza = new Pizza(pizzaX, BOX_OFFSET, BOX_OFFSET);
+        for(int i = 0; i < 6; i++)
+        {
+            boxes.add(new Rectangle(BOX_OFFSET, (i+1)*(BOX_HEIGHT+BOX_OFFSET) + BOX_OFFSET, BOX_WIDTH, BOX_HEIGHT));
+        }
+        shockwave = new Shockwave[ROWS];
+        for(int i = 0; i < ROWS; i++)
+        {
+            Dimension d = getDimension(Shockwave.IMAGE_NAME, new Dimension(SHOCK_WIDTH, getS2()));
+            shockwave[i] = new Shockwave(BOX_WIDTH+HORIZONTAL_OFFSET + SHOCK_WIDTH/2 - d.width/2,
+                    i*getS2() + VERTICAL_OFFSET + getS2()/2 - d.height/2,
+                    d.width, d.height);
+        }
+        spawnBaileys();
+        spawnPizzas();
     }
 
     public static class MessageTask extends TimerTask{
