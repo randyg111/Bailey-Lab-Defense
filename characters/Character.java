@@ -80,6 +80,7 @@ public abstract class Character{
 
     public void minusHp(int lose) {
         hp -= lose;
+        checkHp();
     }
 
     public int getDamage()
@@ -96,8 +97,14 @@ public abstract class Character{
         return image;
     }
 
-    public void setImage(String name) throws IOException {
-        image = ImageIO.read(new File(name));
+    public void setImage(String name) {
+        try{
+            image = ImageIO.read(new File(name));
+            Dimension d = Level.getDimension(name, new Dimension(width, height));
+            image = image.getScaledInstance(d.width, d.height, Image.SCALE_DEFAULT);
+        } catch (IOException e){
+            System.out.println(name + " image not found");
+        }
     }
 
     public void draw(Graphics2D gr)
@@ -111,6 +118,8 @@ public abstract class Character{
     }
 
     public abstract void useAbility(Level level);
+
+    public abstract void checkHp();
 
 //    static int num = 0;
     protected class TimerListener implements ActionListener

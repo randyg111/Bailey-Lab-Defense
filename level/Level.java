@@ -580,14 +580,17 @@ public class Level extends JComponent {
                         }
                     }
                 }
+                int prev = curr;
                 selected[curr] = false;
                 curr = -1;
                 for (int i = 0; i < boxes.size(); i++)
                 {
                     if (boxes.get(i).contains(e.getPoint()))
                     {
-                        curr = i;
-                        selected[i] = true;
+                        if(prev != i) {
+                            curr = i;
+                            selected[i] = true;
+                        }
                     }
                 }
                 repaint();

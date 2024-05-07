@@ -16,4 +16,11 @@ public class RedHead extends Bailey {
 //
 //    }
 
+    public void checkHp()
+    {
+        if(hp < startingHp/2)
+        {
+            setImage("blonde.png");
+        }
+    }
 }

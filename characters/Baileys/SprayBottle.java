@@ -16,4 +16,12 @@ public class SprayBottle extends Bailey {
 //    public void useAbility(Level level) {
 //
 //    }
+
+    public void checkHp()
+    {
+        if(hp < startingHp/2)
+        {
+            setImage("blonde.png");
+        }
+    }
 }

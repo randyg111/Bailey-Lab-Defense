@@ -22,4 +22,8 @@ public abstract class Officer extends Character {
     public int getCost(){
         return cost;
     }
+    public void checkHp()
+    {
+
+    }
 }

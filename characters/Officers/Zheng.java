@@ -2,7 +2,6 @@ package characters.Officers;
 import characters.Baileys.Bailey;
 import level.Level;
 import level.LevelPlayer;
-import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.util.List;

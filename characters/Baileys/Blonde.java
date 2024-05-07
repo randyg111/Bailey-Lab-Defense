@@ -15,4 +15,9 @@ public class Blonde extends Bailey {
     public Blonde(int x, int y, int w, int h) {
         super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed, d, r);
     }
+
+    public void checkHp()
+    {
+
+    }
 }

@@ -58,4 +58,9 @@ public abstract class Bailey extends Character {
                 eat(officer);
         }
     }
+
+    public void checkHp()
+    {
+
+    }
 }

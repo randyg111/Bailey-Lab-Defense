@@ -15,4 +15,12 @@ public class Id extends Bailey {
     public Id(int x, int y, int w, int h) {
         super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed, d, r);
     }
+
+    public void checkHp()
+    {
+        if(hp < startingHp/2)
+        {
+            setImage("blonde.png");
+        }
+    }
 }
