@@ -1,6 +1,7 @@
 package characters.Officers;
 import characters.Baileys.Bailey;
 import level.Level;
+import level.LevelPlayer;
 import org.w3c.dom.css.Rect;
 
 import java.awt.*;
@@ -15,7 +16,8 @@ public class Zheng extends Officer {
     static final double r = 1.5;
     public Zheng(int x, int y, int w, int h){
         super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST, d, r);
-        start();
+        if(LevelPlayer.LEVEL != null)
+            start();
     }
     public void useAbility(Level level)
     {

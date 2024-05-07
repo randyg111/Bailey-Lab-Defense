@@ -52,14 +52,14 @@ public abstract class Character{
         }
 
         active = false;
-        if(name.equals(Kho.NAME))
-            start();
     }
 
     public void start()
     {
-        if(LevelPlayer.LEVEL == null)
+        if(LevelPlayer.LEVEL == null) {
+            System.out.println("Level is null: "+name);
             return;
+        }
         timer = new Timer((int) (1000*rate), new TimerListener(LevelPlayer.LEVEL));
         active = true;
         timer.start();
