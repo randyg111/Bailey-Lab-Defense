@@ -1,15 +1,11 @@
 package level;
 
 import characters.Baileys.Bailey;
-import characters.Officers.Officer;
-import level.Level;
-
-import java.awt.*;
 
 public class Mobile extends Bailey {
     static final String name = "Mobile";
     static final int startingHp = 1;
-    public static final String IMAGE_NAME = "mobile.png";
+    public static final String IMAGE_NAME = "images/mobile.png";
     static final int startingSpeed = 50;
     static final int d = 25;
     static final double r = 0.1;

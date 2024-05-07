@@ -2,17 +2,15 @@ package characters.Officers;
 import characters.Baileys.Bailey;
 import level.Level;
 
-import java.awt.*;
-
 public class Aaron extends Officer {
     public static final String NAME = "Aaron Zhou";
-    static final int startingHp = 1000;
-    public static final String IMAGE_NAME = "aaron.png";
+    static final int STARTING_HP = 1000;
+    public static final String IMAGE_NAME = "images/aaron.png";
     public static final int COST = 50;
     private static final int DAMAGE = 600; //used to be 350
     private static final double RATE = 2;
     public Aaron(int x, int y, int w, int h){
-        super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST, DAMAGE, RATE);
+        super(NAME, STARTING_HP, IMAGE_NAME, x, y, w, h, COST, DAMAGE, RATE);
     }
     public void useAbility(Level level)
     {

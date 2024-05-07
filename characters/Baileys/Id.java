@@ -1,26 +1,21 @@
 package characters.Baileys;
 
-import characters.Officers.Officer;
-import level.Level;
-
-import java.awt.*;
-
 public class Id extends Bailey {
-    static final String name = "Id Bailey";
-    static final int startingHp = 600;
-    public static final String IMAGE_NAME = "id.png";
-    static final int startingSpeed = 10;
-    static final int d = 100;
-    static final double r = 1;
+    static final String NAME = "Id Bailey";
+    static final int STARTING_HP = 600;
+    public static final String IMAGE_NAME = "images/id.png";
+    static final int STARTING_SPEED = 10;
+    static final int DAMAGE = 100;
+    static final double RATE = 1;
     public Id(int x, int y, int w, int h) {
-        super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed, d, r);
+        super(NAME, STARTING_HP, IMAGE_NAME, x, y, w, h, STARTING_SPEED, DAMAGE, RATE);
     }
 
     public void checkHp()
     {
-        if(hp < startingHp/2)
+        if(hp < STARTING_HP /2)
         {
-            setImage("blonde.png");
+            setImage("images/blonde.png");
         }
     }
 }

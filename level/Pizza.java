@@ -1,19 +1,11 @@
 package level;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.*;
-import java.io.*;
-
 import characters.Baileys.Bailey;
-import characters.Character;
 
 public class Pizza extends Bailey {
     public static final int WIDTH = 104;
     public static final int HEIGHT = 65;
-    public static final String IMAGE_NAME = "pizza.png";
+    public static final String IMAGE_NAME = "images/pizza.png";
     private static final String NAME = "Pizza";
     private static final int STARTING_HP = 0;
     private static final int DAMAGE = 0;

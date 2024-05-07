@@ -1,16 +1,11 @@
 package level;
 
 import characters.Baileys.Bailey;
-import characters.Officers.Officer;
-import level.Level;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Water extends Bailey {
     static final String name = "Water";
     static final int startingHp = 1;
-    public static final String IMAGE_NAME = "water.png";
+    public static final String IMAGE_NAME = "images/water.png";
     static final int startingSpeed = 50;
     static final int d = 25;
     static final double r = 0.1;
