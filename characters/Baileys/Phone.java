@@ -1,5 +1,6 @@
 package characters.Baileys;
 import level.Level;
+import level.Mobile;
 
 public class Phone extends Bailey {
     static final String name = "Phone Bailey";
@@ -12,9 +13,12 @@ public class Phone extends Bailey {
         super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed, d, r);
     }
 
-//    public void useAbility(Level level) {
-//
-//    }
+    public void useAbility(Level level) {
+        walk();
+        int mobileX = x;
+        int mobileY = y;
+        level.addMobile(new Mobile(mobileX, mobileY, mobileX - 3*level.getS1()));
+    }
 
     public void checkHp()
     {

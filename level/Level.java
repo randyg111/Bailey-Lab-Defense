@@ -24,6 +24,7 @@ public class Level extends JComponent {
     private static List<BufferedImage> officers;
     private static List<Pizza> pizzas;
     private static List<Bullet> bullets;
+    private static List<Mobile> mobiles;
     private static Pizza displayPizza;
     private static int numPizza;
     private static Timer timer = new Timer();
@@ -50,37 +51,15 @@ public class Level extends JComponent {
 
     public Level()
     {
-        grid = new Officer[ROWS][COLS];
-        for(int row = 0; row < ROWS; row++)
-            baileys[row] = new ArrayList<>();
-        boxes = new ArrayList<>();
-        officers = new ArrayList<>();
-        pizzas = new ArrayList<>();
-        bullets = new ArrayList<>();
-        gameOver = false;
-        numPizza = 75;
-        officers.add(getScaledImage(Aaron.IMAGE_NAME));
-        officers.add(getScaledImage(Emily.IMAGE_NAME));
-        officers.add(getScaledImage(Kho.IMAGE_NAME));
-        officers.add(getScaledImage(Randy.IMAGE_NAME));
-        officers.add(getScaledImage(So.IMAGE_NAME));
-        officers.add(getScaledImage(Zheng.IMAGE_NAME));
-        int pizzaX = BOX_OFFSET + BOX_WIDTH/2 - Pizza.WIDTH/2;
-        displayPizza = new Pizza(pizzaX, BOX_OFFSET, BOX_OFFSET);
-        for(int i = 0; i < 6; i++)
-        {
-            boxes.add(new Rectangle(BOX_OFFSET, (i+1)*(BOX_HEIGHT+BOX_OFFSET) + BOX_OFFSET, BOX_WIDTH, BOX_HEIGHT));
-        }
+        initialize();
         addMouseListener(new ClickListener());
-        spawnBaileys();
-        spawnPizzas();
     }
 
     public void spawnBaileys(){
         Timer timer = new Timer();
 
         for(int wave = 0; wave < 2; wave++) {
-            timer.schedule(new StageTask(.5, 0, 0, 0, 0, 0), 10000 + wave * 10000);
+            timer.schedule(new StageTask(.5, 0, 0, 0, 0, 1), 10000 + wave * 10000);
             timer.schedule(new StageTask(.5, .2, 0, 0, 0, 0), 30000 + wave * 10000);
             timer.schedule(new StageTask(.5, .2, .2, 0, 0, 0), 50000 + wave * 10000);
             timer.schedule(new StageTask(.6, .2, .2, .2, 0, 0), 70000 + wave * 10000);
@@ -172,6 +151,10 @@ public class Level extends JComponent {
     {
         pizzas.add(p);
     }
+    public void addMobile(Mobile m)
+    {
+        mobiles.add(m);
+    }
     public List<Bailey>[] getBaileys()
     {
         return baileys;
@@ -227,8 +210,6 @@ public class Level extends JComponent {
                 g.draw(rect);
 
                 Officer officer = grid[row][col];
-                if(officer != null && officer.isDead())
-                    grid[row][col] = null;
 
                 if (officer != null)
                 {
@@ -256,6 +237,7 @@ public class Level extends JComponent {
                     }
                     else if (officer.isDead())
                     {
+                        officer.stop();
                         grid[row][col] = null;
                     }
                     else
@@ -289,10 +271,10 @@ public class Level extends JComponent {
                 continue;
             }
             shock.draw(g);
-            Rectangle shockRect = new Rectangle(shock.x, shock.y, shock.width, shock.height);
+            Rectangle shockRect = shock.getBounds();
             for(Bailey bailey : baileys[i])
             {
-                Rectangle rect = new Rectangle(bailey.x, bailey.y, bailey.width, bailey.height);
+                Rectangle rect = bailey.getBounds();
                 if(rect.intersects(shockRect))
                 {
                     if(!shock.isActive())
@@ -324,6 +306,7 @@ public class Level extends JComponent {
                 Bailey bailey = baileys[row].get(i);
                 if(bailey.isDead())
                 {
+                    bailey.stop();
                     baileys[row].remove(i);
                     continue;
                 }
@@ -353,16 +336,35 @@ public class Level extends JComponent {
             }
             bullet.draw(g);
             Point p = getLoc(bullet);
-            Rectangle bulletRect = new Rectangle(bullet.x, bullet.y, bullet.width, bullet.height);
+            Rectangle bulletRect = bullet.getBounds();
             for(Bailey bailey : baileys[p.x])
             {
-                Rectangle rect = new Rectangle(bailey.x, bailey.y, bailey.width, bailey.height);
+                Rectangle rect = bailey.getBounds();
                 if(rect.intersects(bulletRect))
                 {
                     bullets.remove(i);
                     bailey.minusHp(bullet.getDamage());
                     break;
                 }
+            }
+        }
+
+        for (int i = mobiles.size()-1; i >= 0; i--)
+        {
+            Mobile mobile = mobiles.get(i);
+            if(!mobile.isActive())
+            {
+                mobiles.remove(i);
+                continue;
+            }
+            mobile.draw(g);
+            Point p = getLoc(mobile);
+            Rectangle mobileRect = mobile.getBounds();
+            Officer officer = grid[p.x][p.y];
+            if(officer != null && mobileRect.intersects(officer.getBounds()))
+            {
+                mobiles.remove(i);
+                officer.minusHp(mobile.getDamage());
             }
         }
 
@@ -614,7 +616,7 @@ public class Level extends JComponent {
                 return;
             if(pressed[0] && restart.contains(e.getPoint())) {
                 System.out.println("RESTART");
-                restart();
+                initialize();
             }
             else if(pressed[1] && mainMenu.contains(e.getPoint())) {
                 System.out.println("MAIN MENU");
@@ -624,7 +626,7 @@ public class Level extends JComponent {
         }
     }
 
-    private void restart()
+    private void initialize()
     {
         grid = new Officer[ROWS][COLS];
         for(int row = 0; row < ROWS; row++)
@@ -633,6 +635,7 @@ public class Level extends JComponent {
         officers = new ArrayList<>();
         pizzas = new ArrayList<>();
         bullets = new ArrayList<>();
+        mobiles = new ArrayList<>();
         gameOver = false;
         numPizza = 75;
         officers.add(getScaledImage(Aaron.IMAGE_NAME));
@@ -646,14 +649,6 @@ public class Level extends JComponent {
         for(int i = 0; i < 6; i++)
         {
             boxes.add(new Rectangle(BOX_OFFSET, (i+1)*(BOX_HEIGHT+BOX_OFFSET) + BOX_OFFSET, BOX_WIDTH, BOX_HEIGHT));
-        }
-        shockwave = new Shockwave[ROWS];
-        for(int i = 0; i < ROWS; i++)
-        {
-            Dimension d = getDimension(Shockwave.IMAGE_NAME, new Dimension(SHOCK_WIDTH, getS2()));
-            shockwave[i] = new Shockwave(BOX_WIDTH+HORIZONTAL_OFFSET + SHOCK_WIDTH/2 - d.width/2,
-                    i*getS2() + VERTICAL_OFFSET + getS2()/2 - d.height/2,
-                    d.width, d.height);
         }
         spawnBaileys();
         spawnPizzas();

@@ -107,6 +107,11 @@ public abstract class Character{
         }
     }
 
+    public Rectangle getBounds()
+    {
+        return new Rectangle(x, y, width, height);
+    }
+
     public void draw(Graphics2D gr)
     {
         gr.drawImage(image, x, y, null);
