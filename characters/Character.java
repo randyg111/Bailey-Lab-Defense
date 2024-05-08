@@ -52,20 +52,22 @@ public abstract class Character{
         }
 
         active = false;
-        if(name.equals(Kho.NAME))
-            start();
     }
 
     public void start()
     {
-        if(LevelPlayer.LEVEL == null)
+        if(LevelPlayer.LEVEL == null) {
+            System.out.println("Level is null: "+name);
             return;
+        }
         timer = new Timer((int) (1000*rate), new TimerListener(LevelPlayer.LEVEL));
         active = true;
         timer.start();
     }
     public void stop()
     {
+        if(!active)
+            return;
         active = false;
         timer.stop();
     }
@@ -80,6 +82,7 @@ public abstract class Character{
 
     public void minusHp(int lose) {
         hp -= lose;
+        checkHp();
     }
 
     public int getDamage()
@@ -96,8 +99,19 @@ public abstract class Character{
         return image;
     }
 
-    public void setImage(String name) throws IOException {
-        image = ImageIO.read(new File(name));
+    public void setImage(String name) {
+        try{
+            image = ImageIO.read(new File(name));
+            Dimension d = Level.getDimension(name, new Dimension(width, height));
+            image = image.getScaledInstance(d.width, d.height, Image.SCALE_DEFAULT);
+        } catch (IOException e){
+            System.out.println(name + " image not found");
+        }
+    }
+
+    public Rectangle getBounds()
+    {
+        return new Rectangle(x, y, width, height);
     }
 
     public void draw(Graphics2D gr)
@@ -111,6 +125,8 @@ public abstract class Character{
     }
 
     public abstract void useAbility(Level level);
+
+    public abstract void checkHp();
 
 //    static int num = 0;
     protected class TimerListener implements ActionListener

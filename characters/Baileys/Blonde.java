@@ -1,18 +1,18 @@
 package characters.Baileys;
 
-import characters.Officers.Officer;
-import level.Level;
-
-import java.awt.*;
-
 public class Blonde extends Bailey {
-    static final String name = "Blonde Bailey";
-    static final int startingHp = 200;
-    public static final String IMAGE_NAME = "blonde.png";
-    static final int startingSpeed = 10;
-    static final int d = 100;
-    static final double r = 1;
+    static final String NAME = "Blonde Bailey";
+    static final int STARTING_HP = 200;
+    public static final String IMAGE_NAME = "images/blonde.png";
+    static final int STARTING_SPEED = 10;
+    static final int DAMAGE = 50; //used to be 100
+    static final double RATE = 1;
     public Blonde(int x, int y, int w, int h) {
-        super(name, startingHp, IMAGE_NAME, x, y, w, h, startingSpeed, d, r);
+        super(NAME, STARTING_HP, IMAGE_NAME, x, y, w, h, STARTING_SPEED, DAMAGE, RATE);
+    }
+
+    public void checkHp()
+    {
+
     }
 }

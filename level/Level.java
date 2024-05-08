@@ -19,57 +19,64 @@ public class Level extends JComponent {
     private static Officer[][] grid;
     private static final int ROWS = 5;
     private static final int COLS = 9;
-    private static List<Bailey>[] baileys = new List[ROWS];
-    private static List<Rectangle> boxes = new ArrayList<>();
-    private static List<BufferedImage> officers = new ArrayList<>();
-    private static List<Pizza> pizzas = new ArrayList<>();
-    private static List<Bullet> bullets = new ArrayList<>();
+    private static final List<Bailey>[] baileys = new List[ROWS];
+    private static List<Rectangle> boxes;
+    private static List<BufferedImage> officers;
+    private static List<Pizza> pizzas;
+    private static List<Bullet> bullets;
+    private static List<Mobile> mobiles;
+    private static List<Water> waters;
     private static Pizza displayPizza;
-    static boolean[] selected = new boolean[6];
-    private static int numPizza = 75;
+    private static int numPizza;
     private static Timer timer = new Timer();
     private static final int VERTICAL_OFFSET = 25;
     private static final int HORIZONTAL_OFFSET = 20;
     private static final int BOX_WIDTH = 200;
     private static final int BOX_HEIGHT = 100;
     private static final int BOX_OFFSET = 10;
+    private static final int SHOCK_WIDTH = 100;
     private static final String INSUFFICIENT = "Not Enough Pizza!";
-    static String display = "";
+    private static String display = "";
+    private static final int DISPLAY_SIZE = 36;
+    private static final int PRICE_SIZE = 24;
+    private static final int PIZZA_VALUE = 25;
+    private static boolean gameOver;
+    private static Rectangle restart;
+    private static Rectangle mainMenu;
+    static boolean[] pressed = new boolean[2];
+    static Shockwave[] shockwave;
 
-    private static Officer[] arr = {new Aaron(0, 0, 1, 1), new Emily(0,0,1,1),
-            new Kho(0,0,1,1), new So(0,0,1,1), new Randy(0,0,1,1), new Zheng(0,0,1,1)};
+    private static final Officer[] arr = {new Aaron(0, 0, 1, 1), new Emily(0,0,1,1),
+            new Kho(0,0,1,1), new Randy(0,0,1,1), new So(0,0,1,1), new Zheng(0,0,1,1)};
+    static boolean[] selected = new boolean[arr.length];
+
     public Level()
     {
-        grid = new Officer[ROWS][COLS];
-        for(int row = 0; row < ROWS; row++)
-            baileys[row] = new ArrayList<>();
-        officers.add(getScaledImage(Aaron.IMAGE_NAME));
-        officers.add(getScaledImage(Emily.IMAGE_NAME));
-        officers.add(getScaledImage(Kho.IMAGE_NAME));
-        officers.add(getScaledImage(Randy.IMAGE_NAME));
-        officers.add(getScaledImage(So.IMAGE_NAME));
-        officers.add(getScaledImage(Zheng.IMAGE_NAME));
-        displayPizza = new Pizza(BOX_OFFSET + BOX_WIDTH/2 - Pizza.WIDTH/2, BOX_OFFSET);
-        for(int i = 0; i < 6; i++)
-        {
-            boxes.add(new Rectangle(BOX_OFFSET, (i+1)*(BOX_HEIGHT+BOX_OFFSET) + BOX_OFFSET, BOX_WIDTH, BOX_HEIGHT));
-        }
+        initialize();
         addMouseListener(new ClickListener());
-        startSpawn();
     }
 
-    public void startSpawn(){
+    public void spawnBaileys(){
         Timer timer = new Timer();
 
         for(int wave = 0; wave < 2; wave++) {
-            timer.schedule(new StageTask(.5, 0, 0, 0, 0, 0), 5000 + wave * 2500);
-            timer.schedule(new StageTask(.5, .2, 0, 0, 0, 0), 10000 + wave * 2500);
-            timer.schedule(new StageTask(.5, .2, .2, 0, 0, 0), 15000 + wave * 2500);
-            timer.schedule(new StageTask(.6, .2, .2, .2, 0, 0), 20000 + wave * 2500);
-            timer.schedule(new StageTask(.7, .2, .2, .2, .2, 0), 25000 + wave * 2500);
-            timer.schedule(new StageTask(.8, .3, .3, .2, .2, .2), 30000 + wave * 2500);
+            timer.schedule(new StageTask(.5, 0, 0, 0, 1, 0), 10000 + wave * 10000);
+            timer.schedule(new StageTask(.5, .2, 0, 0, 0, 0), 30000 + wave * 10000);
+            timer.schedule(new StageTask(.5, .2, .2, 0, 0, 0), 50000 + wave * 10000);
+            timer.schedule(new StageTask(.6, .2, .2, .2, 0, 0), 70000 + wave * 10000);
+            timer.schedule(new StageTask(.7, .2, .2, .2, .2, 0), 90000 + wave * 10000);
+            timer.schedule(new StageTask(.8, .3, .3, .2, .2, .2), 110000 + wave * 10000);
         }
 
+    }
+
+    public void spawnPizzas()
+    {
+        new javax.swing.Timer(10000, e -> {
+            int dx = (int) (Math.random() * (getWidth() - getLeftWidth() - HORIZONTAL_OFFSET - Pizza.WIDTH)) + getLeftWidth();
+            int dy = (int) (Math.random() * (getHeight() - 2 * VERTICAL_OFFSET - Pizza.HEIGHT)) + VERTICAL_OFFSET;
+            pizzas.add(new Pizza(dx, -Pizza.HEIGHT, dy));
+        }).start();
     }
 
     public void spawn(double blondeRate, double redHeadRate, double idRate,
@@ -111,7 +118,7 @@ public class Level extends JComponent {
     {
         int w = getWidth();
         int s2 = getS2();
-        int row = (int) (Math.random()*5);
+        int row = (int) (Math.random()*ROWS);
         switch(type)
         {
             case 0:
@@ -145,15 +152,13 @@ public class Level extends JComponent {
     {
         pizzas.add(p);
     }
-    public void testPizza() {
-        spawn(1,1,1,1,1,1);
-        int w = getWidth();
-        int h = getHeight();
-        for(int i = 0; i < 5; i++) {
-            int x = (int) (Math.random() * (w-240)) + 220;
-            int y = (int) (Math.random() * (h - 50)) + 25;
-            pizzas.add(new Pizza(x, y));
-        }
+    public void addMobile(Mobile m)
+    {
+        mobiles.add(m);
+    }
+    public void addWater(Water w)
+    {
+        waters.add(w);
     }
     public List<Bailey>[] getBaileys()
     {
@@ -178,10 +183,10 @@ public class Level extends JComponent {
         int h = getHeight();
 
         displayPizza.draw(g);
-        g.setFont(new Font("Comic Sans", Font.BOLD, 36));
+        g.setFont(new Font("Comic Sans", Font.BOLD, DISPLAY_SIZE));
         g.drawString(Integer.toString(numPizza), displayPizza.x + BOX_OFFSET, displayPizza.y + Pizza.HEIGHT + 3*BOX_OFFSET);
 
-        g.setFont(new Font("Comic Sans", Font.PLAIN, 24));
+        g.setFont(new Font("Comic Sans", Font.PLAIN, PRICE_SIZE));
         for (int i = 0; i < boxes.size(); i++)
         {
             Rectangle box = boxes.get(i);
@@ -203,9 +208,13 @@ public class Level extends JComponent {
         {
             for (int col = 0; col < COLS; col++)
             {
+                Rectangle rect = getRectangle(row, col);
+                g.setColor(Color.lightGray);
+                g.fill(rect);
+                g.setColor(Color.black);
+                g.draw(rect);
+
                 Officer officer = grid[row][col];
-                if(officer != null && officer.isDead())
-                    grid[row][col] = null;
 
                 if (officer != null)
                 {
@@ -215,8 +224,6 @@ public class Level extends JComponent {
                         if(bailey != null && bailey.x - officer.x <= getS1()) {
                             officer.useAbility(this);
                         }
-                        else
-                            officer.draw(g);
                     }
                     else if(officer.getName().equals("Emily Lou"))
                     {
@@ -229,10 +236,10 @@ public class Level extends JComponent {
                         {
                             officer.stop();
                         }
-                        officer.draw(g);
                     }
-                    else if (officer.isDead())
+                    if (officer.isDead())
                     {
+                        officer.stop();
                         grid[row][col] = null;
                     }
                     else
@@ -240,16 +247,45 @@ public class Level extends JComponent {
                         officer.draw(g);
                     }
                 }
-                if(grid[row][col] == null)
+            }
+        }
+
+        if(shockwave == null && getS2() > 0)
+        {
+            shockwave = new Shockwave[ROWS];
+            for(int i = 0; i < ROWS; i++)
+            {
+                Dimension d = getDimension(Shockwave.IMAGE_NAME, new Dimension(SHOCK_WIDTH, getS2()));
+                shockwave[i] = new Shockwave(BOX_WIDTH+HORIZONTAL_OFFSET + SHOCK_WIDTH/2 - d.width/2,
+                        i*getS2() + VERTICAL_OFFSET + getS2()/2 - d.height/2,
+                        d.width, d.height);
+            }
+        }
+
+        for (int i = 0; i < ROWS; i++)
+        {
+            if(shockwave == null || shockwave[i] == null)
+                continue;
+            Shockwave shock = shockwave[i];
+            if(shock.x > w)
+            {
+                shockwave[i] = null;
+                continue;
+            }
+            shock.draw(g);
+            Rectangle shockRect = shock.getBounds();
+            for(Bailey bailey : baileys[i])
+            {
+                Rectangle rect = bailey.getBounds();
+                if(rect.intersects(shockRect))
                 {
-                    Rectangle rect = getRectangle(row, col);
-                    g.setColor(Color.lightGray);
-                    g.fill(rect);
-                    g.setColor(Color.black);
-                    g.draw(rect);
+                    if(!shock.isActive())
+                        shock.start();
+                    bailey.minusHp(shock.getDamage());
                 }
             }
         }
+
         for (int row = 0; row < ROWS; row++) {
             if (!baileys[row].isEmpty() && baileys[row].get(0).x < w) {
                 for (int col = 0; col < COLS; col++) {
@@ -272,6 +308,7 @@ public class Level extends JComponent {
                 Bailey bailey = baileys[row].get(i);
                 if(bailey.isDead())
                 {
+                    bailey.stop();
                     baileys[row].remove(i);
                     continue;
                 }
@@ -281,6 +318,10 @@ public class Level extends JComponent {
                 if (bailey.isWalking() && r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null) {
                     bailey.stop();
                     bailey.startEat();
+                }
+                if (bailey.x < BOX_WIDTH+HORIZONTAL_OFFSET)
+                {
+                    gameOver = true;
                 }
                 bailey.draw(g);
             }
@@ -297,15 +338,58 @@ public class Level extends JComponent {
             }
             bullet.draw(g);
             Point p = getLoc(bullet);
-            Rectangle bulletRect = new Rectangle(bullet.x, bullet.y, bullet.width, bullet.height);
+            Rectangle bulletRect = bullet.getBounds();
             for(Bailey bailey : baileys[p.x])
             {
-                Rectangle rect = new Rectangle(bailey.x, bailey.y, bailey.width, bailey.height);
+                Rectangle rect = bailey.getBounds();
                 if(rect.intersects(bulletRect))
                 {
                     bullets.remove(i);
                     bailey.minusHp(bullet.getDamage());
+                    break;
                 }
+            }
+        }
+
+        for (int i = mobiles.size()-1; i >= 0; i--)
+        {
+            Mobile mobile = mobiles.get(i);
+            if(!mobile.isActive())
+            {
+                mobiles.remove(i);
+                continue;
+            }
+            mobile.draw(g);
+            Point p = getLoc(mobile);
+            Rectangle mobileRect = mobile.getBounds();
+            if(p.x < 0 || p.x >= ROWS || p.y < 0 || p.y >= COLS)
+                continue;
+            Officer officer = grid[p.x][p.y];
+            if(officer != null && mobileRect.intersects(officer.getBounds()))
+            {
+                mobiles.remove(i);
+                officer.minusHp(mobile.getDamage());
+            }
+        }
+
+        for (int i = waters.size()-1; i >= 0; i--)
+        {
+            Water water = waters.get(i);
+            if(!water.isActive())
+            {
+                waters.remove(i);
+                continue;
+            }
+            water.draw(g);
+            Point p = getLoc(water);
+            Rectangle waterRect = water.getBounds();
+            if(p.x < 0 || p.x >= ROWS || p.y < 0 || p.y >= COLS)
+                continue;
+            Officer officer = grid[p.x][p.y];
+            if(officer != null && waterRect.intersects(officer.getBounds()))
+            {
+                waters.remove(i);
+                officer.minusHp(water.getDamage());
             }
         }
 
@@ -314,15 +398,54 @@ public class Level extends JComponent {
 
         if(!display.isEmpty()){
             g.setColor(Color.red);
-            g.setFont(new Font("Comic Sans", Font.BOLD, 36));
+            g.setFont(new Font("Comic Sans", Font.BOLD, DISPLAY_SIZE));
             g.drawString(INSUFFICIENT, w / 2 - 50, h / 8);
             timer.schedule(new MessageTask(), 2000);
+        }
+
+        if(gameOver)
+        {
+            Rectangle rect = new Rectangle(0, 0, w, h);
+            g.setColor(new Color(0f, 0f, 0f, 0.5f));
+            g.fill(rect);
+
+            Rectangle monitor = new Rectangle(w/2 - 100, h/2 - 100, 200, 200);
+            g.setColor(Color.darkGray);
+            g.fill(monitor);
+
+            Rectangle screen = new Rectangle(w/2 - 90, h/2 - 90, 180, 180);
+            g.setColor(Color.black);
+            g.fill(screen);
+
+            g.setColor(Color.green);
+            g.setFont(new Font("Mono", Font.PLAIN, 18));
+            g.drawString("BAILEYS FOUND", w/2 - 70, h/2 - 60);
+            g.drawString("YOUR LAB!", w/2 - 50, h/2 - 30);
+
+            restart = new Rectangle(w/2 - 80, h/2 + 40, 70, 40);
+            if(pressed[0])
+                g.setColor(Color.darkGray);
+            else
+                g.setColor(Color.gray);
+            g.fill(restart);
+
+            mainMenu = new Rectangle(w/2 + 10, h/2 + 40, 70, 40);
+            if(pressed[1])
+                g.setColor(Color.darkGray);
+            else
+                g.setColor(Color.gray);
+            g.fill(mainMenu);
+
+            g.setColor(Color.green);
+            g.setFont(new Font("Mono", Font.PLAIN, 12));
+            g.drawString("Try Again", w/2 - 75, h/2 + 65);
+            g.drawString("Main Menu", w/2 + 15, h/2 + 65);
         }
     }
 
     public int getS1()
     {
-        return (getWidth()-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
+        return (getWidth()-(getLeftWidth()-HORIZONTAL_OFFSET))/COLS;
     }
 
     public int getS2()
@@ -335,13 +458,18 @@ public class Level extends JComponent {
         return grid[r][c];
     }
 
+    private int getLeftWidth()
+    {
+        return BOX_WIDTH + HORIZONTAL_OFFSET + SHOCK_WIDTH + BOX_OFFSET;
+    }
+
     public Rectangle getRectangle(int r, int c)
     {
         int w = getWidth();
         int h = getHeight();
-        int s1 = (w-(BOX_WIDTH+2*HORIZONTAL_OFFSET))/COLS;
+        int s1 = (w-(getLeftWidth()+HORIZONTAL_OFFSET))/COLS;
         int s2 = (h-2*VERTICAL_OFFSET)/ROWS;
-        int x = c*s1 + BOX_WIDTH + HORIZONTAL_OFFSET;
+        int x = c*s1 + getLeftWidth();
         int y = r*s2 + VERTICAL_OFFSET;
         return new Rectangle(x, y, s1, s2);
     }
@@ -374,11 +502,11 @@ public class Level extends JComponent {
         }
     }
 
-    public static BufferedImage getScaledImage(String imageName) {
+    public static BufferedImage getScaledImage(String imageName, Dimension d) {
 
         try {
             BufferedImage image = ImageIO.read(new File(imageName));
-            Dimension newDimension = getDimension(imageName, new Dimension(200, 100));
+            Dimension newDimension = getDimension(imageName, d);
             int newWidth = newDimension.width;
             int newHeight = newDimension.height;
 
@@ -399,8 +527,8 @@ public class Level extends JComponent {
 
     public Point getLoc(Character character)
     {
-        int c = (character.x + character.width/2 - 220) / getS1();
-        int r = (character.y + character.height/2 - 25) / getS2();
+        int c = (character.x + character.width/2 - getLeftWidth()) / getS1();
+        int r = (character.y + character.height/2 - VERTICAL_OFFSET) / getS2();
         return new Point(r, c);
     }
 
@@ -432,6 +560,18 @@ public class Level extends JComponent {
     public class ClickListener extends MouseAdapter {
         int curr = -1;
         public void mousePressed(MouseEvent e) {
+            if(gameOver)
+            {
+                if(restart.contains(e.getPoint())) {
+                    pressed[0] = true;
+                    repaint();
+                }
+                else if(mainMenu.contains(e.getPoint())) {
+                    pressed[1] = true;
+                    repaint();
+                }
+                return;
+            }
             for (int i = pizzas.size()-1; i >= 0; i--)
             {
                 Pizza pizza = pizzas.get(i);
@@ -439,7 +579,7 @@ public class Level extends JComponent {
                 if(rect.contains(e.getPoint()))
                 {
                     pizzas.remove(i);
-                    numPizza += 50;
+                    numPizza += PIZZA_VALUE;
                     repaint();
                     return;
                 }
@@ -467,8 +607,19 @@ public class Level extends JComponent {
                         }
                     }
                 }
+                int prev = curr;
                 selected[curr] = false;
                 curr = -1;
+                for (int i = 0; i < boxes.size(); i++)
+                {
+                    if (boxes.get(i).contains(e.getPoint()))
+                    {
+                        if(prev != i) {
+                            curr = i;
+                            selected[i] = true;
+                        }
+                    }
+                }
                 repaint();
             }
             else
@@ -484,9 +635,53 @@ public class Level extends JComponent {
                 repaint();
             }
         }
+        public void mouseReleased(MouseEvent e)
+        {
+            if(!gameOver)
+                return;
+            if(pressed[0] && restart.contains(e.getPoint())) {
+                System.out.println("RESTART");
+                initialize();
+            }
+            else if(pressed[1] && mainMenu.contains(e.getPoint())) {
+                System.out.println("MAIN MENU");
+            }
+            Arrays.fill(pressed, false);
+            repaint();
+        }
     }
 
-    public class MessageTask extends TimerTask{
+    private void initialize()
+    {
+        grid = new Officer[ROWS][COLS];
+        for(int row = 0; row < ROWS; row++)
+            baileys[row] = new ArrayList<>();
+        boxes = new ArrayList<>();
+        officers = new ArrayList<>();
+        pizzas = new ArrayList<>();
+        bullets = new ArrayList<>();
+        mobiles = new ArrayList<>();
+        waters = new ArrayList<>();
+        gameOver = false;
+        numPizza = 75;
+        Dimension d = new Dimension(BOX_WIDTH, BOX_HEIGHT);
+        officers.add(getScaledImage(Aaron.IMAGE_NAME, d));
+        officers.add(getScaledImage(Emily.IMAGE_NAME, d));
+        officers.add(getScaledImage(Kho.IMAGE_NAME, d));
+        officers.add(getScaledImage(Randy.IMAGE_NAME, d));
+        officers.add(getScaledImage(So.IMAGE_NAME, d));
+        officers.add(getScaledImage(Zheng.IMAGE_NAME, d));
+        int pizzaX = BOX_OFFSET + BOX_WIDTH/2 - Pizza.WIDTH/2;
+        displayPizza = new Pizza(pizzaX, BOX_OFFSET, BOX_OFFSET);
+        for(int i = 0; i < 6; i++)
+        {
+            boxes.add(new Rectangle(BOX_OFFSET, (i+1)*(BOX_HEIGHT+BOX_OFFSET) + BOX_OFFSET, BOX_WIDTH, BOX_HEIGHT));
+        }
+        spawnBaileys();
+        spawnPizzas();
+    }
+
+    public static class MessageTask extends TimerTask{
         public void run() {
             display = "";
         }

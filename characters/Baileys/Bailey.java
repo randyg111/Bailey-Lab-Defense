@@ -18,7 +18,8 @@ public abstract class Bailey extends Character {
     public Bailey(String name, int hp, String image, int x, int y, int w, int h, int speed, int d, double r) {
         super(name, hp, image, x, y, w, h, d, r);
         this.speed = speed;
-        start();
+        if(LevelPlayer.LEVEL != null && !name.equals("Shockwave"))
+            start();
     }
 
     public void eat(Officer officer)
@@ -53,7 +54,13 @@ public abstract class Bailey extends Character {
             int c = p.y;
             int r = p.x;
             Officer officer = level.getOfficer(r, c);
-            eat(officer);
+            if(officer != null)
+                eat(officer);
         }
+    }
+
+    public void checkHp()
+    {
+
     }
 }

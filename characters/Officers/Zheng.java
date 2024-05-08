@@ -1,21 +1,22 @@
 package characters.Officers;
 import characters.Baileys.Bailey;
 import level.Level;
-import org.w3c.dom.css.Rect;
+import level.LevelPlayer;
 
 import java.awt.*;
 import java.util.List;
 
 public class Zheng extends Officer {
     public static final String NAME = "Alex Zheng";
-    static final int startingHp = 100;
-    public static final String IMAGE_NAME = "zheng.png";
+    static final int STARTING_HP = 100;
+    public static final String IMAGE_NAME = "images/zheng.png";
     public static final int COST = 150;
-    static final int d = 1800;
-    static final double r = 1.5;
+    static final int DAMAGE = 1800;
+    static final double RATE = 1.5;
     public Zheng(int x, int y, int w, int h){
-        super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST, d, r);
-        start();
+        super(NAME, STARTING_HP, IMAGE_NAME, x, y, w, h, COST, DAMAGE, RATE);
+        if(LevelPlayer.LEVEL != null)
+            start();
     }
     public void useAbility(Level level)
     {

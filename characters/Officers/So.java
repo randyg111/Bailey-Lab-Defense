@@ -4,13 +4,13 @@ import level.Level;
 
 public class So extends Officer {
     public static final String NAME = "Alex So";
-    static final int startingHp = 350;
-    public static final String IMAGE_NAME = "so.png";
+    static final int STARTING_HP = 350;
+    public static final String IMAGE_NAME = "images/so.png";
     public static final int COST = 100;
-    static final int d = 25;
-    static final double r = 5; // used to be 2.5
+    static final int DAMAGE = 25;
+    static final double RATE = 2.5;
     public So(int x, int y, int w, int h){
-        super(NAME, startingHp, IMAGE_NAME, x, y, w, h, COST, d, r);
+        super(NAME, STARTING_HP, IMAGE_NAME, x, y, w, h, COST, DAMAGE, RATE);
     }
     public void useAbility(Level level)
     {
