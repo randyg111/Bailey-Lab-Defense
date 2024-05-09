@@ -56,6 +56,8 @@ public abstract class Bailey extends Character {
             Officer officer = level.getOfficer(r, c);
             if(officer != null)
                 eat(officer);
+            else
+                start();
         }
     }
 
