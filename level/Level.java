@@ -280,7 +280,7 @@ public class Level extends JComponent {
                 if(rect.intersects(shockRect))
                 {
                     if(!shock.isActive())
-                        shock.start();
+                        shock.startWalk();
                     bailey.minusHp(shock.getDamage());
                 }
             }
@@ -317,7 +317,7 @@ public class Level extends JComponent {
                 int r = p.x;
                 if (bailey.isWalking() && r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null) {
                     bailey.stop();
-                    bailey.startEat();
+                    bailey.start();
                 }
                 if (bailey.x < BOX_WIDTH+HORIZONTAL_OFFSET)
                 {
@@ -534,27 +534,33 @@ public class Level extends JComponent {
 
     private Officer getOfficer(int i, int x, int y, Dimension bounds)
     {
-        switch(i) {
-            case 0:
+        return switch (i) {
+            case 0 -> {
                 Dimension d = getDimension(Aaron.IMAGE_NAME, bounds);
-                return new Aaron(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
-            case 1:
-                d = getDimension(Emily.IMAGE_NAME, bounds);
-                return new Emily(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
-            case 2:
-                d = getDimension(Kho.IMAGE_NAME, bounds);
-                return new Kho(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
-            case 3:
-                d = getDimension(Randy.IMAGE_NAME, bounds);
-                return new Randy(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
-            case 4:
-                d = getDimension(So.IMAGE_NAME, bounds);
-                return new So(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
-            case 5:
-                d = getDimension(Zheng.IMAGE_NAME, bounds);
-                return new Zheng(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
-        }
-        return null;
+                yield new Aaron(x + bounds.width / 2 - d.width / 2, y + bounds.height / 2 - d.height / 2, d.width, d.height);
+            }
+            case 1 -> {
+                Dimension d = getDimension(Emily.IMAGE_NAME, bounds);
+                yield new Emily(x + bounds.width / 2 - d.width / 2, y + bounds.height / 2 - d.height / 2, d.width, d.height);
+            }
+            case 2 -> {
+                Dimension d = getDimension(Kho.IMAGE_NAME, bounds);
+                yield new Kho(x + bounds.width / 2 - d.width / 2, y + bounds.height / 2 - d.height / 2, d.width, d.height);
+            }
+            case 3 -> {
+                Dimension d = getDimension(Randy.IMAGE_NAME, bounds);
+                yield new Randy(x + bounds.width / 2 - d.width / 2, y + bounds.height / 2 - d.height / 2, d.width, d.height);
+            }
+            case 4 -> {
+                Dimension d = getDimension(So.IMAGE_NAME, bounds);
+                yield new So(x + bounds.width / 2 - d.width / 2, y + bounds.height / 2 - d.height / 2, d.width, d.height);
+            }
+            case 5 -> {
+                Dimension d = getDimension(Zheng.IMAGE_NAME, bounds);
+                yield new Zheng(x + bounds.width / 2 - d.width / 2, y + bounds.height / 2 - d.height / 2, d.width, d.height);
+            }
+            default -> null;
+        };
     }
 
     public class ClickListener extends MouseAdapter {

@@ -6,7 +6,7 @@ public class Phone extends Bailey {
     static final String NAME = "Phone Bailey";
     static final int STARTING_HP = 200;
     public static final String IMAGE_NAME = "images/phone.png";
-    static final int STARTING_SPEED = 5;
+    static final int STARTING_SPEED = 1;
     static final int DAMAGE = 200;
     static final double RATE = 3;
     public Phone(int x, int y, int w, int h){

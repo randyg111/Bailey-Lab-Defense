@@ -4,7 +4,7 @@ public class RedHead extends Bailey {
     static final String NAME = "RedHead Bailey";
     static final int STARTING_HP = 400;
     public static final String IMAGE_NAME = "images/redHead.png";
-    static final int STARTING_SPEED = 10;
+    static final int STARTING_SPEED = 2;
     static final int DAMAGE = 100;
     static final double RATE = 1;
     public RedHead(int x, int y, int w, int h){

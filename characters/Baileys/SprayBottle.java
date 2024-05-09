@@ -6,7 +6,7 @@ public class SprayBottle extends Bailey {
     static final String NAME = "Spray Bottle Bailey";
     static final int STARTING_HP = 200;
     public static final String IMAGE_NAME = "images/sprayBottle.png";
-    static final int STARTING_SPEED = 10;
+    static final int STARTING_SPEED = 2;
     static final int DAMAGE = 200;
     static final double RATE = 3;
 

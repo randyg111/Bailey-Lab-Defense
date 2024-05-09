@@ -8,7 +8,7 @@ public class So extends Officer {
     public static final String IMAGE_NAME = "images/so.png";
     public static final int COST = 100;
     static final int DAMAGE = 25;
-    static final double RATE = 2.5;
+    static final double RATE = 5;
     public So(int x, int y, int w, int h){
         super(NAME, STARTING_HP, IMAGE_NAME, x, y, w, h, COST, DAMAGE, RATE);
     }

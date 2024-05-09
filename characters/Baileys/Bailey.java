@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 
 public abstract class Bailey extends Character {
     protected int speed;
+    private static final int WALKING_RATE = 50;
 
     public Bailey(){
         super();
@@ -19,19 +20,20 @@ public abstract class Bailey extends Character {
         super(name, hp, image, x, y, w, h, d, r);
         this.speed = speed;
         if(LevelPlayer.LEVEL != null && !name.equals("Shockwave"))
-            start();
+            startWalk();
     }
 
     public void eat(Officer officer)
     {
         officer.minusHp(damage);
         if(officer.getHp() <= 0)
-            start();
+            startWalk();
     }
 
-    public void startEat()
+    public void startWalk()
     {
-        timer = new Timer((int) (1000/rate), new TimerListener(LevelPlayer.LEVEL));
+        active = false;
+        timer = new Timer(WALKING_RATE, new TimerListener(LevelPlayer.LEVEL));
         timer.start();
     }
 
@@ -45,7 +47,7 @@ public abstract class Bailey extends Character {
         return active;
     }
     public void useAbility(Level level) {
-        if(active) {
+        if(!active) {
             walk();
         }
         else

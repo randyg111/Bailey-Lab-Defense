@@ -10,7 +10,7 @@ public class Pizza extends Bailey {
     private static final int STARTING_HP = 0;
     private static final int DAMAGE = 0;
     private static final double RATE = 0.25;
-    private static final int STARTING_SPEED = 2;
+    private static final int STARTING_SPEED = 4;
     private final int dy;
 
     public Pizza(int x, int y, int dy)

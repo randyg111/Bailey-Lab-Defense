@@ -4,7 +4,7 @@ public class Glasses extends Bailey {
     static final String NAME = "Glasses Bailey";
     static final int STARTING_HP = 400;
     public static final String IMAGE_NAME = "images/glasses.png";
-    static final int STARTING_SPEED = 10;
+    static final int STARTING_SPEED = 2;
     static final int DAMAGE = 100;
     static final double RATE = 1;
     public Glasses(int x, int y, int w, int h){

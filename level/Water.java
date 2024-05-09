@@ -6,7 +6,7 @@ public class Water extends Bailey {
     static final String name = "Water";
     static final int startingHp = 1;
     public static final String IMAGE_NAME = "images/water.png";
-    static final int startingSpeed = 50;
+    static final int startingSpeed = 5;
     static final int d = 25;
     static final double r = 0.1;
     private static final int WIDTH = 32;
