@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Zheng extends Officer {
     public static final String NAME = "Alex Zheng";
-    static final int STARTING_HP = 1000;
+    static final int STARTING_HP = 10000;
     public static final String IMAGE_NAME = "images/zhengInactive.png";
     public static final int COST = 150;
     static final int DAMAGE = 1800;
