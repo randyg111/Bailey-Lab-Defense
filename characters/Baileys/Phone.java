@@ -2,6 +2,8 @@ package characters.Baileys;
 import level.Level;
 import level.Mobile;
 
+import java.awt.*;
+
 public class Phone extends Bailey {
     static final String NAME = "Phone Bailey";
     static final int STARTING_HP = 200;
@@ -17,6 +19,27 @@ public class Phone extends Bailey {
         int mobileX = x;
         int mobileY = y;
         level.addMobile(new Mobile(mobileX, mobileY, mobileX - 3*level.getS1()));
+        Point p = level.getLoc(this);
+        int c = p.y;
+        int r = p.x;
+        if(!(level.containsOfficer(r, c) || level.containsOfficer(r, c-1)
+                || level.containsOfficer(r, c-2) || level.containsOfficer(r, c-3)))
+        {
+            stop();
+            startWalk();
+        }
+    }
+
+    public void checkRange(Level level)
+    {
+        Point p = level.getLoc(this);
+        int c = p.y;
+        int r = p.x;
+        if (isWalking() && (level.containsOfficer(r, c) || level.containsOfficer(r, c-1)
+                || level.containsOfficer(r, c-2) || level.containsOfficer(r, c-3))) {
+            stopWalk();
+            start();
+        }
     }
 
     public void checkHp()

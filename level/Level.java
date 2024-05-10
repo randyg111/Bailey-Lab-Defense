@@ -62,7 +62,7 @@ public class Level extends JComponent {
         Timer timer = new Timer();
 
         for(int wave = 0; wave < 2; wave++) {
-            timer.schedule(new StageTask(.5, 0, 0, 0, 1, 0), 10000 + wave * 10000);
+            timer.schedule(new StageTask(.5, 0, 0, 0, 0, 0), 10000 + wave * 10000);
             timer.schedule(new StageTask(.5, .2, 0, 0, 0, 0), 30000 + wave * 10000);
             timer.schedule(new StageTask(.5, .2, .2, 0, 0, 0), 50000 + wave * 10000);
             timer.schedule(new StageTask(.6, .2, .2, .2, 0, 0), 70000 + wave * 10000);
@@ -118,6 +118,11 @@ public class Level extends JComponent {
             int dy = (int) (Math.random() * (getHeight() - 2 * VERTICAL_OFFSET - Pizza.HEIGHT)) + VERTICAL_OFFSET;
             pizzas.add(new Pizza(dx, -Pizza.HEIGHT, dy));
         }).start();
+    }
+
+    public boolean containsOfficer(int r, int c)
+    {
+        return r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null;
     }
 
     public void spawn(double blondeRate, double redHeadRate, double idRate,
@@ -389,7 +394,7 @@ public class Level extends JComponent {
         for (int i = mobiles.size()-1; i >= 0; i--)
         {
             Mobile mobile = mobiles.get(i);
-            if(!mobile.isActive())
+            if(mobile.isDead())
             {
                 mobiles.remove(i);
                 continue;
@@ -410,7 +415,7 @@ public class Level extends JComponent {
         for (int i = waters.size()-1; i >= 0; i--)
         {
             Water water = waters.get(i);
-            if(!water.isActive())
+            if(water.isDead())
             {
                 waters.remove(i);
                 continue;

@@ -40,7 +40,7 @@ public abstract class Bailey extends Character {
         Point p = level.getLoc(this);
         int c = p.y;
         int r = p.x;
-        if (isWalking() && r >= 0 && r < Level.ROWS && c >= 0 && c < Level.COLS && level.getOfficer(r, c) != null) {
+        if (isWalking() && level.containsOfficer(r, c)) {
             stopWalk();
             start();
         }
