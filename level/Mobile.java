@@ -17,13 +17,18 @@ public class Mobile extends Bailey {
         this.dx = dx;
     }
 
-    public void useAbility(Level level) {
+    public void walk()
+    {
         if(x > dx)
-            walk();
+            x -= speed;
         else
         {
-            stop();
+            stopWalk();
             hp = 0;
         }
+    }
+
+    public void useAbility(Level level) {
+
     }
 }

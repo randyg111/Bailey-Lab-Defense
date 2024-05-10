@@ -6,7 +6,7 @@ public class Shockwave extends Bailey {
     static final String name = "Shockwave";
     static final int startingHp = 1;
     public static final String IMAGE_NAME = "images/shockwave.png";
-    static final int startingSpeed = -10;
+    static final int startingSpeed = -20;
     static final int d = 1000;
     static final double r = 0.1;
     public Shockwave(int x, int y, int w, int h) {

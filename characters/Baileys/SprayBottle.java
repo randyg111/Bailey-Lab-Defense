@@ -15,7 +15,6 @@ public class SprayBottle extends Bailey {
     }
 
     public void useAbility(Level level) {
-        walk();
         int waterX = x + width/2;
         int waterY = y + height/2;
         level.addWater(new Water(waterX, waterY, waterX - level.getS1(), waterY - level.getS2()));
@@ -25,7 +24,7 @@ public class SprayBottle extends Bailey {
 
     public void checkHp()
     {
-        if(hp < STARTING_HP /2)
+        if(hp < STARTING_HP/2)
         {
             setImage("images/blonde.png");
         }

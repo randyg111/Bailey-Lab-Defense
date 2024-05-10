@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 public abstract class Bailey extends Character {
     protected int speed;
     private static final int WALKING_RATE = 50;
+    private Timer walkTimer;
+    private boolean walking;
 
     public Bailey(){
         super();
@@ -27,14 +29,34 @@ public abstract class Bailey extends Character {
     {
         officer.minusHp(damage);
         if(officer.getHp() <= 0)
+        {
+            stop();
             startWalk();
+        }
+    }
+
+    public void checkRange(Level level)
+    {
+        Point p = level.getLoc(this);
+        int c = p.y;
+        int r = p.x;
+        if (isWalking() && r >= 0 && r < Level.ROWS && c >= 0 && c < Level.COLS && level.getOfficer(r, c) != null) {
+            stopWalk();
+            start();
+        }
     }
 
     public void startWalk()
     {
-        active = false;
-        timer = new Timer(WALKING_RATE, new TimerListener(LevelPlayer.LEVEL));
-        timer.start();
+        walking = true;
+        walkTimer = new Timer(WALKING_RATE, new WalkListener(LevelPlayer.LEVEL));
+        walkTimer.start();
+    }
+
+    public void stopWalk()
+    {
+        walking = false;
+        walkTimer.stop();
     }
 
     public void walk()
@@ -44,27 +66,39 @@ public abstract class Bailey extends Character {
 
     public boolean isWalking()
     {
-        return active;
+        return walking;
     }
     public void useAbility(Level level) {
-        if(!active) {
-            walk();
-        }
-        else
-        {
-            Point p = level.getLoc(this);
-            int c = p.y;
-            int r = p.x;
-            Officer officer = level.getOfficer(r, c);
-            if(officer != null)
-                eat(officer);
-            else
-                start();
+        Point p = level.getLoc(this);
+        int c = p.y;
+        int r = p.x;
+        Officer officer = level.getOfficer(r, c);
+        if(officer != null)
+            eat(officer);
+        else {
+            stop();
+            startWalk();
         }
     }
 
     public void checkHp()
     {
 
+    }
+
+    protected class WalkListener implements ActionListener
+    {
+        private final Level level;
+
+        public WalkListener(Level level)
+        {
+            this.level = level;
+        }
+
+        public void actionPerformed(ActionEvent event)
+        {
+            Bailey.this.walk();
+            level.repaint();
+        }
     }
 }

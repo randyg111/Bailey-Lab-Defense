@@ -19,15 +19,20 @@ public class Water extends Bailey {
         this.dy = dy;
     }
 
-    public void useAbility(Level level) {
+    public void walk()
+    {
         if(x > dx) {
-            walk();
+            x -= speed;
             y += (dy - y)/(x - dx) * speed;
         }
         else
         {
-            stop();
+            stopWalk();
             hp = 0;
         }
+    }
+
+    public void useAbility(Level level) {
+
     }
 }

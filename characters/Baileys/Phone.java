@@ -14,7 +14,6 @@ public class Phone extends Bailey {
     }
 
     public void useAbility(Level level) {
-        walk();
         int mobileX = x;
         int mobileY = y;
         level.addMobile(new Mobile(mobileX, mobileY, mobileX - 3*level.getS1()));

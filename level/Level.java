@@ -17,8 +17,8 @@ import characters.Character;
 
 public class Level extends JComponent {
     private static Officer[][] grid;
-    private static final int ROWS = 5;
-    private static final int COLS = 9;
+    public static final int ROWS = 5;
+    public static final int COLS = 9;
     private static final List<Bailey>[] baileys = new List[ROWS];
     private static List<Rectangle> boxes;
     private static List<BufferedImage> officers;
@@ -40,6 +40,7 @@ public class Level extends JComponent {
     private static final int DISPLAY_SIZE = 36;
     private static final int PRICE_SIZE = 24;
     private static final int PIZZA_VALUE = 25;
+    private static final int STARTING_PIZZA = 1000;
     private static boolean gameOver;
     private static Rectangle restart;
     private static Rectangle mainMenu;
@@ -162,17 +163,23 @@ public class Level extends JComponent {
         switch(type)
         {
             case 0:
-                return new Blonde(w, row*s2 + VERTICAL_OFFSET, w, s2);
+                BufferedImage image = getImage(Blonde.IMAGE_NAME, new Dimension(w, s2));
+                return new Blonde(w, row*s2 + VERTICAL_OFFSET, image.getWidth(), image.getHeight());
             case 1:
-                return new RedHead(w, row*s2 + VERTICAL_OFFSET, w, s2);
+                image = getImage(RedHead.IMAGE_NAME, new Dimension(w, s2));
+                return new RedHead(w, row*s2 + VERTICAL_OFFSET, image.getWidth(), image.getHeight());
             case 2:
-                return new Id(w, row*s2 + VERTICAL_OFFSET, w, s2);
+                image = getImage(Id.IMAGE_NAME, new Dimension(w, s2));
+                return new Id(w, row*s2 + VERTICAL_OFFSET, image.getWidth(), image.getHeight());
             case 3:
-                return new Glasses(w, row*s2 + VERTICAL_OFFSET, w, s2);
+                image = getImage(Glasses.IMAGE_NAME, new Dimension(w, s2));
+                return new Glasses(w, row*s2 + VERTICAL_OFFSET, image.getWidth(), image.getHeight());
             case 4:
-                return new SprayBottle(w, row*s2 + VERTICAL_OFFSET, w, s2);
+                image = getImage(SprayBottle.IMAGE_NAME, new Dimension(w, s2));
+                return new SprayBottle(w, row*s2 + VERTICAL_OFFSET, image.getWidth(), image.getHeight());
             case 5:
-                return new Phone(w, row*s2 + VERTICAL_OFFSET, w, s2);
+                image = getImage(Phone.IMAGE_NAME, new Dimension(w, s2));
+                return new Phone(w, row*s2 + VERTICAL_OFFSET, image.getWidth(), image.getHeight());
         }
         return null;
     }
@@ -313,7 +320,7 @@ public class Level extends JComponent {
                 Rectangle rect = bailey.getBounds();
                 if(rect.intersects(shockRect))
                 {
-                    if(!shock.isActive())
+                    if(!shock.isWalking())
                         shock.startWalk();
                     bailey.minusHp(shock.getDamage());
                 }
@@ -346,13 +353,7 @@ public class Level extends JComponent {
                     baileys[row].remove(i);
                     continue;
                 }
-                Point p = getLoc(bailey);
-                int c = p.y;
-                int r = p.x;
-                if (bailey.isWalking() && r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null) {
-                    bailey.stop();
-                    bailey.start();
-                }
+                bailey.checkRange(this);
                 if (bailey.x < BOX_WIDTH+HORIZONTAL_OFFSET)
                 {
                     gameOver = true;
@@ -623,7 +624,6 @@ public class Level extends JComponent {
             if(!gameOver)
                 return;
             if(pressed[0] && restart.contains(e.getPoint())) {
-                System.out.println("RESTART");
                 initialize();
             }
             else if(pressed[1] && mainMenu.contains(e.getPoint())) {
@@ -646,7 +646,7 @@ public class Level extends JComponent {
         mobiles = new ArrayList<>();
         waters = new ArrayList<>();
         gameOver = false;
-        numPizza = 75;
+        numPizza = STARTING_PIZZA;
         Dimension d = new Dimension(BOX_WIDTH, BOX_HEIGHT);
         officers.add(getImage(Aaron.IMAGE_NAME, d));
         officers.add(getImage(Emily.IMAGE_NAME, d));
