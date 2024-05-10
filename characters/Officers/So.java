@@ -2,6 +2,9 @@ package characters.Officers;
 import level.Bullet;
 import level.Level;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class So extends Officer {
     public static final String NAME = "Alex So";
     static final int STARTING_HP = 350;
@@ -14,8 +17,16 @@ public class So extends Officer {
     }
     public void useAbility(Level level)
     {
+        setImage("images/soActive.png");
+        Timer time = new Timer();
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                setImage("images/soInactive.png");
+            }
+        }, 1000);
         int bulletX = x + width;
-        int bulletY = y + height/4;
+        int bulletY = y + height/2;
         level.addBullet(new Bullet(bulletX, bulletY));
     }
 

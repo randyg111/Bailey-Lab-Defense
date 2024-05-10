@@ -3,6 +3,9 @@ import level.Level;
 import level.LevelPlayer;
 import level.Pizza;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Kho extends Officer {
     public static final String NAME = "Khosraw Azizi";
     static final int STARTING_HP = 300;
@@ -17,6 +20,14 @@ public class Kho extends Officer {
     }
     public void useAbility(Level level)
     {
+        setImage("images/khoActive.png");
+        Timer time = new Timer();
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                setImage("images/khoInactive.png");
+            }
+        }, 1000);
         int pizzaX = x + (int) (Math.random() * 101) - 50;
         int pizzaY = y + (int) (Math.random() * 101) - 50;
         level.addPizza(new Pizza(pizzaX, pizzaY, pizzaY));
