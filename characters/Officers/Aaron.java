@@ -19,6 +19,7 @@ public class Aaron extends Officer {
         super(NAME, STARTING_HP, IMAGE_NAME, x, y, w, h, COST, DAMAGE, RATE);
     }
     public void useAbility(Level level) {
+        stop();
         Bailey bailey = level.getNearestBailey(this);
         setImage("images/aaronActive.png");
         Timer time = new Timer();

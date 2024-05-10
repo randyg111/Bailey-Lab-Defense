@@ -50,7 +50,7 @@ public class Level extends JComponent {
 
     private static final Officer[] arr = {new Aaron(0, 0, 100, 100), new Emily(0,0,100, 100),
             new Kho(0,0,100, 100), new Randy(0,0,100, 100), new So(0,0,100, 100), new Zheng(0,0,100, 100)};
-    static boolean[] selected = new boolean[arr.length];
+    static boolean[] selected = new boolean[7];
 
     public Level()
     {
@@ -246,18 +246,35 @@ public class Level extends JComponent {
         for (int i = 0; i < boxes.size(); i++)
         {
             Rectangle box = boxes.get(i);
-            BufferedImage officer = officers.get(i);
-            if(selected[i])
-                g.setColor(Color.darkGray);
+            if(i == boxes.size()-1)
+            {
+                BufferedImage shovel = getImage("images/shovel.png", new Dimension(BOX_WIDTH, BOX_HEIGHT));
+                if(selected[i])
+                    g.setColor(Color.darkGray);
+                else
+                    g.setColor(Color.lightGray);
+                g.fill(box);
+                g.setColor(Color.black);
+                g.draw(box);
+                int x = box.x + box.width/2 - shovel.getWidth()/2;
+                int y = box.y + box.height/2 - shovel.getHeight()/2;
+                g.drawImage(shovel, x, y, null);
+            }
             else
-                g.setColor(Color.lightGray);
-            g.fill(box);
-            g.setColor(Color.black);
-            g.draw(box);
-            int x = box.x + box.width/2 - officer.getWidth()/2;
-            int y = box.y + box.height/2 - officer.getHeight()/2;
-            g.drawImage(officer, x, y, null);
-            g.drawString(Integer.toString(arr[i].getCost()), box.x + BOX_OFFSET, box.y + box.height - BOX_OFFSET);
+            {
+                BufferedImage officer = officers.get(i);
+                if(selected[i])
+                    g.setColor(Color.darkGray);
+                else
+                    g.setColor(Color.lightGray);
+                g.fill(box);
+                g.setColor(Color.black);
+                g.draw(box);
+                int x = box.x + box.width/2 - officer.getWidth()/2;
+                int y = box.y + box.height/2 - officer.getHeight()/2;
+                g.drawImage(officer, x, y, null);
+                g.drawString(Integer.toString(arr[i].getCost()), box.x + BOX_OFFSET, box.y + box.height - BOX_OFFSET);
+            }
         }
 
         for(int row = 0; row < ROWS; row++)
@@ -596,7 +613,14 @@ public class Level extends JComponent {
                 {
                     for (int col = 0; col < COLS; col++)
                     {
-                        if (grid[row][col] == null)
+                        if(curr == 6)
+                        {
+                            if(grid[row][col] != null) {
+                                grid[row][col].stop();
+                                grid[row][col] = null;
+                            }
+                        }
+                        else if (grid[row][col] == null)
                         {
                             Rectangle rect = getRectangle(row, col);
                             if (rect.contains(e.getPoint())) {
@@ -677,7 +701,7 @@ public class Level extends JComponent {
         officers.add(getImage(Zheng.IMAGE_NAME, d));
         int pizzaX = BOX_OFFSET + BOX_WIDTH/2 - Pizza.WIDTH/2;
         displayPizza = new Pizza(pizzaX, BOX_OFFSET, BOX_OFFSET);
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < 7; i++)
         {
             boxes.add(new Rectangle(BOX_OFFSET, (i+1)*(BOX_HEIGHT+BOX_OFFSET) + BOX_OFFSET, BOX_WIDTH, BOX_HEIGHT));
         }
