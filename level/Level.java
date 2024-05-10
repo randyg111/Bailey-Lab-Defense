@@ -95,6 +95,16 @@ public class Level extends JComponent {
                     newWidth = (newHeight * originalWidth) / originalHeight;
                 }
 
+                if(boundWidth > originalWidth && boundHeight > originalHeight) {
+                    if(boundWidth / originalWidth > boundHeight / originalHeight) {
+                        newHeight = boundHeight;
+                        newWidth = originalWidth * boundHeight / originalHeight;
+                    } else {
+                        newWidth = boundWidth;
+                        newHeight = originalHeight * boundWidth / originalWidth;
+                    }
+                }
+
                 BufferedImage resized = new BufferedImage(newWidth, newHeight, image.getType());
                 Graphics2D g = resized.createGraphics();
                 g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
@@ -250,16 +260,22 @@ public class Level extends JComponent {
             g.drawString(Integer.toString(arr[i].getCost()), box.x + BOX_OFFSET, box.y + box.height - BOX_OFFSET);
         }
 
-        for (int row = 0; row < ROWS; row++)
+        for(int row = 0; row < ROWS; row++)
         {
-            for (int col = 0; col < COLS; col++)
+            for(int col = 0; col < COLS; col++)
             {
                 Rectangle rect = getRectangle(row, col);
                 g.setColor(Color.lightGray);
                 g.fill(rect);
                 g.setColor(Color.black);
                 g.draw(rect);
+            }
+        }
 
+        for (int row = 0; row < ROWS; row++)
+        {
+            for (int col = 0; col < COLS; col++)
+            {
                 Officer officer = grid[row][col];
 
                 if (officer != null)

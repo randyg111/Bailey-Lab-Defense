@@ -5,6 +5,8 @@ import level.LevelPlayer;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Zheng extends Officer {
     public static final String NAME = "Alex Zheng";
@@ -45,6 +47,19 @@ public class Zheng extends Officer {
                     bailey.minusHp(damage);
             }
         }
+        stop();
+        x -= level.getS1();
+        y -= level.getS2();
+        width *= 3;
+        height *= 3;
+        setImage("images/zhengActive.png");
+        Timer time = new Timer();
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                done = true;
+            }
+        }, 1500);
         hp = 0;
     }
 }
