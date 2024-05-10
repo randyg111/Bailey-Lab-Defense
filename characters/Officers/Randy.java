@@ -1,6 +1,9 @@
 package characters.Officers;
 import level.Level;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Randy extends Officer {
     public static final String NAME = "Randy Guo";
     static final int STARTING_HP = 4000;
@@ -17,7 +20,22 @@ public class Randy extends Officer {
     }
     public void checkHp()
     {
-        if(hp < STARTING_HP /2)
+        if(isDead())
+        {
+            setImage("images/randyDead.png");
+            Timer time = new Timer();
+            time.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    done = true;
+                }
+            }, 1500);
+        }
+        else if(hp < STARTING_HP/3)
+        {
+            setImage("images/randyDamaged.png");
+        }
+        else if(hp < 2*STARTING_HP/3)
         {
             setImage("images/randySlightlyDamaged.png");
         }
