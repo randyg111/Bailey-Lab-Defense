@@ -27,6 +27,7 @@ public abstract class Character{
     protected Timer timer;
     protected int damage;
     protected double rate;
+    protected String imageName;
 
     public Character() {
         this.name = null;
@@ -38,6 +39,7 @@ public abstract class Character{
     public Character(String name, int hp, String imageName, int x, int y, int width, int height, int d, double r){
         this.name = name;
         this.hp = hp;
+        this.imageName = imageName;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -117,7 +119,6 @@ public abstract class Character{
 
     public abstract void checkHp();
 
-//    static int num = 0;
     protected class TimerListener implements ActionListener
     {
         private final Level level;
@@ -129,7 +130,6 @@ public abstract class Character{
 
         public void actionPerformed(ActionEvent event)
         {
-//            System.out.println(++num);
             Character.this.useAbility(level);
             level.repaint();
         }

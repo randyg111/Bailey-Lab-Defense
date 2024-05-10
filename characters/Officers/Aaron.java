@@ -1,6 +1,10 @@
 package characters.Officers;
 import characters.Baileys.Bailey;
+import javafx.animation.PathTransition;
 import level.Level;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Aaron extends Officer {
     public static final String NAME = "Aaron Zhou";
@@ -12,8 +16,7 @@ public class Aaron extends Officer {
     public Aaron(int x, int y, int w, int h){
         super(NAME, STARTING_HP, IMAGE_NAME, x, y, w, h, COST, DAMAGE, RATE);
     }
-    public void useAbility(Level level)
-    {
+    public void useAbility(Level level) {
         Bailey bailey = level.getNearestBailey(this);
         bailey.minusHp(damage);
         hp = 0;

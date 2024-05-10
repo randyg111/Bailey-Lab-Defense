@@ -15,4 +15,11 @@ public class Randy extends Officer {
     {
 
     }
+    public void checkHp()
+    {
+        if(hp < STARTING_HP /2)
+        {
+            setImage("images/randySlightlyDamaged.png");
+        }
+    }
 }

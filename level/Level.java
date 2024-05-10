@@ -62,7 +62,7 @@ public class Level extends JComponent {
         Timer timer = new Timer();
 
         for(int wave = 0; wave < 2; wave++) {
-            timer.schedule(new StageTask(.5, 0, 0, 0, 0, 0), 10000 + wave * 10000);
+            timer.schedule(new StageTask(1, 0, 0, 0, 0, 0), 10000 + wave * 10000);
             timer.schedule(new StageTask(.5, .2, 0, 0, 0, 0), 30000 + wave * 10000);
             timer.schedule(new StageTask(.5, .2, .2, 0, 0, 0), 50000 + wave * 10000);
             timer.schedule(new StageTask(.6, .2, .2, .2, 0, 0), 70000 + wave * 10000);
@@ -122,7 +122,7 @@ public class Level extends JComponent {
 
     public boolean containsOfficer(int r, int c)
     {
-        return r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null;
+        return r >= 0 && r < ROWS && c >= 0 && c < COLS && grid[r][c] != null && !grid[r][c].isDead();
     }
 
     public void spawn(double blondeRate, double redHeadRate, double idRate,
@@ -283,7 +283,7 @@ public class Level extends JComponent {
                             officer.stop();
                         }
                     }
-                    if (officer.isDead())
+                    if (officer.isDone())
                     {
                         officer.stop();
                         grid[row][col] = null;
