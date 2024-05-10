@@ -44,12 +44,7 @@ public abstract class Character{
         this.height = height;
         damage = d;
         rate = r;
-        try{
-            image = ImageIO.read(new File(imageName));
-            image = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-        } catch (IOException e){
-            System.out.println(imageName + " image not found");
-        }
+        image = Level.getImage(imageName, new Dimension(width, height));
 
         active = false;
     }
@@ -100,13 +95,7 @@ public abstract class Character{
     }
 
     public void setImage(String name) {
-        try{
-            image = ImageIO.read(new File(name));
-            Dimension d = Level.getDimension(name, new Dimension(width, height));
-            image = image.getScaledInstance(d.width, d.height, Image.SCALE_DEFAULT);
-        } catch (IOException e){
-            System.out.println(name + " image not found");
-        }
+        image = Level.getImage(name, new Dimension(width, height));
     }
 
     public Rectangle getBounds()

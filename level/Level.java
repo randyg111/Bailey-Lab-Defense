@@ -45,9 +45,10 @@ public class Level extends JComponent {
     private static Rectangle mainMenu;
     static boolean[] pressed = new boolean[2];
     static Shockwave[] shockwave;
+    private static HashMap<String, BufferedImage> map = new HashMap<>();
 
-    private static final Officer[] arr = {new Aaron(0, 0, 1, 1), new Emily(0,0,1,1),
-            new Kho(0,0,1,1), new Randy(0,0,1,1), new So(0,0,1,1), new Zheng(0,0,1,1)};
+    private static final Officer[] arr = {new Aaron(0, 0, 100, 100), new Emily(0,0,100, 100),
+            new Kho(0,0,100, 100), new Randy(0,0,100, 100), new So(0,0,100, 100), new Zheng(0,0,100, 100)};
     static boolean[] selected = new boolean[arr.length];
 
     public Level()
@@ -68,6 +69,45 @@ public class Level extends JComponent {
             timer.schedule(new StageTask(.8, .3, .3, .2, .2, .2), 110000 + wave * 10000);
         }
 
+    }
+
+    public static BufferedImage getImage(String name, Dimension bounds)
+    {
+        if(!map.containsKey(name+bounds.width+bounds.height))
+        {
+            try {
+                BufferedImage image = ImageIO.read(new File(name));
+                int originalWidth = image.getWidth();
+                int originalHeight = image.getHeight();
+                int boundWidth = bounds.width;
+                int boundHeight = bounds.height;
+                int newWidth = originalWidth;
+                int newHeight = originalHeight;
+
+                if (originalWidth > boundWidth) {
+                    newWidth = boundWidth;
+                    newHeight = (newWidth * originalHeight) / originalWidth;
+                }
+
+                if (newHeight > boundHeight) {
+                    newHeight = boundHeight;
+                    newWidth = (newHeight * originalWidth) / originalHeight;
+                }
+
+                BufferedImage resized = new BufferedImage(newWidth, newHeight, image.getType());
+                Graphics2D g = resized.createGraphics();
+                g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g.drawImage(image, 0, 0, newWidth, newHeight, 0, 0, image.getWidth(),
+                        image.getHeight(), null);
+                g.dispose();
+
+                map.put(name, resized);
+            } catch (IOException e) {
+                System.out.println(name + " image not found");
+            }
+        }
+        return map.get(name);
     }
 
     public void spawnPizzas()
@@ -122,23 +162,17 @@ public class Level extends JComponent {
         switch(type)
         {
             case 0:
-                Dimension d = getDimension(Blonde.IMAGE_NAME, new Dimension(w, s2));
-                return new Blonde(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+                return new Blonde(w, row*s2 + VERTICAL_OFFSET, w, s2);
             case 1:
-                d = getDimension(RedHead.IMAGE_NAME, new Dimension(w, s2));
-                return new RedHead(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+                return new RedHead(w, row*s2 + VERTICAL_OFFSET, w, s2);
             case 2:
-                d = getDimension(Id.IMAGE_NAME, new Dimension(w, s2));
-                return new Id(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+                return new Id(w, row*s2 + VERTICAL_OFFSET, w, s2);
             case 3:
-                d = getDimension(Glasses.IMAGE_NAME, new Dimension(w, s2));
-                return new Glasses(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+                return new Glasses(w, row*s2 + VERTICAL_OFFSET, w, s2);
             case 4:
-                d = getDimension(SprayBottle.IMAGE_NAME, new Dimension(w, s2));
-                return new SprayBottle(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+                return new SprayBottle(w, row*s2 + VERTICAL_OFFSET, w, s2);
             case 5:
-                d = getDimension(Phone.IMAGE_NAME, new Dimension(w, s2));
-                return new Phone(w, row*s2 + VERTICAL_OFFSET, d.width, d.height);
+                return new Phone(w, row*s2 + VERTICAL_OFFSET, w, s2);
         }
         return null;
     }
@@ -255,10 +289,10 @@ public class Level extends JComponent {
             shockwave = new Shockwave[ROWS];
             for(int i = 0; i < ROWS; i++)
             {
-                Dimension d = getDimension(Shockwave.IMAGE_NAME, new Dimension(SHOCK_WIDTH, getS2()));
-                shockwave[i] = new Shockwave(BOX_WIDTH+HORIZONTAL_OFFSET + SHOCK_WIDTH/2 - d.width/2,
-                        i*getS2() + VERTICAL_OFFSET + getS2()/2 - d.height/2,
-                        d.width, d.height);
+                BufferedImage image = getImage(Shockwave.IMAGE_NAME, new Dimension(SHOCK_WIDTH, getS2()));
+                shockwave[i] = new Shockwave(BOX_WIDTH+HORIZONTAL_OFFSET + SHOCK_WIDTH/2 - image.getWidth()/2,
+                        i*getS2() + VERTICAL_OFFSET + getS2()/2 - image.getHeight()/2,
+                        image.getWidth(), image.getHeight());
             }
         }
 
@@ -474,57 +508,6 @@ public class Level extends JComponent {
         return new Rectangle(x, y, s1, s2);
     }
 
-    public static Dimension getDimension(String imageName, Dimension bounds)
-    {
-        try {
-            BufferedImage image = ImageIO.read(new File(imageName));
-            int originalWidth = image.getWidth();
-            int originalHeight = image.getHeight();
-            int boundWidth = bounds.width;
-            int boundHeight = bounds.height;
-            int newWidth = originalWidth;
-            int newHeight = originalHeight;
-
-            if (originalWidth > boundWidth) {
-                newWidth = boundWidth;
-                newHeight = (newWidth * originalHeight) / originalWidth;
-            }
-
-            if (newHeight > boundHeight) {
-                newHeight = boundHeight;
-                newWidth = (newHeight * originalWidth) / originalHeight;
-            }
-
-            return new Dimension(newWidth, newHeight);
-        } catch (IOException e) {
-            System.out.println(imageName+" image not found");
-            throw new RuntimeException();
-        }
-    }
-
-    public static BufferedImage getScaledImage(String imageName, Dimension d) {
-
-        try {
-            BufferedImage image = ImageIO.read(new File(imageName));
-            Dimension newDimension = getDimension(imageName, d);
-            int newWidth = newDimension.width;
-            int newHeight = newDimension.height;
-
-            BufferedImage resized = new BufferedImage(newWidth, newHeight, image.getType());
-            Graphics2D g = resized.createGraphics();
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g.drawImage(image, 0, 0, newWidth, newHeight, 0, 0, image.getWidth(),
-                    image.getHeight(), null);
-            g.dispose();
-
-            return resized;
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
-
-    }
-
     public Point getLoc(Character character)
     {
         int c = (character.x + character.width/2 - getLeftWidth()) / getS1();
@@ -536,23 +519,23 @@ public class Level extends JComponent {
     {
         switch(i) {
             case 0:
-                Dimension d = getDimension(Aaron.IMAGE_NAME, bounds);
-                return new Aaron(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
+                BufferedImage image = getImage(Aaron.IMAGE_NAME, bounds);
+                return new Aaron(x + bounds.width/2 - image.getWidth()/2, y + bounds.height/2 - image.getHeight()/2, image.getWidth(), image.getHeight());
             case 1:
-                d = getDimension(Emily.IMAGE_NAME, bounds);
-                return new Emily(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
+                image = getImage(Emily.IMAGE_NAME, bounds);
+                return new Emily(x + bounds.width/2 - image.getWidth()/2, y + bounds.height/2 - image.getHeight()/2, image.getWidth(), image.getHeight());
             case 2:
-                d = getDimension(Kho.IMAGE_NAME, bounds);
-                return new Kho(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
+                image = getImage(Kho.IMAGE_NAME, bounds);
+                return new Kho(x + bounds.width/2 - image.getWidth()/2, y + bounds.height/2 - image.getHeight()/2, image.getWidth(), image.getHeight());
             case 3:
-                d = getDimension(Randy.IMAGE_NAME, bounds);
-                return new Randy(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
+                image = getImage(Randy.IMAGE_NAME, bounds);
+                return new Randy(x + bounds.width/2 - image.getWidth()/2, y + bounds.height/2 - image.getHeight()/2, image.getWidth(), image.getHeight());
             case 4:
-                d = getDimension(So.IMAGE_NAME, bounds);
-                return new So(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
+                image = getImage(So.IMAGE_NAME, bounds);
+                return new So(x + bounds.width/2 - image.getWidth()/2, y + bounds.height/2 - image.getHeight()/2, image.getWidth(), image.getHeight());
             case 5:
-                d = getDimension(Zheng.IMAGE_NAME, bounds);
-                return new Zheng(x + bounds.width/2 - d.width/2, y + bounds.height/2 - d.height/2, d.width, d.height);
+                image = getImage(Zheng.IMAGE_NAME, bounds);
+                return new Zheng(x + bounds.width/2 - image.getWidth()/2, y + bounds.height/2 - image.getHeight()/2, image.getWidth(), image.getHeight());
         }
         return null;
     }
@@ -665,12 +648,12 @@ public class Level extends JComponent {
         gameOver = false;
         numPizza = 75;
         Dimension d = new Dimension(BOX_WIDTH, BOX_HEIGHT);
-        officers.add(getScaledImage(Aaron.IMAGE_NAME, d));
-        officers.add(getScaledImage(Emily.IMAGE_NAME, d));
-        officers.add(getScaledImage(Kho.IMAGE_NAME, d));
-        officers.add(getScaledImage(Randy.IMAGE_NAME, d));
-        officers.add(getScaledImage(So.IMAGE_NAME, d));
-        officers.add(getScaledImage(Zheng.IMAGE_NAME, d));
+        officers.add(getImage(Aaron.IMAGE_NAME, d));
+        officers.add(getImage(Emily.IMAGE_NAME, d));
+        officers.add(getImage(Kho.IMAGE_NAME, d));
+        officers.add(getImage(Randy.IMAGE_NAME, d));
+        officers.add(getImage(So.IMAGE_NAME, d));
+        officers.add(getImage(Zheng.IMAGE_NAME, d));
         int pizzaX = BOX_OFFSET + BOX_WIDTH/2 - Pizza.WIDTH/2;
         displayPizza = new Pizza(pizzaX, BOX_OFFSET, BOX_OFFSET);
         for(int i = 0; i < 6; i++)
