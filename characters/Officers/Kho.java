@@ -6,7 +6,7 @@ import level.Pizza;
 public class Kho extends Officer {
     public static final String NAME = "Khosraw Azizi";
     static final int STARTING_HP = 300;
-    public static final String IMAGE_NAME = "images/kho.png";
+    public static final String IMAGE_NAME = "images/khoInactive.png";
     public static final int COST = 50;
     static final int DAMAGE = 0;
     static final double RATE = 24;
